@@ -5,7 +5,6 @@
 // -----------------------------------------------------------------------
 namespace EducationalTeamsBotApi.Application.Tags.Queries.GetTagsQuery
 {
-    using System.Collections.Generic;
     using System.Threading;
     using System.Threading.Tasks;
     using AutoMapper;
@@ -14,7 +13,6 @@ namespace EducationalTeamsBotApi.Application.Tags.Queries.GetTagsQuery
     using EducationalTeamsBotApi.Application.Common.Models;
     using EducationalTeamsBotApi.Application.Dto;
     using EducationalTeamsBotApi.Application.Pagination.Queries;
-    using EducationalTeamsBotApi.Domain.Entities;
     using global::Application.Common.Mappings;
     using MediatR;
 
