@@ -4,10 +4,10 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-using EducationalTeamsBotApi.WebApi.Common.Extensions.Options;
-
 namespace EducationalTeamsBotApi.WebApi.Common.Extensions
 {
+    using EducationalTeamsBotApi.WebApi.Common.Extensions.Options;
+
     /// <summary>
     /// Extension class for the services.
     /// </summary>
@@ -20,12 +20,6 @@ namespace EducationalTeamsBotApi.WebApi.Common.Extensions
         /// <returns>Returns the <see cref="IServiceCollection"/>.</returns>
         public static IServiceCollection AddSwaggerVersioningSupport(this IServiceCollection services)
         {
-            services.AddSwaggerGen(options =>
-            {
-                // for further customization
-                //options.OperationFilter<DefaultValuesFilter>();
-            });
-
             services.ConfigureOptions<ConfigureSwaggerOptions>();
 
             return services;

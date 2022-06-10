@@ -4,13 +4,13 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-using AutoMapper;
-using System;
-using System.Linq;
-using System.Reflection;
-
 namespace EducationalTeamsBotApi.Application.Common.Mappings
 {
+    using System;
+    using System.Linq;
+    using System.Reflection;
+    using AutoMapper;
+
     /// <summary>
     /// Class Mapping profile.
     /// </summary>
@@ -40,7 +40,7 @@ namespace EducationalTeamsBotApi.Application.Common.Mappings
                 var instance = Activator.CreateInstance(type);
 
                 var methodInfo = type.GetMethod("Mapping")
-                    ?? type.GetInterface("IMapFrom`1").GetMethod("Mapping");
+                    ?? type?.GetInterface("IMapFrom`1")?.GetMethod("Mapping");
 
                 methodInfo?.Invoke(instance, new object[] { this });
             }

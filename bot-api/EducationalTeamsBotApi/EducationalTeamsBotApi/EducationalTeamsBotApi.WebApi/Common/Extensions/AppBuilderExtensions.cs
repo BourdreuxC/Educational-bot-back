@@ -4,10 +4,10 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-using Microsoft.AspNetCore.Mvc.ApiExplorer;
-
 namespace EducationalTeamsBotApi.WebApi.Common.Extensions
 {
+    using Microsoft.AspNetCore.Mvc.ApiExplorer;
+
     /// <summary>
     /// Extension class providing methods for the app builder.
     /// </summary>

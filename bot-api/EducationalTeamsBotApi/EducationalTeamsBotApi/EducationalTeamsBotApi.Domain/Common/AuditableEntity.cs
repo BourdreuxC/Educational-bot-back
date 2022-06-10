@@ -4,10 +4,10 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-using System;
-
 namespace EducationalTeamsBotApi.Domain.Common
 {
+    using System;
+
     /// <summary>
     /// Abstract class providing the properties allowing the tracking the modification of an entity.
     /// </summary>
@@ -21,7 +21,7 @@ namespace EducationalTeamsBotApi.Domain.Common
         /// <summary>
         /// Gets or sets the user who create the <see cref="AuditableEntity"/>.
         /// </summary>
-        public string CreatedBy { get; set; }
+        public string? CreatedBy { get; set; }
 
         /// <summary>
         /// Gets or sets the date of last modification of the <see cref="AuditableEntity"/>.
@@ -31,6 +31,6 @@ namespace EducationalTeamsBotApi.Domain.Common
         /// <summary>
         /// Gets or sets the user who made the last modification on the <see cref="AuditableEntity"/>.
         /// </summary>
-        public string LastModifiedBy { get; set; }
+        public string? LastModifiedBy { get; set; }
     }
 }

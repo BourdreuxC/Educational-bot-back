@@ -4,15 +4,15 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-using FluentValidation;
-using MediatR;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
-
 namespace EducationalTeamsBotApi.Application.Common.Behaviours
 {
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Threading;
+    using System.Threading.Tasks;
+    using FluentValidation;
+    using MediatR;
+
     /// <summary>
     /// Class Behaviour for the validators.
     /// </summary>

@@ -4,10 +4,10 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-using System.Collections.Generic;
-
 namespace EducationalTeamsBotApi.Domain.Common
 {
+    using System.Collections.Generic;
+
     /// <summary>
     /// Interface providing a list of domain event.
     /// </summary>

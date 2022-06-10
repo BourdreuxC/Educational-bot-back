@@ -4,10 +4,10 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-using System;
-
 namespace EducationalTeamsBotApi.Domain.Common
 {
+    using System;
+
     /// <summary>
     /// Abstract class for a domain event.
     /// </summary>

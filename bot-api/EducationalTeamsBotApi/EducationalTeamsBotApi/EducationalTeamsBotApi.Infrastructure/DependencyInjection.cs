@@ -3,16 +3,13 @@
 // Copyright (c) DIIAGE 2022. All rights reserved.
 // </copyright>
 // -----------------------------------------------------------------------
-
-using EducationalTeamsBotApi.Application.Common.Interfaces;
-using EducationalTeamsBotApi.Infrastructure.Persistence;
-using EducationalTeamsBotApi.Infrastructure.Services;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-
 namespace EducationalTeamsBotApi.Infrastructure
 {
+    using EducationalTeamsBotApi.Application.Common.Interfaces;
+    using EducationalTeamsBotApi.Infrastructure.Services;
+    using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Graph;
+
     /// <summary>
     /// Static class providing an extension method to handle dependency injection for the infrastructure layer.
     /// </summary>
@@ -22,26 +19,17 @@ namespace EducationalTeamsBotApi.Infrastructure
         /// Configures and returns a service collection for the infrastructure layer.
         /// </summary>
         /// <param name="services">Service collection.</param>
-        /// <param name="configuration">Configuration of the application.</param>
         /// <returns>Returns a <see cref="ServiceCollection"/>.</returns>
-        public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
+        public static IServiceCollection AddInfrastructure(this IServiceCollection services)
         {
-            if (bool.Parse(configuration["UseInMemoryDatabase"]))
-            {
-                services.AddDbContext<ApplicationDbContext>(options =>
-                    options.UseInMemoryDatabase("DbMemory"));
-            }
-            else
-            {
-                services.AddDbContext<ApplicationDbContext>(options =>
-                    options.UseSqlServer(
-                        configuration.GetConnectionString("DefaultConnection"),
-                        b => b.MigrationsAssembly(typeof(ApplicationDbContext).Assembly.FullName)));
-            }
-
-            services.AddScoped<IApplicationDbContext>(provider => provider.GetService<ApplicationDbContext>());
-
-            services.AddScoped<IDomainEventService, DomainEventService>();
+            services.AddScoped<GraphServiceClient, GraphServiceClient>();
+            services.AddScoped<IGraphService, GraphService>();
+            services.AddScoped<ISpeakerCosmosService, SpeakerCosmosService>();
+            services.AddScoped<IUserCosmosService, UserCosmosService>();
+            services.AddScoped<IQuestionCosmosService, QuestionCosmosService>();
+            services.AddScoped<IReactionCosmosService, ReactionCosmosService>();
+            services.AddScoped<IAnswerCosmosService, AnswerCosmosService>();
+            services.AddScoped<ITagCosmosService, TagCosmosService>();
 
             return services;
         }

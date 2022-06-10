@@ -4,12 +4,12 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-using EducationalTeamsBotApi.Application.Common.Interfaces;
-using Microsoft.AspNetCore.Http;
-using System.Security.Claims;
-
 namespace EducationalTeamsBotApi.WebApi.Services
 {
+    using System.Security.Claims;
+    using EducationalTeamsBotApi.Application.Common.Interfaces;
+    using Microsoft.AspNetCore.Http;
+
     /// <summary>
     /// Class <see cref="CurrentUserService"/> providing the current user in the http context.
     /// </summary>

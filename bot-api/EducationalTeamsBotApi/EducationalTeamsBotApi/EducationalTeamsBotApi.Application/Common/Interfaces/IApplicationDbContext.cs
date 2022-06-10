@@ -4,11 +4,11 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-using System.Threading;
-using System.Threading.Tasks;
-
 namespace EducationalTeamsBotApi.Application.Common.Interfaces
 {
+    using System.Threading;
+    using System.Threading.Tasks;
+
     /// <summary>
     /// Interface context for the application.
     /// </summary>

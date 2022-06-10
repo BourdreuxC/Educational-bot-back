@@ -4,11 +4,11 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-using EducationalTeamsBotApi.Domain.Common;
-using System.Threading.Tasks;
-
 namespace EducationalTeamsBotApi.Application.Common.Interfaces
 {
+    using System.Threading.Tasks;
+    using EducationalTeamsBotApi.Domain.Common;
+
     /// <summary>
     /// Interface domain event service.
     /// </summary>

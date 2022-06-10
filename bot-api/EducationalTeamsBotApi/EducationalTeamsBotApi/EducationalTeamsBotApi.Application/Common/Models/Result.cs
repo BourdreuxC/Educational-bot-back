@@ -4,9 +4,6 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-using System.Collections.Generic;
-using System.Linq;
-
 namespace EducationalTeamsBotApi.Application.Common.Models
 {
     /// <summary>
@@ -41,7 +38,7 @@ namespace EducationalTeamsBotApi.Application.Common.Models
         /// <returns>Returns a <see cref="Result"/>.</returns>
         public static Result Success()
         {
-            return new Result(true, new string[] { });
+            return new Result(true, Array.Empty<string>());
         }
 
         /// <summary>

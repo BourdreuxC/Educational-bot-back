@@ -4,12 +4,12 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-
 namespace EducationalTeamsBotApi.Domain.Common
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+
     /// <summary>
     /// Abstract class value object.
     /// </summary>

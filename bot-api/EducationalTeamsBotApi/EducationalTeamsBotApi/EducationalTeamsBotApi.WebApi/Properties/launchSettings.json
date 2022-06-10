@@ -14,6 +14,7 @@
       "launchBrowser": true,
       "launchUrl": "swagger",
       "environmentVariables": {
+        "COSMOS_CON_STRING": "AccountEndpoint=https://dibotaccount.documents.azure.com:443/;AccountKey=oE6bgeWdELDySDjRRibUShCPQBqb3bWutp7kxAIhnu5HviFARLcpsM78cQfSVBbiKsbNK73tkqbouYay8FpSkA==",
         "ASPNETCORE_ENVIRONMENT": "Development"
       },
       "applicationUrl": "http://localhost:5025",

@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "EducationalTeamsBotApi.Application": {
+      "commandName": "Project",
+      "environmentVariables": {
+        "COSMOS_CON_STRING": "https:/dibotaccount.documents.azure.com:443/"
+      }
+    }
+  }
+}
