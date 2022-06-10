@@ -20,6 +20,9 @@ namespace EducationalTeamsBotApi.Application.Common.Behaviours
     public class UnhandledExceptionBehaviour<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
         where TRequest : MediatR.IRequest<TResponse>
     {
+        /// <summary>
+        /// Logger to use in this behaviour.
+        /// </summary>
         private readonly ILogger<TRequest> logger;
 
         /// <summary>

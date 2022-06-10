@@ -32,7 +32,7 @@ namespace EducationalTeamsBotApi.WebApi.Controllers
         /// </summary>
         /// <param name="teamId">Graph team identifier.</param>
         /// <returns>A list of channels.</returns>
-        [HttpGet("{teamId}")]
+        [HttpGet("{teamId}/channels")]
         public async Task<IActionResult> GetTeamChannels(string teamId)
         {
             var channels = await this.Mediator.Send(new GetTeamChannelsQuery { TeamId = teamId });

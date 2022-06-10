@@ -6,16 +6,15 @@
 
 namespace EducationalTeamsBotApi.WebApi.Controllers
 {
+    using EducationalTeamsBotApi.Application.Dto;
+    using EducationalTeamsBotApi.Application.Pagination.Queries;
     using EducationalTeamsBotApi.Application.Speakers.Commands.AddSpeakerCommand;
     using EducationalTeamsBotApi.Application.Speakers.Commands.DeleteSpeakerCommand;
     using EducationalTeamsBotApi.Application.Speakers.Commands.EditSpeakerCommand;
     using EducationalTeamsBotApi.Application.Speakers.Commands.EnableSpeakerCommand;
     using EducationalTeamsBotApi.Application.Speakers.Queries.GetSpeakerQuery;
-    using EducationalTeamsBotApi.Application.Speakers.Queries.GetSpeakersQuery;
     using EducationalTeamsBotApi.WebApi.Model;
-    using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
-
 
     /// <summary>
     /// Controller allowing to interact with speakers.
@@ -26,16 +25,16 @@ namespace EducationalTeamsBotApi.WebApi.Controllers
         /// <summary>
         /// Gets the list of all speakers.
         /// </summary>
+        /// <param name="query">Query with pagination.</param>
         /// <returns>A list of speakers.</returns>
         [HttpGet]
-        public async Task<IActionResult> GetSpeakers()
+        public async Task<IActionResult> GetSpeakers([FromQuery] GetWithPaginationQuery<SpeakerDto> query)
         {
             try
             {
-                var speakers = await this.Mediator.Send(new GetSpeakersQuery());
+                var speakers = await this.Mediator.Send(query);
                 return this.Ok(speakers);
             }
-
             catch (Exception)
             {
                 throw;

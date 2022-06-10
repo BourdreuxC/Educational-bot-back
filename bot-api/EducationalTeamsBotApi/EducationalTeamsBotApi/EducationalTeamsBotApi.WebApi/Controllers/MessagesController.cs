@@ -18,17 +18,6 @@ namespace EducationalTeamsBotApi.WebApi.Controllers
     public class MessagesController : ApiBaseController
     {
         /// <summary>
-        /// Gets the list of all messages.
-        /// </summary>
-        /// <returns>A list of messages.</returns>
-        [HttpGet]
-        public async Task<IActionResult> GetMessages()
-        {
-            var messages = await this.Mediator.Send(new GetMessagesQuery());
-            return this.Ok(messages);
-        }
-
-        /// <summary>
         /// Get the list of messages for a team channel from Graph and update database.
         /// </summary>
         /// <param name="teamId">Graph team identifier.</param>

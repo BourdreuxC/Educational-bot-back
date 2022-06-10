@@ -6,6 +6,8 @@
 
 namespace EducationalTeamsBotApi.WebApi.Controllers
 {
+    using EducationalTeamsBotApi.Application.Dto;
+    using EducationalTeamsBotApi.Application.Pagination.Queries;
     using EducationalTeamsBotApi.Application.Tags.Commands.AddTagCommand;
     using EducationalTeamsBotApi.Application.Tags.Commands.AddTagVariant;
     using EducationalTeamsBotApi.Application.Tags.Commands.DeleteTagCommand;
@@ -26,12 +28,13 @@ namespace EducationalTeamsBotApi.WebApi.Controllers
         /// <summary>
         /// Gets the list of all tags.
         /// </summary>
+        /// <param name="query">Query with pagination.</param>
         /// <returns>A list of tags.</returns>
         [HttpGet]
         [AllowAnonymous]
-        public async Task<IActionResult> GetTags()
+        public async Task<IActionResult> GetTags([FromQuery] GetWithPaginationQuery<TagDto> query)
         {
-            var tags = await this.Mediator.Send(new GetTagsQuery());
+            var tags = await this.Mediator.Send(query);
             return this.Ok(tags);
         }
 

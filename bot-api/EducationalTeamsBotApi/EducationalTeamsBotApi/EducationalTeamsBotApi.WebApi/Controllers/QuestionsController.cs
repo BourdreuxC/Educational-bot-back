@@ -6,8 +6,9 @@
 
 namespace EducationalTeamsBotApi.WebApi.Controllers
 {
+    using EducationalTeamsBotApi.Application.Dto;
+    using EducationalTeamsBotApi.Application.Pagination.Queries;
     using EducationalTeamsBotApi.Application.Questions.Commands.AskQuestion;
-    using EducationalTeamsBotApi.Application.Questions.Queries.GetAllQuestionsQuery;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.Bot.Schema;
@@ -22,14 +23,15 @@ namespace EducationalTeamsBotApi.WebApi.Controllers
         /// <summary>
         /// Get the list of questions.
         /// </summary>
+        /// <param name="query">Query with pagination.</param>
         /// <returns>All Questions.</returns>
         [HttpGet]
         [AllowAnonymous]
-        public async Task<IActionResult> GetQuestions()
+        public async Task<IActionResult> GetQuestions([FromQuery] GetWithPaginationQuery<QuestionDto> query)
         {
             try
             {
-                var questions = await this.Mediator.Send(new GetAllQuestionsQuery());
+                var questions = await this.Mediator.Send(query);
                 return this.Ok(questions);
             }
             catch (Exception)
