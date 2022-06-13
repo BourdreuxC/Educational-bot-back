@@ -13,7 +13,7 @@ namespace EducationalTeamsBotApi.Application.Common.Exceptions
     /// Class exception for the forbidden exception.
     /// </summary>
     [Serializable]
-    public class ForbiddenAccessException : Exception, ISerializable
+    public class ForbiddenAccessException : Exception
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="ForbiddenAccessException"/> class.
