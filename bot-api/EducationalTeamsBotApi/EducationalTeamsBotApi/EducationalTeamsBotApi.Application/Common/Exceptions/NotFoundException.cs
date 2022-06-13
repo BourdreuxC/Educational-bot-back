@@ -13,7 +13,7 @@ namespace EducationalTeamsBotApi.Application.Common.Exceptions
     /// Class exception for the not found exception.
     /// </summary>
     [Serializable]
-    public class NotFoundException : Exception, ISerializable
+    public class NotFoundException : Exception
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="NotFoundException"/> class.

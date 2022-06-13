@@ -13,7 +13,7 @@ namespace EducationalTeamsBotApi.Application.Common.Exceptions
     /// Class exception for the conflict exception.
     /// </summary>
     [Serializable]
-    public class ConflictException : Exception, ISerializable
+    public class ConflictException : Exception
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="ConflictException"/> class.
