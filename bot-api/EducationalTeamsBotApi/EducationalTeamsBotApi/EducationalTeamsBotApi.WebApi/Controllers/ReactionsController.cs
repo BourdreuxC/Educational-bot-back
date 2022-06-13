@@ -75,6 +75,11 @@ namespace EducationalTeamsBotApi.WebApi.Controllers
             return this.Ok(reaction);
         }
 
+        /// <summary>
+        /// Deletes a reaction.
+        /// </summary>
+        /// <param name="id">Id of the reaction to delete.</param>
+        /// <returns>A HTTP status code.</returns>
         [HttpDelete]
         public async Task<IActionResult> DeleteReaction(string id)
         {
