@@ -6,9 +6,7 @@
 
 namespace EducationalTeamsBotApi.WebApi.Controllers
 {
-    using EducationalTeamsBotApi.Application.Common.Constants;
     using EducationalTeamsBotApi.Application.Messages.Commands.Graph_SyncMessagesCommand;
-    using EducationalTeamsBotApi.Application.Messages.Queries.GetMessagesQuery;
     using Microsoft.AspNetCore.Mvc;
 
     /// <summary>

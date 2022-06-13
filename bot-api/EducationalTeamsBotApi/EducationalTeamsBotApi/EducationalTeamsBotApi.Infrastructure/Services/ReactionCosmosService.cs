@@ -12,6 +12,7 @@ namespace EducationalTeamsBotApi.Infrastructure.Services
     using EducationalTeamsBotApi.Application.Common.Interfaces;
     using EducationalTeamsBotApi.Domain.Entities;
     using Microsoft.Azure.Cosmos;
+    using Microsoft.Azure.Cosmos.Linq;
 
     /// <summary>
     /// Class that will interact with the CosmosDB.
@@ -34,39 +35,94 @@ namespace EducationalTeamsBotApi.Infrastructure.Services
         public ReactionCosmosService()
         {
             var cosmosConString = Environment.GetEnvironmentVariable(DatabaseConstants.ConnectionString);
-            this.cosmosClient = new CosmosClient(cosmosConString);
+
+            var options = new CosmosClientOptions() { ConnectionMode = ConnectionMode.Gateway };
+
+            this.cosmosClient = new CosmosClient(cosmosConString, options);
 
             this.database = this.cosmosClient.GetDatabase(DatabaseConstants.Database);
         }
 
         /// <inheritdoc/>
-        public Task<CosmosReaction> CreateReaction(CosmosReaction reaction)
+        public async Task<CosmosReaction> CreateReaction(CosmosReaction reaction)
         {
-            throw new NotImplementedException();
+            var container = this.database.GetContainer(DatabaseConstants.ReactionContainer);
+
+            // Try to find a reaction with the same ReactionId.
+            var r = container.GetItemLinqQueryable<CosmosReaction>();
+            var iterator = r.Where(x => x.ReactionId == reaction.ReactionId).ToFeedIterator();
+            var result = await iterator.ReadNextAsync();
+            var existingReaction = Tools.ToIEnumerable(result.GetEnumerator()).FirstOrDefault();
+
+            // If a reaction already exists, return it.
+            if (existingReaction != null)
+            {
+                return existingReaction;
+            }
+
+            var id = Guid.NewGuid().ToString();
+
+            reaction.Id = id;
+
+            var createdReaction = await container.CreateItemAsync(reaction, new PartitionKey(id));
+
+            return createdReaction;
         }
 
         /// <inheritdoc/>
-        public Task DeleteReaction(string id)
+        public async Task DeleteReaction(string id)
         {
-            throw new NotImplementedException();
+            var container = this.database.GetContainer(DatabaseConstants.ReactionContainer);
+
+            // Find the reaction to update.
+            var reactionToDelete = await this.GetReaction(id);
+
+            // If no reaction was found, set a new Id for the reaction.
+            if (reactionToDelete != null)
+            {
+                await container.DeleteItemAsync<CosmosReaction>(id, new PartitionKey(id));
+            }
         }
 
         /// <inheritdoc/>
-        public Task<CosmosReaction> EditReaction(CosmosReaction reaction)
+        public async Task<CosmosReaction> EditReaction(CosmosReaction reaction)
         {
-            throw new NotImplementedException();
+            var container = this.database.GetContainer(DatabaseConstants.ReactionContainer);
+
+            // Find the reaction to update.
+            var reactionToUpdate = await this.GetReaction(reaction.Id);
+
+            // If no reaction was found, set a new Id for the reaction.
+            if (reactionToUpdate == null)
+            {
+                reaction.Id = Guid.NewGuid().ToString();
+            }
+
+            // Upsert the reaction.
+            var upsertedReaction = await container.UpsertItemAsync(reaction);
+
+            return upsertedReaction;
         }
 
         /// <inheritdoc/>
-        public Task<IEnumerable<CosmosReaction>> GetCosmosReactions()
+        public async Task<IEnumerable<CosmosReaction>> GetCosmosReactions()
         {
-            throw new NotImplementedException();
+            var container = this.database.GetContainer(DatabaseConstants.ReactionContainer);
+            var reactions = container.GetItemLinqQueryable<CosmosReaction>();
+            var iterator = reactions.ToFeedIterator();
+            var results = await iterator.ReadNextAsync();
+
+            return Tools.ToIEnumerable(results.GetEnumerator());
         }
 
         /// <inheritdoc/>
-        public Task<CosmosReaction> GetReaction(string id)
+        public async Task<CosmosReaction> GetReaction(string id)
         {
-            throw new NotImplementedException();
+            var container = this.database.GetContainer(DatabaseConstants.ReactionContainer);
+            var q = container.GetItemLinqQueryable<CosmosReaction>();
+            var iterator = q.Where(x => x.Id == id).ToFeedIterator();
+            var result = await iterator.ReadNextAsync();
+            return Tools.ToIEnumerable(result.GetEnumerator()).First();
         }
     }
 }
