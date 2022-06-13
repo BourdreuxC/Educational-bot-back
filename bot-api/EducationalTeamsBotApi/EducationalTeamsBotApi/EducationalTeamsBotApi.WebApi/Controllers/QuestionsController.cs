@@ -43,15 +43,15 @@ namespace EducationalTeamsBotApi.WebApi.Controllers
         /// <summary>
         /// Answer a given question.
         /// </summary>
-        /// <param name="question">the question asked.</param>
-        /// <returns>the answer.</returns>
+        /// <param name="question">The question asked.</param>
+        /// <returns>The answer.</returns>
         [HttpPost]
         [AllowAnonymous]
-        public async Task QuestionAsked(QuestionInputDto activity)
+        public async Task QuestionAsked(QuestionInputDto question)
         {
             try
             {
-               await this.Mediator.Send(new AskQuestionCommand { Message = activity });
+               await this.Mediator.Send(new AskQuestionCommand { Message = question });
             }
             catch (Exception)
             {
