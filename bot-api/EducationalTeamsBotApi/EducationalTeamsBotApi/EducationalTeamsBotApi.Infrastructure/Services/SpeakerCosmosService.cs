@@ -131,16 +131,16 @@ namespace EducationalTeamsBotApi.Infrastructure.Services
             var container = this.database.GetContainer(DatabaseConstants.SpeakerContainer);
             var containerSpeakerQueryable = container.GetItemLinqQueryable<CosmosSpeaker>();
             var iterator = containerSpeakerQueryable.Where(s => s.Tags.Contains(id)).ToFeedIterator();
-            var SpeakersWithTag = await iterator.ReadNextAsync();
+            var speakersWithTag = await iterator.ReadNextAsync();
 
             IEnumerable<string> tagList;
             CosmosSpeaker speaker;
-            foreach (var item in SpeakersWithTag)
+            foreach (var item in speakersWithTag)
             {
                 speaker = await this.GetSpeaker(item.Id);
                 tagList = item.Tags.Where(t => t != id);
                 speaker.Tags = tagList;
-                this.EditSpeaker(speaker);
+                await this.EditSpeaker(speaker);
             }
 
             return default(Unit);
