@@ -13,6 +13,7 @@ namespace EducationalTeamsBotApi.WebApi.Controllers
     using EducationalTeamsBotApi.Application.Speakers.Commands.EditSpeakerCommand;
     using EducationalTeamsBotApi.Application.Speakers.Commands.EnableSpeakerCommand;
     using EducationalTeamsBotApi.Application.Speakers.Queries.GetSpeakerQuery;
+    using EducationalTeamsBotApi.Domain.Entities;
     using EducationalTeamsBotApi.WebApi.Model;
     using Microsoft.AspNetCore.Mvc;
 
@@ -51,8 +52,7 @@ namespace EducationalTeamsBotApi.WebApi.Controllers
         {
             try
             {
-
-                var speakers = await this.Mediator.Send(new GetSpeakerQuery { SpeakerId = id });
+                var speakers = await this.Mediator.Send(new GetSpeakerQuery(id));
                 return this.Ok(speakers);
             }
             catch (Exception)
@@ -71,7 +71,7 @@ namespace EducationalTeamsBotApi.WebApi.Controllers
         {
             try
             {
-                var speakers = await this.Mediator.Send(new EnableSpeakerCommand { Id = id });
+                var speakers = await this.Mediator.Send(new EnableSpeakerCommand(id));
                 return this.Ok(speakers);
             }
             catch (Exception)
@@ -90,17 +90,14 @@ namespace EducationalTeamsBotApi.WebApi.Controllers
         {
             try
             {
-                var speakers = await this.Mediator.Send(new EditSpeakerCommand
+                var speakers = await this.Mediator.Send(new EditSpeakerCommand(new CosmosSpeaker(model.Id)
                 {
-                    Speaker = new Domain.Entities.CosmosSpeaker(model.Id)
-                    {
-                        AltIds = model.AltIds,
-                        Enabled = model.Enabled,
-                        Nickname = model.Nickname,
-                        Name = model.Name,
-                        Tags = model.Tags,
-                    },
-                });
+                    AltIds = model.AltIds,
+                    Enabled = model.Enabled,
+                    Nickname = model.Nickname,
+                    Name = model.Name,
+                    Tags = model.Tags,
+                }));
                 return this.Ok(speakers);
             }
             catch (Exception)
@@ -119,17 +116,14 @@ namespace EducationalTeamsBotApi.WebApi.Controllers
         {
             try
             {
-                var speakers = await this.Mediator.Send(new AddSpeakerCommand
+                var speakers = await this.Mediator.Send(new AddSpeakerCommand(new CosmosSpeaker(string.Empty)
                 {
-                    Speaker = new Domain.Entities.CosmosSpeaker(string.Empty)
-                    {
-                        AltIds = model.AltIds,
-                        Enabled = model.Enabled,
-                        Nickname = model.Nickname,
-                        Name = model.Name,
-                        Tags = model.Tags,
-                    },
-                });
+                    AltIds = model.AltIds,
+                    Enabled = model.Enabled,
+                    Nickname = model.Nickname,
+                    Name = model.Name,
+                    Tags = model.Tags,
+                }));
                 return this.Ok(speakers);
             }
             catch (Exception)
@@ -148,7 +142,7 @@ namespace EducationalTeamsBotApi.WebApi.Controllers
         {
             try
             {
-                var speakers = await this.Mediator.Send(new DeleteSpeakerCommand { Id = id });
+                var speakers = await this.Mediator.Send(new DeleteSpeakerCommand(id));
                 return this.Ok(speakers);
             }
             catch (Exception)

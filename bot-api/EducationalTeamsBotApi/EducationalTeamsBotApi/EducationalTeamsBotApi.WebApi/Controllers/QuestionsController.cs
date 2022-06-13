@@ -13,6 +13,7 @@ namespace EducationalTeamsBotApi.WebApi.Controllers
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.Bot.Schema;
+
     /// <summary>
     /// Controller allowing to interact with questions.
     /// </summary>
@@ -51,7 +52,7 @@ namespace EducationalTeamsBotApi.WebApi.Controllers
         {
             try
             {
-               await this.Mediator.Send(new AskQuestionCommand { Message = question });
+               await this.Mediator.Send(new AskQuestionCommand(question));
             }
             catch (Exception)
             {

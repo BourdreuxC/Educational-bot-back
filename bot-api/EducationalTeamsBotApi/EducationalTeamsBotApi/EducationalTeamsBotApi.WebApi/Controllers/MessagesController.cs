@@ -6,7 +6,7 @@
 
 namespace EducationalTeamsBotApi.WebApi.Controllers
 {
-    using EducationalTeamsBotApi.Application.Messages.Commands.Graph_SyncMessagesCommand;
+    using EducationalTeamsBotApi.Application.Messages.Commands.GraphSyncMessagesCommand;
     using Microsoft.AspNetCore.Mvc;
 
     /// <summary>
@@ -24,7 +24,7 @@ namespace EducationalTeamsBotApi.WebApi.Controllers
         [HttpGet("sync")]
         public async Task<IActionResult> SyncGraphMessages(string teamId, string channelId)
         {
-            var result = await this.Mediator.Send(new Graph_SyncChannelMessagesCommand { TeamId = teamId, ChannelId = channelId });
+            var result = await this.Mediator.Send(new GraphSyncChannelMessagesCommand(teamId, channelId));
 
             if (result)
             {

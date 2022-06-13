@@ -17,17 +17,10 @@ namespace EducationalTeamsBotApi.Application.Messages.Queries.GetMessagesQuery
     public class GetMessagesQueryHandler : IRequestHandler<GetMessagesQuery, IEnumerable<SearchEntity>>
     {
         /// <summary>
-        /// Graph service.
-        /// </summary>
-        private readonly IGraphService graphService;
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="GetMessagesQueryHandler"/> class.
         /// </summary>
-        /// <param name="graphService">Graph service.</param>
-        public GetMessagesQueryHandler(IGraphService graphService)
+        public GetMessagesQueryHandler()
         {
-            this.graphService = graphService;
         }
 
         /// <inheritdoc/>

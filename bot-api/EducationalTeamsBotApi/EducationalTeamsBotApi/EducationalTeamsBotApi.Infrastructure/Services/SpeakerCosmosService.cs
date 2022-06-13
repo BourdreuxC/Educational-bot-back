@@ -60,11 +60,11 @@ namespace EducationalTeamsBotApi.Infrastructure.Services
 
             await container.DeleteItemAsync<CosmosSpeaker>(id, new PartitionKey(id));
 
-            return default(Unit);
+            return default;
         }
 
         /// <inheritdoc/>
-        public Task<CosmosSpeaker?> EditSpeaker(CosmosSpeaker speaker)
+        public Task<CosmosSpeaker> EditSpeaker(CosmosSpeaker speaker)
         {
             var container = this.database.GetContainer(DatabaseConstants.SpeakerContainer);
             var existingSpeaker = this.GetSpeaker(speaker.Id).Result;
@@ -116,13 +116,13 @@ namespace EducationalTeamsBotApi.Infrastructure.Services
         }
 
         /// <inheritdoc/>
-        public async Task<CosmosSpeaker?> GetSpeaker(string id)
+        public async Task<CosmosSpeaker> GetSpeaker(string id)
         {
             var container = this.database.GetContainer(DatabaseConstants.SpeakerContainer);
             var q = container.GetItemLinqQueryable<CosmosSpeaker>();
             var iterator = q.Where(x => x.Id == id).ToFeedIterator();
             var result = await iterator.ReadNextAsync();
-            return Tools.ToIEnumerable(result.GetEnumerator()).FirstOrDefault();
+            return Tools.ToIEnumerable(result.GetEnumerator()).First();
         }
 
         /// <inheritdoc/>
@@ -143,7 +143,7 @@ namespace EducationalTeamsBotApi.Infrastructure.Services
                 await this.EditSpeaker(speaker);
             }
 
-            return default(Unit);
+            return default;
         }
     }
 }

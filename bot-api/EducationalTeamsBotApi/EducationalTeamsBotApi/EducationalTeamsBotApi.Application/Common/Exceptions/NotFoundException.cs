@@ -7,11 +7,12 @@
 namespace EducationalTeamsBotApi.Application.Common.Exceptions
 {
     using System;
+    using System.Runtime.Serialization;
 
     /// <summary>
     /// Class exception for the not found exception.
     /// </summary>
-    public class NotFoundException : Exception
+    public class NotFoundException : Exception, ISerializable
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="NotFoundException"/> class.
@@ -47,6 +48,16 @@ namespace EducationalTeamsBotApi.Application.Common.Exceptions
         /// <param name="key">Key of the entity.</param>
         public NotFoundException(string name, object key)
             : base($"Entity \"{name}\" ({key}) was not found.")
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="NotFoundException"/> class.
+        /// </summary>
+        /// <param name="info">Serialization information.</param>
+        /// <param name="context">Streaming context.</param>
+        protected NotFoundException(SerializationInfo info, StreamingContext context)
+            : base(info, context)
         {
         }
     }
