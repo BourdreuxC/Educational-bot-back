@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 // <copyright file="QuestionsController.cs" company="DIIAGE">
 // Copyright (c) DIIAGE 2022. All rights reserved.
 // </copyright>
@@ -13,7 +13,6 @@ namespace EducationalTeamsBotApi.WebApi.Controllers
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.Bot.Schema;
-
     /// <summary>
     /// Controller allowing to interact with questions.
     /// </summary>
@@ -44,15 +43,15 @@ namespace EducationalTeamsBotApi.WebApi.Controllers
         /// <summary>
         /// Answer a given question.
         /// </summary>
-        /// <param name="activity">the question asked.</param>
+        /// <param name="question">the question asked.</param>
         /// <returns>the answer.</returns>
         [HttpPost]
         [AllowAnonymous]
-        public async Task QuestionAsked([FromBody] Activity activity)
+        public async Task QuestionAsked(QuestionInputDto activity)
         {
             try
             {
-               await this.Mediator.Send(new AskQuestionCommand { Activity = activity });
+               await this.Mediator.Send(new AskQuestionCommand { Message = activity });
             }
             catch (Exception)
             {

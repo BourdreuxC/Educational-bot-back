@@ -6,6 +6,7 @@
 
 namespace EducationalTeamsBotApi.Application.Common.Interfaces
 {
+    using EducationalTeamsBotApi.Application.Dto;
     using EducationalTeamsBotApi.Domain.Entities;
     using Microsoft.Bot.Schema;
 
@@ -75,7 +76,7 @@ namespace EducationalTeamsBotApi.Application.Common.Interfaces
         /// </summary>
         /// <param name="question">the question asked.</param>
         /// <returns>The saved question (if need be).</returns>
-        Task<string> QuestionAsked(Activity question);
+        Task<string> QuestionAsked(QuestionInputDto question);
 
         /// <summary>
         /// Deletes a question.
