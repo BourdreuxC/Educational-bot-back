@@ -77,5 +77,12 @@ namespace EducationalTeamsBotApi.Application.Common.Interfaces
         /// <param name="question">the question asked.</param>
         /// <returns>The saved question (if need be).</returns>
         Task<string> QuestionAsked(QuestionInputDto question);
+
+        /// <summary>
+        /// Deletes a question.
+        /// </summary>
+        /// <param name="id">Question identifier.</param>
+        /// <returns>Void.</returns>
+        Task DeleteQuestion(string id);
     }
 }
