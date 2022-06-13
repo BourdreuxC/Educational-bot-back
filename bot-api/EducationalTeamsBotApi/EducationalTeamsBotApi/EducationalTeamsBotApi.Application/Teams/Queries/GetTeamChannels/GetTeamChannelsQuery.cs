@@ -16,8 +16,17 @@ namespace EducationalTeamsBotApi.Application.Teams.Queries.GetTeamChannels
     public class GetTeamChannelsQuery : IRequest<IEnumerable<Channel>>
     {
         /// <summary>
+        /// Initializes a new instance of the <see cref="GetTeamChannelsQuery"/> class.
+        /// </summary>
+        /// <param name="teamId">Team identifier.</param>
+        public GetTeamChannelsQuery(string teamId)
+        {
+            this.TeamId = teamId;
+        }
+
+        /// <summary>
         /// Gets or sets the team ID.
         /// </summary>
-        public string? TeamId { get; set; }
+        public string TeamId { get; set; }
     }
 }

@@ -15,9 +15,17 @@ namespace EducationalTeamsBotApi.Application.Speakers.Queries.GetSpeakerQuery
     public class GetSpeakerQuery : IRequest<CosmosSpeaker>
     {
         /// <summary>
+        /// Initializes a new instance of the <see cref="GetSpeakerQuery"/> class.
+        /// </summary>
+        /// <param name="speakerId">Speaker identifier.</param>
+        public GetSpeakerQuery(string speakerId)
+        {
+            this.SpeakerId = speakerId;
+        }
+
+        /// <summary>
         /// Gets or sets the id of the speaker.
         /// </summary>
-
-        public string? SpeakerId { get; set; }
+        public string SpeakerId { get; set; }
     }
 }

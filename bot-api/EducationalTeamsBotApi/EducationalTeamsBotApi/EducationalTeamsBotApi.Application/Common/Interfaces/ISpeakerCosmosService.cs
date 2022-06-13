@@ -27,14 +27,14 @@ namespace EducationalTeamsBotApi.Application.Common.Interfaces
         /// </summary>
         /// <param name="id">identifier of the speaker.</param>
         /// <returns>A speaker object.</returns>
-        Task<CosmosSpeaker?> GetSpeaker(string id);
+        Task<CosmosSpeaker> GetSpeaker(string id);
 
         /// <summary>
         /// Update the speacker informations.
         /// </summary>
         /// <param name="speaker">the changed speaker.</param>
         /// <returns>Updated speaker object.</returns>
-        Task<CosmosSpeaker?> EditSpeaker(CosmosSpeaker speaker);
+        Task<CosmosSpeaker> EditSpeaker(CosmosSpeaker speaker);
 
         /// <summary>
         /// Disable the speaker.

@@ -53,7 +53,7 @@ namespace EducationalTeamsBotApi.WebApi.Controllers
                 throw new ArgumentException($"'{nameof(name)}' cannot be null or empty.", nameof(name));
             }
 
-            var tag = await this.Mediator.Send(new GetTagByNameQuery { Name = name });
+            var tag = await this.Mediator.Send(new GetTagByNameQuery(name));
             if (tag == null)
             {
                 return this.NoContent();
@@ -71,7 +71,7 @@ namespace EducationalTeamsBotApi.WebApi.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> GetTag(string id)
         {
-            var tag = await this.Mediator.Send(new GetTagQuery { Id = id });
+            var tag = await this.Mediator.Send(new GetTagQuery(id));
             if (tag == null)
             {
                 return this.NoContent();
@@ -90,11 +90,7 @@ namespace EducationalTeamsBotApi.WebApi.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> EditTagVariant(EditTagVariantModel model)
         {
-            var tag = await this.Mediator.Send(new EditTagVariantCommand
-            {
-                Variant = model.Variant,
-                Id = model.Id,
-            });
+            var tag = await this.Mediator.Send(new EditTagVariantCommand(model.Id, model.Variant));
 
             if (tag == null)
             {
@@ -118,10 +114,7 @@ namespace EducationalTeamsBotApi.WebApi.Controllers
                 throw new Exception("The list of variant is empty.");
             }
 
-            var tags = await this.Mediator.Send(new AddTagCommand
-                {
-                 Variants = model.Variants,
-                });
+            var tags = await this.Mediator.Send(new AddTagCommand(model.Variants));
 
             return this.Ok(tags);
         }
@@ -135,7 +128,7 @@ namespace EducationalTeamsBotApi.WebApi.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> Delete(string id)
         {
-            var tags = await this.Mediator.Send(new DeleteTagCommand { Id = id });
+            var tags = await this.Mediator.Send(new DeleteTagCommand(id));
             return this.Ok(tags);
         }
     }

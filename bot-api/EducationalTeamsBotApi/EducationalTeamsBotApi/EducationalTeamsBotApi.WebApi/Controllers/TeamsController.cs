@@ -35,7 +35,7 @@ namespace EducationalTeamsBotApi.WebApi.Controllers
         [HttpGet("{teamId}/channels")]
         public async Task<IActionResult> GetTeamChannels(string teamId)
         {
-            var channels = await this.Mediator.Send(new GetTeamChannelsQuery { TeamId = teamId });
+            var channels = await this.Mediator.Send(new (teamId));
             return this.Ok(channels);
         }
     }

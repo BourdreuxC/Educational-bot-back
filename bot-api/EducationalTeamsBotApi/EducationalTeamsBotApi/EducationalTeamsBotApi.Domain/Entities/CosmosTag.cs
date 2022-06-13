@@ -17,9 +17,9 @@ namespace EducationalTeamsBotApi.Domain.Entities
         /// Initializes a new instance of the <see cref="CosmosTag"/> class.
         /// </summary>
         /// <param name="id">identifier of a tag.</param>
-        public CosmosTag()
+        public CosmosTag(string id)
         {
-
+            this.Id = id;
             this.Variants = new List<string>();
         }
 
