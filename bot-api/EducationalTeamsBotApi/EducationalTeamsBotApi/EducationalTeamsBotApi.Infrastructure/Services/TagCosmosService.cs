@@ -51,7 +51,7 @@ namespace EducationalTeamsBotApi.Infrastructure.Services
             }
 
             var id = Guid.NewGuid().ToString();
-            container.CreateItemAsync<CosmosTag>(new CosmosTag { Id = id, Variants = variants }, new PartitionKey(id));
+            container.CreateItemAsync(new CosmosTag(id, variants), new PartitionKey(id));
 
             return this.SearchTag(variants.First());
         }
@@ -122,10 +122,9 @@ namespace EducationalTeamsBotApi.Infrastructure.Services
         public async Task<Unit> DeleteTag(string id)
         {
             var containerTag = this.database.GetContainer(DatabaseConstants.TagContainer);
-            var containerSpeaker = this.database.GetContainer(DatabaseConstants.SpeakerContainer);
 
             await containerTag.DeleteItemAsync<CosmosTag>(id, new PartitionKey(id));
-            return default(Unit);
+            return default;
         }
     }
 }

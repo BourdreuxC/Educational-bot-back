@@ -24,6 +24,17 @@ namespace EducationalTeamsBotApi.Domain.Entities
         }
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="CosmosTag"/> class.
+        /// </summary>
+        /// <param name="id">Identifier of a tag.</param>
+        /// <param name="variants">Variants of the tag.</param>
+        public CosmosTag(string id, List<string> variants)
+        {
+            this.Id = id;
+            this.Variants = variants;
+        }
+
+        /// <summary>
         /// Gets or sets the identifier of a tag.
         /// </summary>
         [JsonProperty("id")]
