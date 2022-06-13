@@ -28,15 +28,8 @@ namespace EducationalTeamsBotApi.WebApi.Controllers
         [HttpGet]
         public async Task<IActionResult> GetReactions([FromQuery] GetWithPaginationQuery<ReactionDto> query)
         {
-            try
-            {
-                var reactions = await this.Mediator.Send(query);
-                return this.Ok(reactions);
-            }
-            catch (Exception)
-            {
-                throw;
-            }
+            var reactions = await this.Mediator.Send(query);
+            return this.Ok(reactions);
         }
 
         /// <summary>

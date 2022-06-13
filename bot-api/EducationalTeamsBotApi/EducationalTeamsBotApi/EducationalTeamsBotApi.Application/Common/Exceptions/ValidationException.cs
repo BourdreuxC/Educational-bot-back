@@ -15,6 +15,7 @@ namespace EducationalTeamsBotApi.Application.Common.Exceptions
     /// <summary>
     /// Class exception for the validation.
     /// </summary>
+    [Serializable]
     public class ValidationException : Exception, ISerializable
     {
         /// <summary>

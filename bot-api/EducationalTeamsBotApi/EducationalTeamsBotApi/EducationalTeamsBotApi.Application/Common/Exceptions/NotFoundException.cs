@@ -12,6 +12,7 @@ namespace EducationalTeamsBotApi.Application.Common.Exceptions
     /// <summary>
     /// Class exception for the not found exception.
     /// </summary>
+    [Serializable]
     public class NotFoundException : Exception, ISerializable
     {
         /// <summary>
