@@ -4,13 +4,13 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-using Microsoft.AspNetCore.Mvc.ApiExplorer;
-using Microsoft.Extensions.Options;
-using Microsoft.OpenApi.Models;
-using Swashbuckle.AspNetCore.SwaggerGen;
-
 namespace EducationalTeamsBotApi.WebApi.Common.Extensions.Options
 {
+    using Microsoft.AspNetCore.Mvc.ApiExplorer;
+    using Microsoft.Extensions.Options;
+    using Microsoft.OpenApi.Models;
+    using Swashbuckle.AspNetCore.SwaggerGen;
+
     /// <summary>
     /// Configuration class for Swagger.
     /// </summary>

@@ -15,7 +15,6 @@ namespace EducationalTeamsBotApi.Application.Common.Interfaces
     /// </summary>
     public interface IUserCosmosService
     {
-
         /// <summary>
         /// Gets the list of users of the cosmosDb.
         /// </summary>
@@ -26,14 +25,14 @@ namespace EducationalTeamsBotApi.Application.Common.Interfaces
         /// Get a specific user (useless).
         /// </summary>
         /// <param name="id">identifier of the user.</param>
-        /// <returns>User object</returns>
+        /// <returns>User object.</returns>
         Task<CosmosUser> GetUser(string id);
 
         /// <summary>
         /// Add a new user in the cosmos.
         /// </summary>
         /// <param name="user">User to add.</param>
-        /// <returns>the created entity</returns>
+        /// <returns>the created entity.</returns>
         Task<CosmosUser> AddUser(CosmosUser user);
     }
 }

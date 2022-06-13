@@ -9,6 +9,7 @@ namespace EducationalTeamsBotApi.Infrastructure.Services
     using System.Collections.Generic;
     using System.Threading.Tasks;
     using System.Xml;
+    using EducationalTeamsBotApi.Application.Common.Constants;
     using EducationalTeamsBotApi.Application.Common.Interfaces;
     using EducationalTeamsBotApi.Application.Dto;
     using EducationalTeamsBotApi.Domain.Entities;
@@ -18,28 +19,69 @@ namespace EducationalTeamsBotApi.Infrastructure.Services
     using Microsoft.Azure.Cosmos.Linq;
     using Microsoft.Bot.Builder;
     using Microsoft.Bot.Schema;
-    using Microsoft.Bot.Connector;
+    using Microsoft.Extensions.Configuration;
 
     /// <summary>
     /// Class that will interact with the CosmosDB.
     /// </summary>
     public class QuestionCosmosService : IQuestionCosmosService
     {
+        /// <summary>
+        /// Cosmos client used in this service.
+        /// </summary>
         private readonly CosmosClient cosmosClient;
+
+        /// <summary>
+        /// Qna Maker client used in this service.
+        /// </summary>
         private readonly QnAMakerClient qnaClient;
+
+        /// <summary>
+        /// Database used in this service.
+        /// </summary>
+        private readonly Database database;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="QuestionCosmosService"/> class.
         /// </summary>
-        public QuestionCosmosService()
+        /// <param name="configuration">Configruation to use.</param>
+        public QuestionCosmosService(IConfiguration configuration)
         {
-            var authoringKey = "113614810bcf4284bc388fc6f0f7ca7b";
-            var authoringURL = "https://qnadiibot.cognitiveservices.azure.com/";
-            var cosmosConString = Environment.GetEnvironmentVariable("COSMOS_CON_STRING");
-            this.cosmosClient = new CosmosClient(cosmosConString);
+            var authoringKey = configuration[QnaMakerConstants.AuthoringKey];
+            var authoringURL = configuration[QnaMakerConstants.AuthoringUrl];
+
             this.qnaClient = new QnAMakerClient(new ApiKeyServiceClientCredentials(authoringKey))
-            { Endpoint = authoringURL };
-            
+            {
+                Endpoint = authoringURL,
+            };
+
+            var cosmosConString = Environment.GetEnvironmentVariable(DatabaseConstants.ConnectionString);
+
+            var options = new CosmosClientOptions() { ConnectionMode = ConnectionMode.Gateway };
+
+            this.cosmosClient = new CosmosClient(cosmosConString, options);
+
+            this.database = this.cosmosClient.GetDatabase(DatabaseConstants.Database);
+        }
+
+        /// <inheritdoc/>
+        public Task<IEnumerable<CosmosQuestion>> InsertCosmosQuestions(List<CosmosQuestion> questions)
+        {
+            var container = this.database.GetContainer(DatabaseConstants.QuestionContainer);
+
+            var insertedQuestions = new List<CosmosQuestion>();
+
+            questions.ForEach(async question =>
+            {
+                // If question already exists, ignore it
+                var existingQuestion = this.GetQuestion(question.Id);
+                if (existingQuestion == null)
+                {
+                    insertedQuestions.Add(await container.CreateItemAsync(question));
+                }
+            });
+
+            return Task.FromResult(insertedQuestions.AsEnumerable());
         }
 
         /// <inheritdoc/>
@@ -69,19 +111,22 @@ namespace EducationalTeamsBotApi.Infrastructure.Services
         /// <inheritdoc/>
         public async Task<IEnumerable<CosmosQuestion>> GetCosmosQuestions()
         {
-            var db = this.cosmosClient.GetDatabase("DiiageBotDatabase");
-            var container = db.GetContainer("Questions");
-            var speakers = container.GetItemLinqQueryable<CosmosQuestion>();
-            var iterator = speakers.ToFeedIterator();
+            var container = this.database.GetContainer(DatabaseConstants.QuestionContainer);
+            var questions = container.GetItemLinqQueryable<CosmosQuestion>();
+            var iterator = questions.ToFeedIterator();
             var results = await iterator.ReadNextAsync();
 
             return Tools.ToIEnumerable(results.GetEnumerator());
         }
 
         /// <inheritdoc/>
-        public Task<CosmosQuestion> GetQuestion(string id)
+        public async Task<CosmosQuestion> GetQuestion(string id)
         {
-            throw new NotImplementedException();
+            var container = this.database.GetContainer(DatabaseConstants.QuestionContainer);
+            var q = container.GetItemLinqQueryable<CosmosQuestion>();
+            var iterator = q.Where(x => x.Id == id).ToFeedIterator();
+            var result = await iterator.ReadNextAsync();
+            return Tools.ToIEnumerable(result.GetEnumerator()).First();
         }
 
         /// <inheritdoc/>
@@ -104,7 +149,6 @@ namespace EducationalTeamsBotApi.Infrastructure.Services
             {
                 res = "Pas de solution mais je reste à l'écoute";
             }
-
             return res;
         }
     }

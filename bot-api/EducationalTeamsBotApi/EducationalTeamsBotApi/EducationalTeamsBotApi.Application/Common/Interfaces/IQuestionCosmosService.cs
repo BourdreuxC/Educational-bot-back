@@ -18,8 +18,15 @@ namespace EducationalTeamsBotApi.Application.Common.Interfaces
         /// <summary>
         /// Get all questions.
         /// </summary>
-        /// <returns>List of all questions objects</returns>
+        /// <returns>List of all questions objects.</returns>
         Task<IEnumerable<CosmosQuestion>> GetCosmosQuestions();
+
+        /// <summary>
+        /// Inserts a list of <see cref="CosmosQuestion"/> in database.
+        /// </summary>
+        /// <param name="questions">Questions to insert.</param>
+        /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
+        Task<IEnumerable<CosmosQuestion>> InsertCosmosQuestions(List<CosmosQuestion> questions);
 
         /// <summary>
         /// Get a specific question.
@@ -38,7 +45,7 @@ namespace EducationalTeamsBotApi.Application.Common.Interfaces
         /// <summary>
         /// Add multiple answers to a question.
         /// </summary>
-        /// <param name="answerIds">List of answers ids</param>
+        /// <param name="answerIds">List of answers ids.</param>
         /// <returns>The newly updated question.</returns>
         Task<CosmosQuestion> AddAnswersToQuestion(List<string> answerIds);
 
@@ -63,12 +70,11 @@ namespace EducationalTeamsBotApi.Application.Common.Interfaces
         /// <returns>The question object.</returns>
         Task<CosmosQuestion> GetQuestionFromAnswer(string answerId);
 
-
         /// <summary>
         /// When a question is asked, ask the Azure cognitive service for an answer.
         /// If no answer is provided, save the question in the CosmosDB.
         /// </summary>
-        /// <param name="question">the question asked</param>
+        /// <param name="question">the question asked.</param>
         /// <returns>The saved question (if need be).</returns>
         Task<string> QuestionAsked(QuestionInputDto question);
     }

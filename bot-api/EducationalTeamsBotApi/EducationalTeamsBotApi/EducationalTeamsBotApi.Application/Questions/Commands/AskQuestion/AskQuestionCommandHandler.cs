@@ -4,8 +4,6 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-
-
 namespace EducationalTeamsBotApi.Application.Questions.Commands.AskQuestion
 {
     using System.Threading;
@@ -18,6 +16,9 @@ namespace EducationalTeamsBotApi.Application.Questions.Commands.AskQuestion
     /// </summary>
     public class AskQuestionCommandHandler : IRequestHandler<AskQuestionCommand, string>
     {
+        /// <summary>
+        /// Question cosmos service to use.
+        /// </summary>
         private readonly IQuestionCosmosService questionCosmosService;
 
         /// <summary>

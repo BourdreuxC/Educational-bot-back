@@ -6,17 +6,12 @@
 
 namespace EducationalTeamsBotApi.WebApi.Controllers
 {
+    using EducationalTeamsBotApi.Application.Dto;
+    using EducationalTeamsBotApi.Application.Pagination.Queries;
     using EducationalTeamsBotApi.Application.Questions.Commands.AskQuestion;
-    using EducationalTeamsBotApi.Application.Questions.Queries.GetAllQuestionsQuery;
     using Microsoft.AspNetCore.Authorization;
-    using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
-    using Microsoft.Bot.Builder;
     using Microsoft.Bot.Schema;
-    using Microsoft.Bot.Connector.Teams;
-    using System.Xml;
-    using EducationalTeamsBotApi.Application.Common.DTOs;
-
     /// <summary>
     /// Controller allowing to interact with questions.
     /// </summary>
@@ -27,19 +22,20 @@ namespace EducationalTeamsBotApi.WebApi.Controllers
         /// <summary>
         /// Get the list of questions.
         /// </summary>
+        /// <param name="query">Query with pagination.</param>
         /// <returns>All Questions.</returns>
         [HttpGet]
         [AllowAnonymous]
-        public async Task<IActionResult> GetQuestions()
+        public async Task<IActionResult> GetQuestions([FromQuery] GetWithPaginationQuery<QuestionDto> query)
         {
             try
             {
-                var questions = await this.Mediator.Send(new GetAllQuestionsQuery());
+                var questions = await this.Mediator.Send(query);
                 return this.Ok(questions);
             }
-            catch (Exception e)
+            catch (Exception)
             {
-                throw e;
+                throw;
             }
         }
 
@@ -56,14 +52,10 @@ namespace EducationalTeamsBotApi.WebApi.Controllers
             {
                await this.Mediator.Send(new AskQuestionCommand { Message = activity });
             }
-            catch (Exception e)
+            catch (Exception)
             {
-
-                throw e;
+                throw;
             }
         }
-
-
-
     }
 }

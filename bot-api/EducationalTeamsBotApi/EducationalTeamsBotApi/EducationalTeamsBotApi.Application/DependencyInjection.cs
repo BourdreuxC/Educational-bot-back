@@ -4,14 +4,14 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-using EducationalTeamsBotApi.Application.Common.Behaviours;
-using FluentValidation;
-using MediatR;
-using Microsoft.Extensions.DependencyInjection;
-using System.Reflection;
-
 namespace EducationalTeamsBotApi.Application
 {
+    using System.Reflection;
+    using EducationalTeamsBotApi.Application.Common.Behaviours;
+    using FluentValidation;
+    using MediatR;
+    using Microsoft.Extensions.DependencyInjection;
+
     /// <summary>
     /// Static class providing an extension method to handle dependency injection for the application layer.
     /// </summary>

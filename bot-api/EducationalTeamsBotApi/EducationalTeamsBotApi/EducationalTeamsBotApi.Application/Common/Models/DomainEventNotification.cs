@@ -4,11 +4,11 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-using EducationalTeamsBotApi.Domain.Common;
-using MediatR;
-
 namespace EducationalTeamsBotApi.Application.Common.Models
 {
+    using EducationalTeamsBotApi.Domain.Common;
+    using MediatR;
+
     /// <summary>
     /// Class event domain notification.
     /// </summary>

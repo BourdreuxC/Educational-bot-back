@@ -14,6 +14,12 @@ namespace EducationalTeamsBotApi.Application.Common.Interfaces
     public interface IAnswerCosmosService
     {
         /// <summary>
+        /// Gets the list of answers.
+        /// </summary>
+        /// <returns>A list of <see cref="CosmosAnswer"/>.</returns>
+        Task<IEnumerable<CosmosAnswer>> GetAnswers();
+
+        /// <summary>
         /// Create à new answer.
         /// </summary>
         /// <param name="answer">New answer object.</param>

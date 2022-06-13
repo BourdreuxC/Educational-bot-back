@@ -4,21 +4,25 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-using MediatR;
-using Microsoft.Extensions.Logging;
-using System;
-using System.Threading;
-using System.Threading.Tasks;
-
 namespace EducationalTeamsBotApi.Application.Common.Behaviours
 {
+    using System;
+    using System.Threading;
+    using System.Threading.Tasks;
+    using MediatR;
+    using Microsoft.Extensions.Logging;
+
     /// <summary>
     /// Class Behaviour for the unhandled exceptions.
     /// </summary>
     /// <typeparam name="TRequest">Type of the request.</typeparam>
     /// <typeparam name="TResponse">Type of the response.</typeparam>
     public class UnhandledExceptionBehaviour<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
+        where TRequest : MediatR.IRequest<TResponse>
     {
+        /// <summary>
+        /// Logger to use in this behaviour.
+        /// </summary>
         private readonly ILogger<TRequest> logger;
 
         /// <summary>

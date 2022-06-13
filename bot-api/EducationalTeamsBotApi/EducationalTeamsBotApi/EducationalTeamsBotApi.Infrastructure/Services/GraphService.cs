@@ -3,12 +3,14 @@
 // Copyright (c) DIIAGE 2022. All rights reserved.
 // </copyright>
 // -----------------------------------------------------------------------
+
 namespace EducationalTeamsBotApi.Infrastructure.Services
 {
     using System;
     using System.Collections.Generic;
     using System.Threading.Tasks;
     using Azure.Identity;
+    using EducationalTeamsBotApi.Application.Common.Constants;
     using EducationalTeamsBotApi.Application.Common.Interfaces;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Graph;
@@ -37,10 +39,10 @@ namespace EducationalTeamsBotApi.Infrastructure.Services
         public GraphService(IConfiguration configuration, ITokenService tokenService)
         {
             this.configuration = configuration;
-            var scopes = new[] { "User.Read" };
-            var tenantId = this.configuration["AzureAd:TenantId"];
-            var clientId = this.configuration["AzureAd:ClientId"];
-            var clientSecret = this.configuration["AzureAd:ClientSecret"];
+            var scopes = GraphConstants.Scopes;
+            var tenantId = this.configuration[GraphConstants.TenantId];
+            var clientId = this.configuration[GraphConstants.ClientId];
+            var clientSecret = this.configuration[GraphConstants.ClientSecret];
 
             var options = new TokenCredentialOptions
             {
@@ -53,10 +55,12 @@ namespace EducationalTeamsBotApi.Infrastructure.Services
                 .WithClientSecret(clientSecret)
                 .Build();
 
-            var authProvider = new DelegateAuthenticationProvider(async (request) =>
+            var authProvider = new DelegateAuthenticationProvider((request) =>
             {
                 request.Headers.Authorization =
-                    new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", tokenService.Token);
+                  new System.Net.Http.Headers.AuthenticationHeaderValue(GraphConstants.TokenScheme, tokenService.Token);
+
+                return Task.CompletedTask;
             });
 
             this.graphServiceClient = new GraphServiceClient(authProvider);
@@ -75,38 +79,45 @@ namespace EducationalTeamsBotApi.Infrastructure.Services
         }
 
         /// <inheritdoc/>
-        public async Task<IEnumerable<SearchEntity>> GetMessages()
+        public async Task<IEnumerable<Team>> GetJoinedTeams()
         {
-            var messages = new List<SearchEntity>();
-            //var requestContent = new List<SearchRequestObject>()
-            //{
-            //    new SearchRequestObject
-            //    {
-            //        EntityTypes = new List<EntityType>()
-            //        {
-            //            EntityType.Message,
-            //        },
-            //        Query = new SearchQuery
-            //        {
-            //            QueryString = "test",
-            //        },
-            //    },
-            //};
+            var teams = new List<Team>();
 
-            //var requestResult = await this.graphServiceClient.Search
-            //    .Query(requestContent)
-            //    .Request()
-            //    .PostAsync();
+            var requestResult = await this.graphServiceClient.Me.JoinedTeams
+                .Request()
+                .GetAsync();
 
-            //messages.AddRange(requestResult);
+            teams.AddRange(requestResult);
 
-            return messages;
+            return teams;
         }
 
         /// <inheritdoc/>
-        public async Task<IEnumerable<Group>> GetTeams()
+        public async Task<IEnumerable<Channel>> GetTeamChannels(string teamId)
         {
-            throw new NotImplementedException();
+            var channels = new List<Channel>();
+
+            var requestResult = await this.graphServiceClient.Teams[teamId].Channels
+                .Request()
+                .GetAsync();
+
+            channels.AddRange(requestResult);
+
+            return channels;
+        }
+
+        /// <inheritdoc/>
+        public async Task<IEnumerable<ChatMessage>> GetChannelMessages(string teamId, string channelId)
+        {
+            var messages = new List<ChatMessage>();
+
+            var requestResult = await this.graphServiceClient.Teams[teamId].Channels[channelId].Messages
+                .Request()
+                .GetAsync();
+
+            messages.AddRange(requestResult);
+
+            return messages;
         }
 
         /// <inheritdoc/>

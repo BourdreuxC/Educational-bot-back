@@ -4,21 +4,29 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-using EducationalTeamsBotApi.Application.Common.Interfaces;
-using MediatR.Pipeline;
-using Microsoft.Extensions.Logging;
-using System.Threading;
-using System.Threading.Tasks;
-
 namespace EducationalTeamsBotApi.Application.Common.Behaviours
 {
+    using System.Threading;
+    using System.Threading.Tasks;
+    using EducationalTeamsBotApi.Application.Common.Interfaces;
+    using MediatR.Pipeline;
+    using Microsoft.Extensions.Logging;
+
     /// <summary>
     /// Class Behaviour for logging.
     /// </summary>
     /// <typeparam name="TRequest">Type of the request.</typeparam>
     public class LoggingBehaviour<TRequest> : IRequestPreProcessor<TRequest>
+        where TRequest : MediatR.IRequest
     {
+        /// <summary>
+        /// Logger to use.
+        /// </summary>
         private readonly ILogger logger;
+
+        /// <summary>
+        /// User service.
+        /// </summary>
         private readonly ICurrentUserService currentUserService;
 
         /// <summary>
@@ -39,7 +47,7 @@ namespace EducationalTeamsBotApi.Application.Common.Behaviours
         /// <param name="request">Request.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>Return a <see cref="Task"/>.</returns>
-        public async Task Process(TRequest request, CancellationToken cancellationToken)
+        public Task Process(TRequest request, CancellationToken cancellationToken)
         {
             var requestName = typeof(TRequest).Name;
             var userId = this.currentUserService.UserId ?? string.Empty;
@@ -49,6 +57,8 @@ namespace EducationalTeamsBotApi.Application.Common.Behaviours
                 requestName,
                 userId,
                 request);
+
+            return Task.CompletedTask;
         }
     }
 }

@@ -4,10 +4,10 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-using AutoMapper;
-
 namespace EducationalTeamsBotApi.Application.Common.Mappings
 {
+    using AutoMapper;
+
     /// <summary>
     /// Interface mapper.
     /// </summary>

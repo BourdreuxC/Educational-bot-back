@@ -4,21 +4,22 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-using EducationalTeamsBotApi.Application.Common.Interfaces;
-using MediatR;
-using Microsoft.Extensions.Logging;
-using System.Diagnostics;
-using System.Threading;
-using System.Threading.Tasks;
-
 namespace EducationalTeamsBotApi.Application.Common.Behaviours
 {
+    using System.Diagnostics;
+    using System.Threading;
+    using System.Threading.Tasks;
+    using EducationalTeamsBotApi.Application.Common.Interfaces;
+    using MediatR;
+    using Microsoft.Extensions.Logging;
+
     /// <summary>
     /// Class Behaviour for the performances.
     /// </summary>
     /// <typeparam name="TRequest">Type of the request.</typeparam>
     /// <typeparam name="TResponse">Type of the response.</typeparam>
     public class PerformanceBehaviour<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
+        where TRequest : MediatR.IRequest<TResponse>
     {
         private readonly Stopwatch timer;
         private readonly ILogger<TRequest> logger;

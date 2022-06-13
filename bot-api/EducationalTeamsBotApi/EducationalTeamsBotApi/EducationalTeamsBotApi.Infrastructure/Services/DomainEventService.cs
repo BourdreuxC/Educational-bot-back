@@ -4,16 +4,16 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-using EducationalTeamsBotApi.Application.Common.Interfaces;
-using EducationalTeamsBotApi.Application.Common.Models;
-using EducationalTeamsBotApi.Domain.Common;
-using MediatR;
-using Microsoft.Extensions.Logging;
-using System;
-using System.Threading.Tasks;
-
 namespace EducationalTeamsBotApi.Infrastructure.Services
 {
+    using System;
+    using System.Threading.Tasks;
+    using EducationalTeamsBotApi.Application.Common.Interfaces;
+    using EducationalTeamsBotApi.Application.Common.Models;
+    using EducationalTeamsBotApi.Domain.Common;
+    using MediatR;
+    using Microsoft.Extensions.Logging;
+
     /// <summary>
     /// Class service for the domain events.
     /// </summary>
@@ -48,6 +48,7 @@ namespace EducationalTeamsBotApi.Infrastructure.Services
         public async Task Publish(DomainEvent domainEvent)
         {
             this.logger.LogInformation("Publishing domain event. Event - {event}", domainEvent.GetType().Name);
+
             await this.mediator.Publish(this.GetNotificationCorrespondingToDomainEvent(domainEvent));
         }
 
@@ -58,8 +59,7 @@ namespace EducationalTeamsBotApi.Infrastructure.Services
         /// <returns>Returns a <see cref="INotification"/>.</returns>
         private INotification GetNotificationCorrespondingToDomainEvent(DomainEvent domainEvent)
         {
-            return (INotification)Activator.CreateInstance(
-                typeof(DomainEventNotification<>).MakeGenericType(domainEvent.GetType()), domainEvent);
+            return (INotification)Activator.CreateInstance(typeof(DomainEventNotification<>).MakeGenericType(domainEvent.GetType()), domainEvent);
         }
     }
 }

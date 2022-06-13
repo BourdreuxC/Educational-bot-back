@@ -4,7 +4,6 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-
 namespace EducationalTeamsBotApi.Application.Questions.Commands.AskQuestion
 {
     using EducationalTeamsBotApi.Application.Dto;

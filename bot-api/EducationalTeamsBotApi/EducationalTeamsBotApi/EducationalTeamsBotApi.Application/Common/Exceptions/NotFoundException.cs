@@ -4,10 +4,10 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-using System;
-
 namespace EducationalTeamsBotApi.Application.Common.Exceptions
 {
+    using System;
+
     /// <summary>
     /// Class exception for the not found exception.
     /// </summary>

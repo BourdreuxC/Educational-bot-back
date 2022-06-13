@@ -4,13 +4,13 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-using FluentValidation.Results;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-
 namespace EducationalTeamsBotApi.Application.Common.Exceptions
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using FluentValidation.Results;
+
     /// <summary>
     /// Class exception for the validation.
     /// </summary>

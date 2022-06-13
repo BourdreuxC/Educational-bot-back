@@ -1,6 +1,6 @@
 ﻿// -----------------------------------------------------------------------
-// <copyright file="CosmosUser.cs" company="DiiageBot Team">
-// Copyright (c) DIIAGE Groupe 1 2022. All rights reserved.
+// <copyright file="GetUsersQuery.cs" company="DIIAGE">
+// Copyright (c) DIIAGE 2022. All rights reserved.
 // </copyright>
 // -----------------------------------------------------------------------
 namespace EducationalTeamsBotApi.Application.Cosmos_Users.Queries.GetUsersQuery

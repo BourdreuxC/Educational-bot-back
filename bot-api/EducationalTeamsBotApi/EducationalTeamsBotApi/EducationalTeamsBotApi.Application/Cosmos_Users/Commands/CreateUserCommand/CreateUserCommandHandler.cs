@@ -1,11 +1,15 @@
 ﻿// -----------------------------------------------------------------------
-// <copyright file="CosmosUser.cs" company="DiiageBot Team">
-// Copyright (c) DIIAGE Groupe 1 2022. All rights reserved.
+// <copyright file="CreateUserCommandHandler.cs" company="DIIAGE">
+// Copyright (c) DIIAGE 2022. All rights reserved.
 // </copyright>
 // -----------------------------------------------------------------------
-namespace EducationalTeamsBotApi.Application.cosmos_Users.Commands.CreateUserCommand
+
+namespace EducationalTeamsBotApi.Application.Cosmos_Users.Commands.CreateUserCommand
 {
-    internal class CreateUserCommandHandler
+    /// <summary>
+    /// Command handler for user creation.
+    /// </summary>
+    public class CreateUserCommandHandler
     {
     }
 }

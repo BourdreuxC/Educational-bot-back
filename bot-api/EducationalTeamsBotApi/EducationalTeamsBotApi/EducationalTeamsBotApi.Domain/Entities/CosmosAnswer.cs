@@ -14,6 +14,33 @@ namespace EducationalTeamsBotApi.Domain.Entities
     public class CosmosAnswer
     {
         /// <summary>
+        /// Initializes a new instance of the <see cref="CosmosAnswer"/> class.
+        /// </summary>
+        /// <param name="id">identifier of a message answer.</param>
+        /// <param name="content"> content of an answer.</param>
+        /// <param name="bestA"> is the best answer.</param>
+        public CosmosAnswer(string id, string content, bool bestA)
+        {
+            this.Id = id;
+            this.Content = content;
+            this.Reactions = new List<string>();
+            this.BestAnswer = bestA;
+        }
+
+        /// <summary>
+        ///  Initializes a new instance of the <see cref="CosmosAnswer"/> class.
+        /// </summary>
+        /// <param name="id">identifier of a message answer.</param>
+        /// <param name="content"> content of an answer.</param>
+        /// <param name="reactions">reactions to a message.</param>
+        /// <param name="bestA"> is the best answer.</param>
+        public CosmosAnswer(string id, string content, IEnumerable<string> reactions, bool bestA)
+            : this(id, content, bestA)
+        {
+            this.Reactions = reactions;
+        }
+
+        /// <summary>
         /// Gets or sets the identifier of a message answer | returned by the graph api.
         /// </summary>
         [JsonProperty("id")]
@@ -42,36 +69,5 @@ namespace EducationalTeamsBotApi.Domain.Entities
         /// </summary>
         [JsonProperty("best")]
         public bool? BestAnswer { get; set; }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="CosmosAnswer"/> class.
-        /// </summary>
-        /// <param name="id">identifier of a message answer.</param>
-        /// <param name="content"> content of an answer.</param>
-        /// <param name="uid">user id of a specific answer.</param>
-        /// <param name="bestA"> is the best answer.</param>
-        public CosmosAnswer(string id, string content, string uid, bool bestA)
-        {
-            this.Id = id;
-            this.Content = content;
-            this.Reactions = new List<string>();
-            this.BestAnswer = bestA;
-        }
-
-        /// <summary>
-        ///  Initializes a new instance of the <see cref="CosmosAnswer"/> class.
-        /// </summary>
-        /// <param name="id">identifier of a message answer.</param>
-        /// <param name="content"> content of an answer.</param>
-        /// <param name="uid">user id of a specific answer.</param>
-        /// <param name="reactions">reactions to a message.</param>
-        /// <param name="bestA"> is the best answer.</param>
-
-        public CosmosAnswer(string id, string content, string uid, IEnumerable<string> reactions , bool bestA)
-            : this(id, content, uid, bestA)
-        {
-            this.Reactions = reactions;
-        }
-
     }
 }

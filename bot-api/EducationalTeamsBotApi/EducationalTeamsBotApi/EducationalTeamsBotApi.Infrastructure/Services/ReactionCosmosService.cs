@@ -8,6 +8,7 @@ namespace EducationalTeamsBotApi.Infrastructure.Services
 {
     using System.Collections.Generic;
     using System.Threading.Tasks;
+    using EducationalTeamsBotApi.Application.Common.Constants;
     using EducationalTeamsBotApi.Application.Common.Interfaces;
     using EducationalTeamsBotApi.Domain.Entities;
     using Microsoft.Azure.Cosmos;
@@ -17,15 +18,25 @@ namespace EducationalTeamsBotApi.Infrastructure.Services
     /// </summary>
     public class ReactionCosmosService : IReactionCosmosService
     {
+        /// <summary>
+        /// Cosmos client used in this service.
+        /// </summary>
         private readonly CosmosClient cosmosClient;
+
+        /// <summary>
+        /// Database used in this service.
+        /// </summary>
+        private readonly Database database;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ReactionCosmosService"/> class.
         /// </summary>
         public ReactionCosmosService()
         {
-            var cosmosConString = Environment.GetEnvironmentVariable("COSMOS_CON_STRING");
+            var cosmosConString = Environment.GetEnvironmentVariable(DatabaseConstants.ConnectionString);
             this.cosmosClient = new CosmosClient(cosmosConString);
+
+            this.database = this.cosmosClient.GetDatabase(DatabaseConstants.Database);
         }
 
         /// <inheritdoc/>

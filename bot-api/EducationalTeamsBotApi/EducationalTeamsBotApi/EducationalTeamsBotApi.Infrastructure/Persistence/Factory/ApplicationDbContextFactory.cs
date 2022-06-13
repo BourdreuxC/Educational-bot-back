@@ -4,12 +4,12 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-using EducationalTeamsBotApi.Infrastructure.Persistence;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Design;
-
 namespace EducationalTeamsBotApi.Infrastructure.Factory
 {
+    using EducationalTeamsBotApi.Infrastructure.Persistence;
+    using Microsoft.EntityFrameworkCore;
+    using Microsoft.EntityFrameworkCore.Design;
+
     /// <summary>
     /// Class Factory for the <see cref="ApplicationDbContext"/>.
     /// </summary>
@@ -23,10 +23,6 @@ namespace EducationalTeamsBotApi.Infrastructure.Factory
         public ApplicationDbContext CreateDbContext(string[] args)
         {
             var optionsBuilder = new DbContextOptionsBuilder<ApplicationDbContext>();
-            //Console.WriteLine(args[0]);
-            //optionsBuilder.UseSqlServer(
-            //    args[0],
-            //    b => b.MigrationsAssembly(typeof(ApplicationDbContext).Assembly.FullName));
 
             return new ApplicationDbContext(optionsBuilder.Options, null, null);
         }

@@ -4,23 +4,27 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-using EducationalTeamsBotApi.Application.Common.Interfaces;
-using EducationalTeamsBotApi.Domain.Common;
-using Microsoft.EntityFrameworkCore;
-using System.Linq;
-using System.Reflection;
-using System.Threading;
-using System.Threading.Tasks;
-
 namespace EducationalTeamsBotApi.Infrastructure.Persistence
 {
+    using System.Reflection;
+    using EducationalTeamsBotApi.Application.Common.Interfaces;
+    using EducationalTeamsBotApi.Domain.Common;
+    using Microsoft.EntityFrameworkCore;
+
     /// <summary>
     /// Class context of the application.
     /// </summary>
     public class ApplicationDbContext : DbContext, IApplicationDbContext
     {
-        private readonly ICurrentUserService currentUserService;
-        private readonly IDomainEventService domainEventService;
+        /// <summary>
+        /// User service to use in context.
+        /// </summary>
+        private readonly ICurrentUserService? currentUserService;
+
+        /// <summary>
+        /// Domaine event service to use in context.
+        /// </summary>
+        private readonly IDomainEventService? domainEventService;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ApplicationDbContext"/> class.
@@ -30,8 +34,8 @@ namespace EducationalTeamsBotApi.Infrastructure.Persistence
         /// <param name="domainEventService">Domain event service.</param>
         public ApplicationDbContext(
             DbContextOptions options,
-            ICurrentUserService currentUserService,
-            IDomainEventService domainEventService)
+            ICurrentUserService? currentUserService,
+            IDomainEventService? domainEventService)
             : base(options)
         {
             this.currentUserService = currentUserService;
@@ -46,12 +50,12 @@ namespace EducationalTeamsBotApi.Infrastructure.Persistence
                 switch (entry.State)
                 {
                     case EntityState.Added:
-                        entry.Entity.CreatedBy = this.currentUserService.UserId;
+                        entry.Entity.CreatedBy = this.currentUserService?.UserId;
                         entry.Entity.Created = DateTime.Now;
                         break;
 
                     case EntityState.Modified:
-                        entry.Entity.LastModifiedBy = this.currentUserService.UserId;
+                        entry.Entity.LastModifiedBy = this.currentUserService?.UserId;
                         entry.Entity.LastModified = DateTime.Now;
                         break;
                 }
@@ -85,7 +89,7 @@ namespace EducationalTeamsBotApi.Infrastructure.Persistence
                     .SelectMany(x => x)
                     .FirstOrDefault(domainEvent => !domainEvent.IsPublished);
 
-                if (domainEventEntity == null)
+                if (domainEventEntity == null || this.domainEventService == null)
                 {
                     break;
                 }

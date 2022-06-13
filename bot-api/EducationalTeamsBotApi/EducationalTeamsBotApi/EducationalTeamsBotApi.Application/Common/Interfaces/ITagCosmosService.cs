@@ -7,6 +7,7 @@
 namespace EducationalTeamsBotApi.Application.Common.Interfaces
 {
     using EducationalTeamsBotApi.Domain.Entities;
+    using MediatR;
 
     /// <summary>
     /// Interface containing methods that call cosmosDB.
@@ -16,36 +17,43 @@ namespace EducationalTeamsBotApi.Application.Common.Interfaces
         /// <summary>
         /// Gets the list of tags of the cosmosDb.
         /// </summary>
-        /// <returns>A list of user objects.</returns>
+        /// <returns>A list of tag objects.</returns>
         Task<IEnumerable<CosmosTag>> GetTags();
 
         /// <summary>
         /// Get a specific tag.
         /// </summary>
-        /// <param name="id">identifier of the tag.</param>
+        /// <param name="id">Identifier of the tag.</param>
         /// <returns>Tag object.</returns>
-        Task<CosmosTag> GetTag(string id);
+        Task<CosmosTag?> GetTag(string id);
 
         /// <summary>
-        /// Get a tag by searching a corresponding variation.
+        /// Get a tag by searching a corresponding variant.
         /// </summary>
-        /// <param name="tag">variation to look for.</param>
+        /// <param name="tag">Variant to look for.</param>
         /// <returns>Tag object.</returns>
-        Task<CosmosTag> SearchTag(string tag);
+        Task<CosmosTag?> SearchTag(string tag);
 
         /// <summary>
         /// Insert a brand new tag in the CosmosDB.
         /// </summary>
-        /// <param name="tag">New tag.</param>
+        /// <param name="variants">New tag.</param>
         /// <returns>The inserted value.</returns>
-        Task<CosmosTag> AddTag(CosmosTag tag);
+        Task<CosmosTag?> AddTag(List<string> variants);
 
         /// <summary>
-        /// Insert a new variation to an already existing tag.
+        /// Insert a new variant to an already existing tag.
         /// </summary>
-        /// <param name="tag">the existing tag</param>
-        /// <param name="tagVariation">the new variation.</param>
-        /// <returns>The edited object</returns>
-        Task<CosmosTag> AddTagVariation(CosmosTag tag, string tagVariation);
+        /// <param name="id">Identifier of the existing tag.</param>
+        /// <param name="tagVariant">The new variant.</param>
+        /// <returns>The edited object.</returns>
+        Task<CosmosTag?> EditTagVariant(string id, string tagVariant);
+
+        /// <summary>
+        /// Insert a new variant to an already existing tag.
+        /// </summary>
+        /// <param name="id">Identifier of the tag to delete.</param>
+        /// <returns>The edited object.</returns>
+        Task<Unit> DeleteTag(string id);
     }
 }

@@ -14,6 +14,17 @@ namespace EducationalTeamsBotApi.Domain.Entities
     public class CosmosSpeaker
     {
         /// <summary>
+        /// Initializes a new instance of the <see cref="CosmosSpeaker"/> class.
+        /// </summary>
+        /// <param name="id">identifier of a user.</param>
+        public CosmosSpeaker(string id)
+        {
+            this.Id = id;
+            this.AltIds = new List<string>();
+            this.Tags = new List<string>();
+        }
+
+        /// <summary>
         /// Gets or sets the identifier of a user.
         /// </summary>
         [JsonProperty("id")]
@@ -48,16 +59,5 @@ namespace EducationalTeamsBotApi.Domain.Entities
         /// </summary>
         [JsonProperty("enabled")]
         public bool? Enabled { get; set; } = true;
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="CosmosSpeaker"/> class.
-        /// </summary>
-        /// <param name="id">identifier of a user.</param>
-        public CosmosSpeaker(string id)
-        {
-            this.Id = id;
-            this.AltIds = new List<string>();
-            this.Tags = new List<string>();
-        }
     }
 }

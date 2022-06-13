@@ -14,26 +14,25 @@ namespace EducationalTeamsBotApi.Domain.Entities
     public class CosmosTag
     {
         /// <summary>
+        /// Initializes a new instance of the <see cref="CosmosTag"/> class.
+        /// </summary>
+        /// <param name="id">identifier of a tag.</param>
+        public CosmosTag()
+        {
+
+            this.Variants = new List<string>();
+        }
+
+        /// <summary>
         /// Gets or sets the identifier of a tag.
         /// </summary>
         [JsonProperty("id")]
         public string Id { get; set; }
 
         /// <summary>
-        /// Gets or sets every variations of a tag.
+        /// Gets or sets every variants of a tag.
         /// </summary>
         [JsonProperty("variants")]
         public IEnumerable<string> Variants { get; set; }
-
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="CosmosTag"/> class.
-        /// </summary>
-        /// <param name="id">identifier of a tag.</param>
-        public CosmosTag(string id)
-        {
-            this.Id = id;
-            this.Variants = new List<string>();
-        }
     }
 }

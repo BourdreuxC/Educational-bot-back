@@ -17,6 +17,7 @@ namespace EducationalTeamsBotApi.Application.Speakers.Queries.GetSpeakerQuery
         /// <summary>
         /// Gets or sets the id of the speaker.
         /// </summary>
-        public string SpeakerId { get; set; }
+
+        public string? SpeakerId { get; set; }
     }
 }

@@ -11,7 +11,6 @@ namespace EducationalTeamsBotApi.WebApi.Controllers
     /// <summary>
     /// Controller allowing to interact with users.
     /// </summary>
-    [Route("api/[controller]")]
     [ApiController]
     public class UsersController : ApiBaseController
     {

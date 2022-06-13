@@ -4,15 +4,25 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-using Newtonsoft.Json;
-
 namespace EducationalTeamsBotApi.Domain.Entities
 {
+    using Newtonsoft.Json;
+
     /// <summary>
     /// The association between an answer and reactions.
     /// </summary>
     public class CosmosAnswerReaction
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CosmosAnswerReaction"/> class.
+        /// </summary>
+        /// <param name="userId">Id of the user that user a reaction.</param>
+        /// <param name="reactionId">Id of the cosmos reation.</param>
+        public CosmosAnswerReaction(string userId, string reactionId)
+        {
+            this.UserId = userId;
+            this.ReactionId = reactionId;
+        }
 
         /// <summary>
         /// Gets or sets the id of the user.
@@ -25,16 +35,5 @@ namespace EducationalTeamsBotApi.Domain.Entities
         /// </summary>
         [JsonProperty("reaction")]
         public string ReactionId { get; set; }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="CosmosAnswerReaction"/> class.
-        /// </summary>
-        /// <param name="userId">Id of the user that user a reaction.</param>
-        /// <param name="reactionId">Id of the cosmos reation.</param>
-        public CosmosAnswerReaction(string userId, string reactionId)
-        {
-            this.UserId = userId;
-            this.ReactionId = reactionId;
-        }
     }
 }

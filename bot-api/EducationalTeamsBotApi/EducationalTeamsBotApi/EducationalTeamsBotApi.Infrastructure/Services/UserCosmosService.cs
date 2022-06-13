@@ -1,9 +1,16 @@
-﻿namespace EducationalTeamsBotApi.Infrastructure.Services
+﻿// -----------------------------------------------------------------------
+// <copyright file="UserCosmosService.cs" company="DIIAGE">
+// Copyright (c) DIIAGE 2022. All rights reserved.
+// </copyright>
+// -----------------------------------------------------------------------
+
+namespace EducationalTeamsBotApi.Infrastructure.Services
 {
-    using EducationalTeamsBotApi.Application.Common.Interfaces;
-    using EducationalTeamsBotApi.Domain.Entities;
     using System.Collections.Generic;
     using System.Threading.Tasks;
+    using EducationalTeamsBotApi.Application.Common.Constants;
+    using EducationalTeamsBotApi.Application.Common.Interfaces;
+    using EducationalTeamsBotApi.Domain.Entities;
     using Microsoft.Azure.Cosmos;
 
     /// <summary>
@@ -11,15 +18,17 @@
     /// </summary>
     public class UserCosmosService : IUserCosmosService
     {
+        /// <summary>
+        /// Cosmos client to use in the service.
+        /// </summary>
         private readonly CosmosClient cosmosClient;
-
 
         /// <summary>
         /// Initializes a new instance of the <see cref="UserCosmosService"/> class.
         /// </summary>
         public UserCosmosService()
         {
-            var cosmosConString = Environment.GetEnvironmentVariable("COSMOS_CON_STRING");
+            var cosmosConString = Environment.GetEnvironmentVariable(DatabaseConstants.ConnectionString);
             this.cosmosClient = new CosmosClient(cosmosConString);
         }
 

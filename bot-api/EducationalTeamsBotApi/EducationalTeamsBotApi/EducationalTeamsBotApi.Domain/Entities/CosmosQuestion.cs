@@ -14,6 +14,21 @@ namespace EducationalTeamsBotApi.Domain.Entities
     public class CosmosQuestion
     {
         /// <summary>
+        /// Initializes a new instance of the <see cref="CosmosQuestion"/> class.
+        /// </summary>
+        /// <param name="id">identifier of a message question.</param>
+        /// <param name="content">content of a question.</param>
+        /// <param name="uid">user id of a specific question.</param>
+        public CosmosQuestion(string id, string content, string uid)
+        {
+            this.Id = id;
+            this.Content = content;
+            this.AssociatedTags = new List<string>();
+            this.Answers = new List<string>();
+            this.UserId = uid;
+        }
+
+        /// <summary>
         /// Gets or sets the identifier of a message question | returned by the graph api.
         /// </summary>
         [JsonProperty("id")]
@@ -37,26 +52,10 @@ namespace EducationalTeamsBotApi.Domain.Entities
         [JsonProperty("answers")]
         public IEnumerable<string> Answers { get; set; }
 
-
         /// <summary>
         /// Gets or sets the user id of a specific question.
         /// </summary>
         [JsonProperty("uid")]
         public string UserId { get; set; }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="CosmosQuestion"/> class.
-        /// </summary>
-        /// <param name="id">identifier of a message question.</param>
-        /// <param name="content">content of a question.</param>
-        /// <param name="uid">user id of a specific question.</param>
-        public CosmosQuestion(string id, string content, string uid)
-        {
-            this.Id = id;
-            this.Content = content;
-            this.AssociatedTags = new List<string>();
-            this.Answers = new List<string>();
-            this.UserId = uid;
-        }
     }
 }

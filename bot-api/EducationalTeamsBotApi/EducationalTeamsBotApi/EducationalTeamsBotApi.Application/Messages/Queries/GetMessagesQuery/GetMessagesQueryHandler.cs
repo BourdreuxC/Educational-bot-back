@@ -31,9 +31,9 @@ namespace EducationalTeamsBotApi.Application.Messages.Queries.GetMessagesQuery
         }
 
         /// <inheritdoc/>
-        public async Task<IEnumerable<SearchEntity>> Handle(GetMessagesQuery request, CancellationToken cancellationToken)
+        public Task<IEnumerable<SearchEntity>> Handle(GetMessagesQuery request, CancellationToken cancellationToken)
         {
-            return await this.graphService.GetMessages();
+            return Task.FromResult(new List<SearchEntity>().AsEnumerable());
         }
     }
 }
