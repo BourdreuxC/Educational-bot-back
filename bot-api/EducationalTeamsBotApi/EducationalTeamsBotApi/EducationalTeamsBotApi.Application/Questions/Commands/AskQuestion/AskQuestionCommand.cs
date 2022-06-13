@@ -6,6 +6,7 @@
 
 namespace EducationalTeamsBotApi.Application.Questions.Commands.AskQuestion
 {
+    using EducationalTeamsBotApi.Application.Dto;
     using MediatR;
     using Microsoft.Bot.Schema;
 
@@ -17,6 +18,6 @@ namespace EducationalTeamsBotApi.Application.Questions.Commands.AskQuestion
         /// <summary>
         /// Gets or sets The content of the question.
         /// </summary>
-        public Activity? Activity { get; set; }
+        public QuestionInputDto Message { get; set; }
     }
 }
