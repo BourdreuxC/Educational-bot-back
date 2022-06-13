@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 // <copyright file="QuestionsController.cs" company="DIIAGE">
 // Copyright (c) DIIAGE 2022. All rights reserved.
 // </copyright>
@@ -50,12 +50,11 @@ namespace EducationalTeamsBotApi.WebApi.Controllers
         /// <returns>the answer.</returns>
         [HttpPost]
         [AllowAnonymous]
-        public async Task<IActionResult> QuestionAsked([FromBody] string question)
+        public async Task QuestionAsked(QuestionInputDto activity)
         {
             try
             {
-               var res = await this.Mediator.Send(new AskQuestionCommand { Activity = question });
-               return this.Ok(res);
+               await this.Mediator.Send(new AskQuestionCommand { Message = activity });
             }
             catch (Exception e)
             {

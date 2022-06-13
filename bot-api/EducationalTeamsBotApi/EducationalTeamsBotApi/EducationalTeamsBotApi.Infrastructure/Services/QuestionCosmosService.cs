@@ -10,6 +10,7 @@ namespace EducationalTeamsBotApi.Infrastructure.Services
     using System.Threading.Tasks;
     using System.Xml;
     using EducationalTeamsBotApi.Application.Common.Interfaces;
+    using EducationalTeamsBotApi.Application.Dto;
     using EducationalTeamsBotApi.Domain.Entities;
     using Microsoft.Azure.CognitiveServices.Knowledge.QnAMaker;
     using Microsoft.Azure.CognitiveServices.Knowledge.QnAMaker.Models;
@@ -90,15 +91,16 @@ namespace EducationalTeamsBotApi.Infrastructure.Services
         }
 
         /// <inheritdoc/>
-        public async Task<string> QuestionAsked(string question)
+        public async Task<string> QuestionAsked(QuestionInputDto question)
         {
             var queryingURL = "https://qnadiibot.azurewebsites.net";
             var endpointKey = await this.qnaClient.EndpointKeys.GetKeysAsync();
             var qnaRuntimeCli = new QnAMakerRuntimeClient(new EndpointKeyServiceClientCredentials(endpointKey.PrimaryEndpointKey)) { RuntimeEndpoint = queryingURL };
 
-            var response = await qnaRuntimeCli.Runtime.GenerateAnswerAsync("770b2be2-e25f-4963-b502-93961da9f88f", new QueryDTO { Question = question });
+            var response = await qnaRuntimeCli.Runtime.GenerateAnswerAsync("770b2be2-e25f-4963-b502-93961da9f88f", new QueryDTO { Question = question.Message });
             var res = response.Answers[0].Answer;
-            if (response.Answers[0].Answer == "No good match found in KB.")
+
+            if (response.Answers[0].Id == -1)
             {
                 res = "Pas de solution mais je reste à l'écoute";
             }

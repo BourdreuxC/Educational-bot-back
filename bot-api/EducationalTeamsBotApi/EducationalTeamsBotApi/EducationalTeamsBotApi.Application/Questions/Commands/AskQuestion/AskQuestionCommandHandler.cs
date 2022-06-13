@@ -32,7 +32,7 @@ namespace EducationalTeamsBotApi.Application.Questions.Commands.AskQuestion
         /// <inheritdoc/>
         public Task<string> Handle(AskQuestionCommand request, CancellationToken cancellationToken)
         {
-            return this.questionCosmosService.QuestionAsked(request.Activity);
+            return this.questionCosmosService.QuestionAsked(request.Message);
         }
     }
 }
