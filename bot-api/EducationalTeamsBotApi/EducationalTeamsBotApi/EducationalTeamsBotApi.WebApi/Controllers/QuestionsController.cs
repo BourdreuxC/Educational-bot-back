@@ -9,9 +9,11 @@ namespace EducationalTeamsBotApi.WebApi.Controllers
     using EducationalTeamsBotApi.Application.Dto;
     using EducationalTeamsBotApi.Application.Pagination.Queries;
     using EducationalTeamsBotApi.Application.Questions.Commands.AskQuestion;
+    using EducationalTeamsBotApi.Application.Questions.Commands.DeleteQuestionCommand;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.Bot.Schema;
+
     /// <summary>
     /// Controller allowing to interact with questions.
     /// </summary>
@@ -42,20 +44,38 @@ namespace EducationalTeamsBotApi.WebApi.Controllers
         /// <summary>
         /// Answer a given question.
         /// </summary>
-        /// <param name="question">the question asked.</param>
-        /// <returns>the answer.</returns>
+        /// <param name="question">The question asked.</param>
+        /// <returns>The answer.</returns>
         [HttpPost]
         [AllowAnonymous]
-        public async Task QuestionAsked(QuestionInputDto activity)
+        public async Task QuestionAsked(QuestionInputDto question)
         {
             try
             {
-               await this.Mediator.Send(new AskQuestionCommand { Message = activity });
+               await this.Mediator.Send(new AskQuestionCommand(question));
             }
             catch (Exception)
             {
                 throw;
             }
+        }
+
+        /// <summary>
+        /// Deletes a question.
+        /// </summary>
+        /// <param name="id">Question identifier.</param>
+        /// <returns>A HTTP status code.</returns>
+        [HttpDelete]
+        public async Task<IActionResult> DeleteQuestion(string id)
+        {
+            var result = await this.Mediator.Send(new DeleteQuestionCommand(id));
+
+            if (result)
+            {
+                return this.Ok();
+            }
+
+            return this.Forbid();
         }
     }
 }

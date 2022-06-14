@@ -14,8 +14,17 @@ namespace EducationalTeamsBotApi.Application.Speakers.Commands.DeleteSpeakerComm
     public class DeleteSpeakerCommand : IRequest<Unit>
     {
         /// <summary>
+        /// Initializes a new instance of the <see cref="DeleteSpeakerCommand"/> class.
+        /// </summary>
+        /// <param name="id">Speaker identifier.</param>
+        public DeleteSpeakerCommand(string id)
+        {
+            this.Id = id;
+        }
+
+        /// <summary>
         /// Gets or Sets the identifier of the speaker.
         /// </summary>
-        public string? Id { get; set; }
+        public string Id { get; set; }
     }
 }

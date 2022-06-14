@@ -1,10 +1,10 @@
 ﻿// -----------------------------------------------------------------------
-// <copyright file="Graph_SyncChannelMessagesCommandHandler.cs" company="DIIAGE">
+// <copyright file="GraphSyncChannelMessagesCommandHandler.cs" company="DIIAGE">
 // Copyright (c) DIIAGE 2022. All rights reserved.
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace EducationalTeamsBotApi.Application.Messages.Commands.Graph_SyncMessagesCommand
+namespace EducationalTeamsBotApi.Application.Messages.Commands.GraphSyncMessagesCommand
 {
     using System.Threading;
     using System.Threading.Tasks;
@@ -13,9 +13,9 @@ namespace EducationalTeamsBotApi.Application.Messages.Commands.Graph_SyncMessage
     using MediatR;
 
     /// <summary>
-    /// Handles the <see cref="Graph_SyncChannelMessagesCommand"/>.
+    /// Handles the <see cref="GraphSyncChannelMessagesCommand"/>.
     /// </summary>
-    public class Graph_SyncChannelMessagesCommandHandler : IRequestHandler<Graph_SyncChannelMessagesCommand, bool>
+    public class GraphSyncChannelMessagesCommandHandler : IRequestHandler<GraphSyncChannelMessagesCommand, bool>
     {
         /// <summary>
         /// Graph service.
@@ -28,18 +28,18 @@ namespace EducationalTeamsBotApi.Application.Messages.Commands.Graph_SyncMessage
         private readonly IQuestionCosmosService questionCosmosService;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="Graph_SyncChannelMessagesCommandHandler"/> class.
+        /// Initializes a new instance of the <see cref="GraphSyncChannelMessagesCommandHandler"/> class.
         /// </summary>
         /// <param name="graphService">Graph service.</param>
         /// <param name="questionCosmosService">Cosmos service.</param>
-        public Graph_SyncChannelMessagesCommandHandler(IGraphService graphService, IQuestionCosmosService questionCosmosService)
+        public GraphSyncChannelMessagesCommandHandler(IGraphService graphService, IQuestionCosmosService questionCosmosService)
         {
             this.graphService = graphService;
             this.questionCosmosService = questionCosmosService;
         }
 
         /// <inheritdoc/>
-        public async Task<bool> Handle(Graph_SyncChannelMessagesCommand request, CancellationToken cancellationToken)
+        public async Task<bool> Handle(GraphSyncChannelMessagesCommand request, CancellationToken cancellationToken)
         {
             // Get graph channel messages.
             var messages = await this.graphService.GetChannelMessages(request.TeamId, request.ChannelId);
