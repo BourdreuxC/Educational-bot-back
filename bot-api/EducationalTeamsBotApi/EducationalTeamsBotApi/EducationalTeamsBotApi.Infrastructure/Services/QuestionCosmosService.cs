@@ -164,7 +164,6 @@ namespace EducationalTeamsBotApi.Infrastructure.Services
 
             questionOutputDto.Answer = res;
             return questionOutputDto;
-
         }
 
         /// <inheritdoc/>
