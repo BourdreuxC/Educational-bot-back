@@ -34,6 +34,15 @@ namespace EducationalTeamsBotApi.Infrastructure.Services
         /// <summary>
         /// Initializes a new instance of the <see cref="GraphService"/> class.
         /// </summary>
+        /// <param name="graphServiceClient">A <see cref="GraphServiceClient"/>.</param>
+        public GraphService(GraphServiceClient graphServiceClient)
+        {
+            this.graphServiceClient = graphServiceClient;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="GraphService"/> class.
+        /// </summary>
         /// <param name="configuration">Configuration to use.</param>
         /// <param name="tokenService">Token.</param>
         public GraphService(IConfiguration configuration, ITokenService tokenService)
