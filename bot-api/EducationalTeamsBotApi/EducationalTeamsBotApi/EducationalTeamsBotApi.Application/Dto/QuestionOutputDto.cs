@@ -11,13 +11,13 @@ namespace EducationalTeamsBotApi.Application.Dto
     public class QuestionOutputDto
     {
         /// <summary>
-        /// The answer of the question if exist.
+        /// Gets or sets the answer of the question if exist.
         /// </summary>
-        public string Answer { get; set; }
+        public string? Answer { get; set; }
 
         /// <summary>
-        /// The user to mention if needed.
+        /// Gets or sets the user to mention if needed.
         /// </summary>
-        public List<string> Mentions { get; set; }
+        public List<string>? Mentions { get; set; }
     }
 }

@@ -19,5 +19,13 @@ namespace EducationalTeamsBotApi.Application.Questions.Commands.AskQuestion
         /// Gets or sets The content of the question.
         /// </summary>
         public QuestionInputDto Message { get; set; }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AskQuestionCommand"/> class.
+        /// </summary>
+        public AskQuestionCommand()
+        {
+            this.Message = new QuestionInputDto();
+        }
     }
 }
