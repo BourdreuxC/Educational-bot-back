@@ -29,7 +29,7 @@ namespace EducationalTeamsBotApi.Infrastructure.Services
         /// <summary>
         /// Configuration.
         /// </summary>
-        private readonly IConfiguration configuration;
+        private readonly IConfiguration? configuration;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="GraphService"/> class.
