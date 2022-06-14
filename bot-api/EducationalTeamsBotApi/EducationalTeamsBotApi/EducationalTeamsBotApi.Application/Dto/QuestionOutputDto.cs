@@ -1,24 +1,23 @@
 ﻿// -----------------------------------------------------------------------
-// <copyright file="QuestionInputDto.cs" company="DIIAGE">
+// <copyright file="QuestionOutputDto.cs" company="DIIAGE">
 // Copyright (c) DIIAGE 2022. All rights reserved.
 // </copyright>
 // -----------------------------------------------------------------------
-
 namespace EducationalTeamsBotApi.Application.Dto
 {
     /// <summary>
-    /// A query DTO.
+    /// The question answer DTO
     /// </summary>
-    public class QuestionInputDto
+    public class QuestionOutputDto
     {
         /// <summary>
-        /// Gets or sets the content of the request.
+        /// The answer of the question if exist.
         /// </summary>
-        public string Message { get; set; }
+        public string Answer { get; set; }
 
         /// <summary>
-        /// List of tags provided in the message.
+        /// The user to mention if needed.
         /// </summary>
-        public List<string> Tags { get; set; }
+        public List<string> Mentions { get; set; }
     }
 }
