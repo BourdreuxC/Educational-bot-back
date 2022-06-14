@@ -13,7 +13,7 @@ namespace EducationalTeamsBotApi.Application.Questions.Commands.AskQuestion
     /// <summary>
     /// Post a new question to be answered.
     /// </summary>
-    public class AskQuestionCommand : IRequest<string>
+    public class AskQuestionCommand : IRequest<QuestionOutputDto>
     {
         /// <summary>
         /// Gets or sets The content of the question.

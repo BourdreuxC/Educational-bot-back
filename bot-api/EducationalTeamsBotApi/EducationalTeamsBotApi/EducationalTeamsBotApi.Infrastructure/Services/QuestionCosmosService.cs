@@ -136,8 +136,9 @@ namespace EducationalTeamsBotApi.Infrastructure.Services
         }
 
         /// <inheritdoc/>
-        public async Task<string> QuestionAsked(QuestionInputDto question)
+        public async Task<QuestionOutputDto> QuestionAsked(QuestionInputDto question)
         {
+            QuestionOutputDto questionOutputDto = new QuestionOutputDto();
             var queryingURL = "https://qnadiibot.azurewebsites.net";
             var endpointKey = await this.qnaClient.EndpointKeys.GetKeysAsync();
             var qnaRuntimeCli = new QnAMakerRuntimeClient(new EndpointKeyServiceClientCredentials(endpointKey.PrimaryEndpointKey)) { RuntimeEndpoint = queryingURL };
@@ -148,8 +149,27 @@ namespace EducationalTeamsBotApi.Infrastructure.Services
             if (response.Answers[0].Id == -1)
             {
                 res = "Pas de solution mais je reste à l'écoute";
+                if (question.Tags.Count > 0)
+                {
+                    var containerTag = this.database.GetContainer(DatabaseConstants.TagContainer);
+                    var q = containerTag.GetItemLinqQueryable<CosmosTag>();
+                    var iterator = q.ToFeedIterator();
+                    var result = await iterator.ReadNextAsync();
+                    var tags = result.Where(t => t.Variants.Any(e => question.Tags.Contains(e))).Select(e => e.Id).ToList();
+
+                    var container = this.database.GetContainer(DatabaseConstants.SpeakerContainer);
+                    var q2 = container.GetItemLinqQueryable<CosmosSpeaker>();
+                    var iterator2 = q2.ToFeedIterator();
+                    var result2 = await iterator2.ReadNextAsync();
+                    var speakers = result2.Where(s => s.Tags.Any(t => tags.Contains(t))).ToList();
+
+                    questionOutputDto.Mentions = speakers.Select(s => s.Id).ToList();
+
+                }
             }
-            return res;
+
+            questionOutputDto.Answer = res;
+            return questionOutputDto;
         }
     }
 }

@@ -76,6 +76,6 @@ namespace EducationalTeamsBotApi.Application.Common.Interfaces
         /// </summary>
         /// <param name="question">the question asked.</param>
         /// <returns>The saved question (if need be).</returns>
-        Task<string> QuestionAsked(QuestionInputDto question);
+        Task<QuestionOutputDto> QuestionAsked(QuestionInputDto question);
     }
 }

@@ -46,11 +46,12 @@ namespace EducationalTeamsBotApi.WebApi.Controllers
         /// <returns>the answer.</returns>
         [HttpPost]
         [AllowAnonymous]
-        public async Task QuestionAsked(QuestionInputDto activity)
+        public async Task<IActionResult> QuestionAsked(QuestionInputDto activity)
         {
             try
             {
-               await this.Mediator.Send(new AskQuestionCommand { Message = activity });
+               var res = await this.Mediator.Send(new AskQuestionCommand { Message = activity });
+               return this.Ok(res);
             }
             catch (Exception)
             {
