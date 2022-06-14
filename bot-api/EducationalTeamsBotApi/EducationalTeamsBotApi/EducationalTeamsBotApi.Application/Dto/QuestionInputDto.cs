@@ -17,8 +17,16 @@ namespace EducationalTeamsBotApi.Application.Dto
         public string Message { get; set; }
 
         /// <summary>
-        /// List of tags provided in the message.
+        /// Gets or sets a list of tags provided in the message.
         /// </summary>
-        public List<string> Tags { get; set; }
+        public List<string>? Tags { get; set; }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="QuestionInputDto"/> class.
+        /// </summary>
+        public QuestionInputDto()
+        {
+            this.Message = string.Empty;
+        }
     }
 }

@@ -159,7 +159,6 @@ namespace EducationalTeamsBotApi.Infrastructure.Services
                     var speakers = result2.Where(s => s.Tags.Any(t => tags.Contains(t))).ToList();
 
                     questionOutputDto.Mentions = speakers.Select(s => s.Id).ToList();
-
                 }
             }
 
