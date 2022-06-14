@@ -28,6 +28,8 @@
     <ProjectReference Include="..\EducationalTeamsBotApi\EducationalTeamsBotApi.Application\EducationalTeamsBotApi.Application.csproj" />
     <ProjectReference Include="..\EducationalTeamsBotApi\EducationalTeamsBotApi.Infrastructure\EducationalTeamsBotApi.Infrastructure.csproj" />
     <ProjectReference Include="..\EducationalTeamsBotApi\EducationalTeamsBotApi.WebApi\EducationalTeamsBotApi.WebApi.csproj" />
+    <ProjectReference Include="..\EducationalTeamsBotApi\EducationalTeamsBotApi.Application\EducationalTeamsBotApi.Application.csproj" />
+    <ProjectReference Include="..\EducationalTeamsBotApi\EducationalTeamsBotApi.Infrastructure\EducationalTeamsBotApi.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>

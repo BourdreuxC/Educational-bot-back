@@ -1,3 +1,10 @@
+using EducationalTeamsBotApi.Application.Tags.Queries.GetTagByNameQuery;
+using EducationalTeamsBotApi.Application.Tags.Queries.GetTagsQuery;
+using EducationalTeamsBotApi.Domain.Entities;
+using EducationalTeamsBotApi.Infrastructure.Services;
+using Microsoft.Azure.Cosmos;
+using Microsoft.Azure.Cosmos.Linq;
+using Moq;
 
 
 namespace EducationalTeamsBotApi.UnitTests

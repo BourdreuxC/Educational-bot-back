@@ -39,7 +39,7 @@ namespace EducationalTeamsBotApi.Infrastructure.Services
         /// <summary>
         /// Initializes a new instance of the <see cref="TagCosmosService"/> class.
         /// </summary>
-        public TagCosmosService()
+        public TagCosmosService(ICosmosLinqQuery myCosmosLinqQuery)
         {
             var cosmosConString = Environment.GetEnvironmentVariable(DatabaseConstants.ConnectionString);
             var options = new CosmosClientOptions() { ConnectionMode = ConnectionMode.Gateway };
