@@ -43,7 +43,6 @@ namespace EducationalTeamsBotApi.WebApi.Filters
         /// <inheritdoc/>
         public override void OnException(ExceptionContext context)
         {
-
             Logger logger = LogManager.GetCurrentClassLogger();
             logger.Log(LogLevel.Error, context.Exception);
 

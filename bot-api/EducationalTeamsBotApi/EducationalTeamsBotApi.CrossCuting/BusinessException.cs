@@ -7,12 +7,12 @@
 namespace EducationalTeamsBotApi.CrossCuting
 {
     using System;
-    using System.Runtime.Serialization;
 
     /// <summary>
     /// Exception used for the business case.
     /// </summary>
-    public class BusinessException : Exception, ISerializable
+    [Serializable]
+    public class BusinessException : Exception
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="BusinessException"/> class.
