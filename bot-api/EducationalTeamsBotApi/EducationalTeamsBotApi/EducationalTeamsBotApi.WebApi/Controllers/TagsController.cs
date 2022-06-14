@@ -14,6 +14,8 @@ namespace EducationalTeamsBotApi.WebApi.Controllers
     using EducationalTeamsBotApi.Application.Tags.Queries.GetTagByNameQuery;
     using EducationalTeamsBotApi.Application.Tags.Queries.GetTagQuery;
     using EducationalTeamsBotApi.Application.Tags.Queries.GetTagsQuery;
+    using EducationalTeamsBotApi.CrossCuting;
+    using EducationalTeamsBotApi.WebApi.Filters;
     using EducationalTeamsBotApi.WebApi.Model;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
@@ -50,7 +52,7 @@ namespace EducationalTeamsBotApi.WebApi.Controllers
         {
             if (string.IsNullOrEmpty(name))
             {
-                throw new ArgumentException($"'{nameof(name)}' cannot be null or empty.", nameof(name));
+                throw new BusinessException("The parameter name is null");
             }
 
             var tag = await this.Mediator.Send(new GetTagByNameQuery(name));
@@ -111,7 +113,7 @@ namespace EducationalTeamsBotApi.WebApi.Controllers
         {
             if (!model.Variants.Any())
             {
-                throw new Exception("The list of variant is empty.");
+                throw new BusinessException("The list of variant is empty.");
             }
 
             var tags = await this.Mediator.Send(new AddTagCommand(model.Variants));

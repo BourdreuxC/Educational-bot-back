@@ -10,6 +10,7 @@ namespace EducationalTeamsBotApi.Infrastructure.Services
     using System.Threading.Tasks;
     using EducationalTeamsBotApi.Application.Common.Constants;
     using EducationalTeamsBotApi.Application.Common.Interfaces;
+    using EducationalTeamsBotApi.CrossCuting;
     using EducationalTeamsBotApi.Domain.Entities;
     using MediatR;
     using Microsoft.Azure.Cosmos;
@@ -47,7 +48,7 @@ namespace EducationalTeamsBotApi.Infrastructure.Services
             var container = this.database.GetContainer(DatabaseConstants.TagContainer);
             if (!variants.Any())
             {
-                throw new Exception("No variants");
+                throw new BusinessException("No variants");
             }
 
             var id = Guid.NewGuid().ToString();

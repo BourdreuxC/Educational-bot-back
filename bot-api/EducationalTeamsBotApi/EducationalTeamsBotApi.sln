@@ -11,6 +11,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EducationalTeamsBotApi.Infr
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EducationalTeamsBotApi.WebApi", "EducationalTeamsBotApi\EducationalTeamsBotApi.WebApi\EducationalTeamsBotApi.WebApi.csproj", "{5E81F3ED-963C-4B95-81F1-CAE18A6902FD}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EducationalTeamsBotApi.CrossCuting", "EducationalTeamsBotApi.CrossCuting\EducationalTeamsBotApi.CrossCuting.csproj", "{EF7360E5-7B46-4D0C-AF17-5E0A98AEE170}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{5E81F3ED-963C-4B95-81F1-CAE18A6902FD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5E81F3ED-963C-4B95-81F1-CAE18A6902FD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5E81F3ED-963C-4B95-81F1-CAE18A6902FD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EF7360E5-7B46-4D0C-AF17-5E0A98AEE170}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EF7360E5-7B46-4D0C-AF17-5E0A98AEE170}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EF7360E5-7B46-4D0C-AF17-5E0A98AEE170}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EF7360E5-7B46-4D0C-AF17-5E0A98AEE170}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

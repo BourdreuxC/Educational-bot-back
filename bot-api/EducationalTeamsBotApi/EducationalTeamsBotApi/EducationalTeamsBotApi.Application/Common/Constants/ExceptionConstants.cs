@@ -65,5 +65,10 @@ namespace EducationalTeamsBotApi.Application.Common.Constants
         /// Exception to show if there is a conflict.
         /// </summary>
         public const string ConflictExceptionTitle = "A conflict occured while trying to update database.";
+
+        /// <summary>
+        /// Exception to show if there is a business exception.
+        /// </summary>
+        public const string BusinessExceptionTitle = "An error occured during the operation.";
     }
 }
