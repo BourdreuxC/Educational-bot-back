@@ -1,0 +1,12 @@
+﻿{
+  "settings": {
+    "documentationRules": {
+      "companyName": "DIIAGE",
+      "copyrightText": "Copyright (c) {companyName} {promo}. All rights reserved.",
+      "headerDecoration": "-----------------------------------------------------------------------",
+      "variables": {
+        "promo": "2022"
+      }
+    }
+  }
+}

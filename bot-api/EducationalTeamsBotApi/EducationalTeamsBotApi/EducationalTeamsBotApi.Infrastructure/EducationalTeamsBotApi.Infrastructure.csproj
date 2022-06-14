@@ -28,6 +28,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\EducationalTeamsBotApi.CrossCuting\EducationalTeamsBotApi.CrossCuting.csproj" />
     <ProjectReference Include="..\EducationalTeamsBotApi.Application\EducationalTeamsBotApi.Application.csproj" />
   </ItemGroup>
 

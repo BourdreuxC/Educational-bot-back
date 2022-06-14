@@ -10,6 +10,7 @@ namespace EducationalTeamsBotApi.Infrastructure.Services
     using System.Threading.Tasks;
     using EducationalTeamsBotApi.Application.Common.Constants;
     using EducationalTeamsBotApi.Application.Common.Interfaces;
+    using EducationalTeamsBotApi.CrossCuting;
     using EducationalTeamsBotApi.Domain.Entities;
     using MediatR;
     using Microsoft.Azure.Cosmos;
@@ -71,7 +72,7 @@ namespace EducationalTeamsBotApi.Infrastructure.Services
 
             if (existingSpeaker == null)
             {
-                throw new Exception("Speaker not found");
+                throw new BusinessException("Speaker not found");
             }
 
             container.ReplaceItemAsync(speaker, speaker.Id);
@@ -87,7 +88,7 @@ namespace EducationalTeamsBotApi.Infrastructure.Services
 
             if (existingSpeaker == null)
             {
-                throw new Exception("Speaker not found");
+                throw new BusinessException("Speaker not found");
             }
 
             if (!existingSpeaker.Enabled.HasValue || existingSpeaker.Enabled == false)
