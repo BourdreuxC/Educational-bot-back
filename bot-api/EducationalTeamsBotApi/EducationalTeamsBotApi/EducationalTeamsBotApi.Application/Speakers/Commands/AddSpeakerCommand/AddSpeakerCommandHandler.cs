@@ -11,6 +11,9 @@ namespace EducationalTeamsBotApi.Application.Speakers.Commands.AddSpeakerCommand
     using EducationalTeamsBotApi.Domain.Entities;
     using MediatR;
 
+    /// <summary>
+    /// Handles a <see cref="AddSpeakerCommand"/> command.
+    /// </summary>
     public class AddSpeakerCommandHandler : IRequestHandler<AddSpeakerCommand, CosmosSpeaker?>
     {
         /// <summary>
@@ -19,7 +22,7 @@ namespace EducationalTeamsBotApi.Application.Speakers.Commands.AddSpeakerCommand
         private readonly ISpeakerCosmosService speakerService;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="AddSpeakerCommand"/> class.
+        /// Initializes a new instance of the <see cref="AddSpeakerCommandHandler"/> class.
         /// </summary>
         /// <param name="speakerService">Service of the speakers.</param>
         public AddSpeakerCommandHandler(ISpeakerCosmosService speakerService)

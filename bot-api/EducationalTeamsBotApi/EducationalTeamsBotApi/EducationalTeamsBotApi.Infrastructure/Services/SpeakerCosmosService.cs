@@ -10,6 +10,7 @@ namespace EducationalTeamsBotApi.Infrastructure.Services
     using System.Threading.Tasks;
     using EducationalTeamsBotApi.Application.Common.Constants;
     using EducationalTeamsBotApi.Application.Common.Interfaces;
+    using EducationalTeamsBotApi.CrossCuting;
     using EducationalTeamsBotApi.Domain.Entities;
     using MediatR;
     using Microsoft.Azure.Cosmos;
@@ -60,18 +61,18 @@ namespace EducationalTeamsBotApi.Infrastructure.Services
 
             await container.DeleteItemAsync<CosmosSpeaker>(id, new PartitionKey(id));
 
-            return default(Unit);
+            return default;
         }
 
         /// <inheritdoc/>
-        public Task<CosmosSpeaker?> EditSpeaker(CosmosSpeaker speaker)
+        public Task<CosmosSpeaker> EditSpeaker(CosmosSpeaker speaker)
         {
             var container = this.database.GetContainer(DatabaseConstants.SpeakerContainer);
             var existingSpeaker = this.GetSpeaker(speaker.Id).Result;
 
             if (existingSpeaker == null)
             {
-                throw new Exception("Speaker not found");
+                throw new BusinessException("Speaker not found");
             }
 
             container.ReplaceItemAsync(speaker, speaker.Id);
@@ -87,7 +88,7 @@ namespace EducationalTeamsBotApi.Infrastructure.Services
 
             if (existingSpeaker == null)
             {
-                throw new Exception("Speaker not found");
+                throw new BusinessException("Speaker not found");
             }
 
             if (!existingSpeaker.Enabled.HasValue || existingSpeaker.Enabled == false)
@@ -105,24 +106,24 @@ namespace EducationalTeamsBotApi.Infrastructure.Services
         }
 
         /// <inheritdoc/>
-        public async Task<IEnumerable<CosmosSpeaker>> GetCosmosSpeakers()
+        public async Task<IQueryable<CosmosSpeaker>> GetCosmosSpeakers()
         {
             var container = this.database.GetContainer(DatabaseConstants.SpeakerContainer);
             var speakers = container.GetItemLinqQueryable<CosmosSpeaker>();
             var iterator = speakers.ToFeedIterator();
             var results = await iterator.ReadNextAsync();
 
-            return Tools.ToIEnumerable(results.GetEnumerator());
+            return results.AsQueryable();
         }
 
         /// <inheritdoc/>
-        public async Task<CosmosSpeaker?> GetSpeaker(string id)
+        public async Task<CosmosSpeaker> GetSpeaker(string id)
         {
             var container = this.database.GetContainer(DatabaseConstants.SpeakerContainer);
             var q = container.GetItemLinqQueryable<CosmosSpeaker>();
             var iterator = q.Where(x => x.Id == id).ToFeedIterator();
             var result = await iterator.ReadNextAsync();
-            return Tools.ToIEnumerable(result.GetEnumerator()).FirstOrDefault();
+            return Tools.ToIEnumerable(result.GetEnumerator()).First();
         }
 
         /// <inheritdoc/>
@@ -131,19 +132,19 @@ namespace EducationalTeamsBotApi.Infrastructure.Services
             var container = this.database.GetContainer(DatabaseConstants.SpeakerContainer);
             var containerSpeakerQueryable = container.GetItemLinqQueryable<CosmosSpeaker>();
             var iterator = containerSpeakerQueryable.Where(s => s.Tags.Contains(id)).ToFeedIterator();
-            var SpeakersWithTag = await iterator.ReadNextAsync();
+            var speakersWithTag = await iterator.ReadNextAsync();
 
             IEnumerable<string> tagList;
             CosmosSpeaker speaker;
-            foreach (var item in SpeakersWithTag)
+            foreach (var item in speakersWithTag)
             {
                 speaker = await this.GetSpeaker(item.Id);
                 tagList = item.Tags.Where(t => t != id);
                 speaker.Tags = tagList;
-                this.EditSpeaker(speaker);
+                await this.EditSpeaker(speaker);
             }
 
-            return default(Unit);
+            return default;
         }
     }
 }

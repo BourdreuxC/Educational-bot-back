@@ -48,9 +48,7 @@ namespace EducationalTeamsBotApi.Application.Questions.Queries.GetAllQuestionsQu
         {
             var questions = await this.questionCosmosService.GetCosmosQuestions();
 
-            var queriableQuestions = questions.ToList().AsQueryable();
-
-            var projectedQuestions = queriableQuestions
+            var projectedQuestions = questions
                 .ProjectTo<QuestionDto>(this.mapper.ConfigurationProvider);
 
             var paginatedQuestions = await projectedQuestions.PaginatedListAsync(request.PageNumber, request.PageSize);

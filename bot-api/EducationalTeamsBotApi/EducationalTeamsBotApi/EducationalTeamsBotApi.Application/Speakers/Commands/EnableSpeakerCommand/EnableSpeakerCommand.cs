@@ -15,8 +15,17 @@ namespace EducationalTeamsBotApi.Application.Speakers.Commands.EnableSpeakerComm
     public class EnableSpeakerCommand : IRequest<CosmosSpeaker>
     {
         /// <summary>
+        /// Initializes a new instance of the <see cref="EnableSpeakerCommand"/> class.
+        /// </summary>
+        /// <param name="id">Speaker identifier.</param>
+        public EnableSpeakerCommand(string id)
+        {
+            this.Id = id;
+        }
+
+        /// <summary>
         /// Gets or Sets the identifier of the speaker.
         /// </summary>
-        public string? Id { get; set; }
+        public string Id { get; set; }
     }
 }

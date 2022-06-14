@@ -7,6 +7,7 @@
 namespace EducationalTeamsBotApi.WebApi.Controllers
 {
     using EducationalTeamsBotApi.Application.Common.Security;
+    using EducationalTeamsBotApi.WebApi.Filters;
     using MediatR;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.Extensions.DependencyInjection;
@@ -17,6 +18,7 @@ namespace EducationalTeamsBotApi.WebApi.Controllers
     [Authorize]
     [Route("api/[controller]")]
     [ApiController]
+    [ApiExceptionFilter]
     public abstract class ApiBaseController : ControllerBase
     {
         /// <summary>

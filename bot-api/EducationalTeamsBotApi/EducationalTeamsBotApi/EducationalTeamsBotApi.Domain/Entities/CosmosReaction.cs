@@ -13,6 +13,19 @@ namespace EducationalTeamsBotApi.Domain.Entities
     public class CosmosReaction
     {
         /// <summary>
+        /// Initializes a new instance of the <see cref="CosmosReaction"/> class.
+        /// </summary>
+        /// <param name="id">identifier of a reaction.</param>
+        /// <param name="reactionId"> the id of a specific teams reaction.</param>
+        /// <param name="val">points value of a reaction.</param>
+        public CosmosReaction(string id, string reactionId, int val)
+        {
+            this.Id = id;
+            this.ReactionId = reactionId;
+            this.Value = val;
+        }
+
+        /// <summary>
         /// Gets or sets the identifier of a reaction.
         /// </summary>
         [JsonProperty("id")]
@@ -29,18 +42,5 @@ namespace EducationalTeamsBotApi.Domain.Entities
         /// </summary>
         [JsonProperty("value")]
         public int Value { get; set; }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="CosmosReaction"/> class.
-        /// </summary>
-        /// <param name="id">identifier of a reaction.</param>
-        /// <param name="reactionId"> the id of a specific teams reaction.</param>
-        /// <param name="val">points value of a reaction.</param>
-        public CosmosReaction(string id, string reactionId, int val)
-        {
-            this.Id = id;
-            this.ReactionId = reactionId;
-            this.Value = val;
-        }
     }
 }
