@@ -18,7 +18,7 @@ namespace EducationalTeamsBotApi.Application.Common.Interfaces
         /// Gets the list of tags of the cosmosDb.
         /// </summary>
         /// <returns>A list of tag objects.</returns>
-        Task<IEnumerable<CosmosTag>> GetTags();
+        Task<IQueryable<CosmosTag>> GetTags();
 
         /// <summary>
         /// Get a specific tag.

@@ -16,6 +16,15 @@ namespace EducationalTeamsBotApi.Application.Questions.Commands.AskQuestion
     public class AskQuestionCommand : IRequest<QuestionOutputDto>
     {
         /// <summary>
+        /// Initializes a new instance of the <see cref="AskQuestionCommand"/> class.
+        /// </summary>
+        /// <param name="message">Message to handle.</param>
+        public AskQuestionCommand(QuestionInputDto message)
+        {
+            this.Message = message;
+        }
+
+        /// <summary>
         /// Gets or sets The content of the question.
         /// </summary>
         public QuestionInputDto Message { get; set; }

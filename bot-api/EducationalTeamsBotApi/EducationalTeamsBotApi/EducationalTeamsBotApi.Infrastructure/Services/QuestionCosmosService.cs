@@ -73,12 +73,7 @@ namespace EducationalTeamsBotApi.Infrastructure.Services
 
             questions.ForEach(async question =>
             {
-                // If question already exists, ignore it
-                var existingQuestion = this.GetQuestion(question.Id);
-                if (existingQuestion == null)
-                {
-                    insertedQuestions.Add(await container.CreateItemAsync(question));
-                }
+                insertedQuestions.Add(await container.UpsertItemAsync(question));
             });
 
             return Task.FromResult(insertedQuestions.AsEnumerable());
@@ -109,14 +104,14 @@ namespace EducationalTeamsBotApi.Infrastructure.Services
         }
 
         /// <inheritdoc/>
-        public async Task<IEnumerable<CosmosQuestion>> GetCosmosQuestions()
+        public async Task<IQueryable<CosmosQuestion>> GetCosmosQuestions()
         {
             var container = this.database.GetContainer(DatabaseConstants.QuestionContainer);
             var questions = container.GetItemLinqQueryable<CosmosQuestion>();
             var iterator = questions.ToFeedIterator();
             var results = await iterator.ReadNextAsync();
 
-            return Tools.ToIEnumerable(results.GetEnumerator());
+            return results.AsQueryable();
         }
 
         /// <inheritdoc/>
@@ -170,6 +165,22 @@ namespace EducationalTeamsBotApi.Infrastructure.Services
 
             questionOutputDto.Answer = res;
             return questionOutputDto;
+
+        }
+
+        /// <inheritdoc/>
+        public async Task DeleteQuestion(string id)
+        {
+            var container = this.database.GetContainer(DatabaseConstants.QuestionContainer);
+
+            // Find the question to delete.
+            var questionToDelete = await this.GetQuestion(id);
+
+            // If no question was found, set a new Id for the reaction.
+            if (questionToDelete != null)
+            {
+                await container.DeleteItemAsync<CosmosQuestion>(id, new PartitionKey(id));
+            }
         }
     }
 }

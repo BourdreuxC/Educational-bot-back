@@ -48,7 +48,7 @@ namespace EducationalTeamsBotApi.Application.Speakers.Queries.GetSpeakersQuery
         public async Task<PaginatedList<SpeakerDto>> Handle(GetWithPaginationQuery<SpeakerDto> request, CancellationToken cancellationToken)
         {
             var speakers = await this.speakerCosmosService.GetCosmosSpeakers();
-            return await speakers.ToList().AsQueryable().ProjectTo<SpeakerDto>(this.mapper.ConfigurationProvider).PaginatedListAsync(request.PageNumber, request.PageSize);
+            return await speakers.ProjectTo<SpeakerDto>(this.mapper.ConfigurationProvider).PaginatedListAsync(request.PageNumber, request.PageSize);
         }
     }
 }

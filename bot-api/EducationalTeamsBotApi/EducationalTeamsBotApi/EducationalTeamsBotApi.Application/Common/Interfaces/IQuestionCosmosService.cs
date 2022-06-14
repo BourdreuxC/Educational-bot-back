@@ -19,7 +19,7 @@ namespace EducationalTeamsBotApi.Application.Common.Interfaces
         /// Get all questions.
         /// </summary>
         /// <returns>List of all questions objects.</returns>
-        Task<IEnumerable<CosmosQuestion>> GetCosmosQuestions();
+        Task<IQueryable<CosmosQuestion>> GetCosmosQuestions();
 
         /// <summary>
         /// Inserts a list of <see cref="CosmosQuestion"/> in database.
@@ -77,5 +77,12 @@ namespace EducationalTeamsBotApi.Application.Common.Interfaces
         /// <param name="question">the question asked.</param>
         /// <returns>The saved question (if need be).</returns>
         Task<QuestionOutputDto> QuestionAsked(QuestionInputDto question);
+
+        /// <summary>
+        /// Deletes a question.
+        /// </summary>
+        /// <param name="id">Question identifier.</param>
+        /// <returns>Void.</returns>
+        Task DeleteQuestion(string id);
     }
 }

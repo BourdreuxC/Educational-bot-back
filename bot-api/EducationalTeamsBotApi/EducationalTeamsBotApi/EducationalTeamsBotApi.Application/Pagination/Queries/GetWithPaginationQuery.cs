@@ -10,7 +10,7 @@ namespace EducationalTeamsBotApi.Application.Pagination.Queries
     using MediatR;
 
     /// <summary>
-    /// Generic query with pagination. 
+    /// Generic query with pagination.
     /// </summary>
     /// <typeparam name="T">Entity that will be treated.</typeparam>
     public class GetWithPaginationQuery<T> : IRequest<PaginatedList<T>>

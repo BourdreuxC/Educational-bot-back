@@ -14,8 +14,17 @@ namespace EducationalTeamsBotApi.Application.Tags.Commands.DeleteTagCommand
     public class DeleteTagCommand : IRequest<Unit>
     {
         /// <summary>
+        /// Initializes a new instance of the <see cref="DeleteTagCommand"/> class.
+        /// </summary>
+        /// <param name="id">Tag identifier.</param>
+        public DeleteTagCommand(string id)
+        {
+            this.Id = id;
+        }
+
+        /// <summary>
         /// Gets or Sets the identifier of the tag.
         /// </summary>
-        public string? Id { get; set; }
+        public string Id { get; set; }
     }
 }
