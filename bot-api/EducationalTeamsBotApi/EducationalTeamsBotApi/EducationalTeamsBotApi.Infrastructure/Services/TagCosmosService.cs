@@ -24,7 +24,7 @@ namespace EducationalTeamsBotApi.Infrastructure.Services
         /// <summary>
         /// Cosmos client used in this service.
         /// </summary>
-        private readonly CosmosClient cosmosClient;
+        private readonly CosmosClient? cosmosClient;
 
         /// <summary>
         /// Database used in this service.
@@ -32,27 +32,49 @@ namespace EducationalTeamsBotApi.Infrastructure.Services
         private readonly Database database;
 
         /// <summary>
+        /// Container used in this service.
+        /// </summary>
+        private readonly Container container;
+
+        
+        private readonly ICosmosLinqQuery myCosmosLinqQuery;
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="TagCosmosService"/> class.
         /// </summary>
-        public TagCosmosService()
+        public TagCosmosService(ICosmosLinqQuery myCosmosLinqQuery)
         {
             var cosmosConString = Environment.GetEnvironmentVariable(DatabaseConstants.ConnectionString);
             var options = new CosmosClientOptions() { ConnectionMode = ConnectionMode.Gateway };
             this.cosmosClient = new CosmosClient(cosmosConString, options);
             this.database = this.cosmosClient.GetDatabase(DatabaseConstants.Database);
+            this.container = this.database.GetContainer(DatabaseConstants.TagContainer);
+            this.myCosmosLinqQuery = myCosmosLinqQuery;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="TagCosmosService"/> class dedicated to unit testing.
+        /// </summary>
+        /// <param name="testContainer">Mock container used in the unit testing.</param>
+        /// <param name="testDatabase">Mock database used in the unit testing.</param>
+        public TagCosmosService(Database testDatabase, Container testContainer)
+        {
+            this.cosmosClient = null;
+            this.database = testDatabase;
+            this.container = testContainer;
+            this.myCosmosLinqQuery = new CosmosLinqQuery();
         }
 
         /// <inheritdoc/>
         public Task<CosmosTag?> AddTag(List<string> variants)
         {
-            var container = this.database.GetContainer(DatabaseConstants.TagContainer);
             if (!variants.Any())
             {
                 throw new BusinessException("No variants");
             }
 
             var id = Guid.NewGuid().ToString();
-            container.CreateItemAsync(new CosmosTag(id, variants), new PartitionKey(id));
+            this.container.CreateItemAsync(new CosmosTag(id, variants), new PartitionKey(id));
 
             return this.SearchTag(variants.First());
         }
@@ -60,8 +82,6 @@ namespace EducationalTeamsBotApi.Infrastructure.Services
         /// <inheritdoc/>
         public Task<CosmosTag?> EditTagVariant(string id, string tagVariant)
         {
-            var container = this.database.GetContainer(DatabaseConstants.TagContainer);
-
             var existingTag = this.GetTag(id).Result;
 
             if (existingTag != null)
@@ -78,7 +98,7 @@ namespace EducationalTeamsBotApi.Infrastructure.Services
                 }
 
                 existingTag.Variants = tags;
-                container.ReplaceItemAsync(existingTag, existingTag.Id);
+                this.container.ReplaceItemAsync(existingTag, existingTag.Id);
             }
 
             return this.GetTag(id);
@@ -87,9 +107,7 @@ namespace EducationalTeamsBotApi.Infrastructure.Services
         /// <inheritdoc/>
         public async Task<CosmosTag?> GetTag(string id)
         {
-            var container = this.database.GetContainer(DatabaseConstants.TagContainer);
-
-            var q = container.GetItemLinqQueryable<CosmosTag>();
+            var q = this.container.GetItemLinqQueryable<CosmosTag>();
             var iterator = q.Where(t => t.Id == id).ToFeedIterator();
             var results = await iterator.ReadNextAsync();
 
@@ -99,9 +117,11 @@ namespace EducationalTeamsBotApi.Infrastructure.Services
         /// <inheritdoc/>
         public async Task<IQueryable<CosmosTag>> GetTags()
         {
-            var container = this.database.GetContainer(DatabaseConstants.TagContainer);
-            var tags = container.GetItemLinqQueryable<CosmosTag>();
-            var iterator = tags.ToFeedIterator();
+            var tags = this.container.GetItemLinqQueryable<CosmosTag>();
+            //var iterator = tags.ToFeedIterator();
+
+            // Same effect as .ToFeedIterator()
+            var iterator = this.myCosmosLinqQuery.GetFeedIterator(tags);
 
             var results = await iterator.ReadNextAsync();
             return results.AsQueryable();
@@ -110,9 +130,7 @@ namespace EducationalTeamsBotApi.Infrastructure.Services
         /// <inheritdoc/>
         public async Task<CosmosTag?> SearchTag(string tag)
         {
-            var container = this.database.GetContainer(DatabaseConstants.TagContainer);
-
-            var q = container.GetItemLinqQueryable<CosmosTag>();
+            var q = this.container.GetItemLinqQueryable<CosmosTag>();
             var iterator = q.Where(t => t.Variants.Contains(tag)).ToFeedIterator();
             var results = await iterator.ReadNextAsync();
 
@@ -122,10 +140,13 @@ namespace EducationalTeamsBotApi.Infrastructure.Services
         /// <inheritdoc/>
         public async Task<Unit> DeleteTag(string id)
         {
-            var containerTag = this.database.GetContainer(DatabaseConstants.TagContainer);
-
-            await containerTag.DeleteItemAsync<CosmosTag>(id, new PartitionKey(id));
+            await this.container.DeleteItemAsync<CosmosTag>(id, new PartitionKey(id));
             return default;
+        }
+
+        public FeedIterator<T> GetFeedIterator<T>(IQueryable<T> query)
+        {
+            return query.ToFeedIterator();
         }
     }
 }
