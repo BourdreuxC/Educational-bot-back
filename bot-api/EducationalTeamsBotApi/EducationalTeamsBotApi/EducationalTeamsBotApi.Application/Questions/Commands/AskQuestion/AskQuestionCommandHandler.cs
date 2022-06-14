@@ -9,12 +9,13 @@ namespace EducationalTeamsBotApi.Application.Questions.Commands.AskQuestion
     using System.Threading;
     using System.Threading.Tasks;
     using EducationalTeamsBotApi.Application.Common.Interfaces;
+    using EducationalTeamsBotApi.Application.Dto;
     using MediatR;
 
     /// <summary>
     /// Handler for the command that will interrogate te QnA service and insert in the Cosmos if no answer is provided.
     /// </summary>
-    public class AskQuestionCommandHandler : IRequestHandler<AskQuestionCommand, string>
+    public class AskQuestionCommandHandler : IRequestHandler<AskQuestionCommand, QuestionOutputDto>
     {
         /// <summary>
         /// Question cosmos service to use.
@@ -31,7 +32,7 @@ namespace EducationalTeamsBotApi.Application.Questions.Commands.AskQuestion
         }
 
         /// <inheritdoc/>
-        public Task<string> Handle(AskQuestionCommand request, CancellationToken cancellationToken)
+        public Task<QuestionOutputDto> Handle(AskQuestionCommand request, CancellationToken cancellationToken)
         {
             return this.questionCosmosService.QuestionAsked(request.Message);
         }
