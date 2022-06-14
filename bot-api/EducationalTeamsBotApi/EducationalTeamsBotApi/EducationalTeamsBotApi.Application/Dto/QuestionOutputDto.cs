@@ -11,13 +11,22 @@ namespace EducationalTeamsBotApi.Application.Dto
     public class QuestionOutputDto
     {
         /// <summary>
+        /// Initializes a new instance of the <see cref="QuestionOutputDto"/> class.
+        /// </summary>
+        public QuestionOutputDto()
+        {
+            this.Answer = string.Empty;
+            this.Mentions = new List<string>();
+        }
+
+        /// <summary>
         /// Gets or sets the answer of the question if exist.
         /// </summary>
-        public string? Answer { get; set; }
+        public string Answer { get; set; }
 
         /// <summary>
         /// Gets or sets the user to mention if needed.
         /// </summary>
-        public List<string>? Mentions { get; set; }
+        public List<string> Mentions { get; set; }
     }
 }
