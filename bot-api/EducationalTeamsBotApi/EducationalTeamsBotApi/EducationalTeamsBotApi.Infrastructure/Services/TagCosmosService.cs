@@ -92,18 +92,18 @@ namespace EducationalTeamsBotApi.Infrastructure.Services
             var iterator = q.Where(t => t.Id == id).ToFeedIterator();
             var results = await iterator.ReadNextAsync();
 
-            return results.FirstOrDefault<CosmosTag>();
+            return results.FirstOrDefault();
         }
 
         /// <inheritdoc/>
-        public async Task<IEnumerable<CosmosTag>> GetTags()
+        public async Task<IQueryable<CosmosTag>> GetTags()
         {
             var container = this.database.GetContainer(DatabaseConstants.TagContainer);
             var tags = container.GetItemLinqQueryable<CosmosTag>();
             var iterator = tags.ToFeedIterator();
 
             var results = await iterator.ReadNextAsync();
-            return Tools.ToIEnumerable<CosmosTag>(results.GetEnumerator());
+            return results.AsQueryable();
         }
 
         /// <inheritdoc/>
@@ -115,7 +115,7 @@ namespace EducationalTeamsBotApi.Infrastructure.Services
             var iterator = q.Where(t => t.Variants.Contains(tag)).ToFeedIterator();
             var results = await iterator.ReadNextAsync();
 
-            return results.FirstOrDefault<CosmosTag>();
+            return results.FirstOrDefault();
         }
 
         /// <inheritdoc/>

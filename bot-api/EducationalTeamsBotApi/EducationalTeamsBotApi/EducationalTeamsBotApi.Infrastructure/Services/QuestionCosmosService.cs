@@ -104,14 +104,14 @@ namespace EducationalTeamsBotApi.Infrastructure.Services
         }
 
         /// <inheritdoc/>
-        public async Task<IEnumerable<CosmosQuestion>> GetCosmosQuestions()
+        public async Task<IQueryable<CosmosQuestion>> GetCosmosQuestions()
         {
             var container = this.database.GetContainer(DatabaseConstants.QuestionContainer);
             var questions = container.GetItemLinqQueryable<CosmosQuestion>();
             var iterator = questions.ToFeedIterator();
             var results = await iterator.ReadNextAsync();
 
-            return Tools.ToIEnumerable(results.GetEnumerator());
+            return results.AsQueryable();
         }
 
         /// <inheritdoc/>
@@ -144,6 +144,7 @@ namespace EducationalTeamsBotApi.Infrastructure.Services
             {
                 res = "Pas de solution mais je reste à l'écoute";
             }
+
             return res;
         }
 

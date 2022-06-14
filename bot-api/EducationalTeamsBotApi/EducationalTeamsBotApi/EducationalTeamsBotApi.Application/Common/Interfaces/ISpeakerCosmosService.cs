@@ -20,7 +20,7 @@ namespace EducationalTeamsBotApi.Application.Common.Interfaces
         /// Get a list of all the speakers.
         /// </summary>
         /// <returns>Enumerable of speaker objects.</returns>
-        Task<IEnumerable<CosmosSpeaker>> GetCosmosSpeakers();
+        Task<IQueryable<CosmosSpeaker>> GetCosmosSpeakers();
 
         /// <summary>
         /// Get a specific speaker.

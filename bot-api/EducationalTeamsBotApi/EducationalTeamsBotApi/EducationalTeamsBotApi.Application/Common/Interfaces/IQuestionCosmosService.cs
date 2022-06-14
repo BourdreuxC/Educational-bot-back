@@ -19,7 +19,7 @@ namespace EducationalTeamsBotApi.Application.Common.Interfaces
         /// Get all questions.
         /// </summary>
         /// <returns>List of all questions objects.</returns>
-        Task<IEnumerable<CosmosQuestion>> GetCosmosQuestions();
+        Task<IQueryable<CosmosQuestion>> GetCosmosQuestions();
 
         /// <summary>
         /// Inserts a list of <see cref="CosmosQuestion"/> in database.
