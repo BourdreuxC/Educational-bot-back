@@ -105,14 +105,14 @@ namespace EducationalTeamsBotApi.Infrastructure.Services
         }
 
         /// <inheritdoc/>
-        public async Task<IEnumerable<CosmosSpeaker>> GetCosmosSpeakers()
+        public async Task<IQueryable<CosmosSpeaker>> GetCosmosSpeakers()
         {
             var container = this.database.GetContainer(DatabaseConstants.SpeakerContainer);
             var speakers = container.GetItemLinqQueryable<CosmosSpeaker>();
             var iterator = speakers.ToFeedIterator();
             var results = await iterator.ReadNextAsync();
 
-            return Tools.ToIEnumerable(results.GetEnumerator());
+            return results.AsQueryable();
         }
 
         /// <inheritdoc/>
