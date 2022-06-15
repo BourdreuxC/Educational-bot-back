@@ -36,20 +36,16 @@ namespace EducationalTeamsBotApi.Infrastructure.Services
         /// </summary>
         private readonly Container container;
 
-        
-        private readonly ICosmosLinqQuery myCosmosLinqQuery;
-
         /// <summary>
         /// Initializes a new instance of the <see cref="TagCosmosService"/> class.
         /// </summary>
-        public TagCosmosService(ICosmosLinqQuery myCosmosLinqQuery)
+        public TagCosmosService()
         {
             var cosmosConString = Environment.GetEnvironmentVariable(DatabaseConstants.ConnectionString);
             var options = new CosmosClientOptions() { ConnectionMode = ConnectionMode.Gateway };
             this.cosmosClient = new CosmosClient(cosmosConString, options);
             this.database = this.cosmosClient.GetDatabase(DatabaseConstants.Database);
             this.container = this.database.GetContainer(DatabaseConstants.TagContainer);
-            this.myCosmosLinqQuery = myCosmosLinqQuery;
         }
 
         /// <summary>
@@ -62,7 +58,6 @@ namespace EducationalTeamsBotApi.Infrastructure.Services
             this.cosmosClient = null;
             this.database = testDatabase;
             this.container = testContainer;
-            this.myCosmosLinqQuery = new CosmosLinqQuery();
         }
 
         /// <inheritdoc/>
@@ -118,10 +113,7 @@ namespace EducationalTeamsBotApi.Infrastructure.Services
         public async Task<IQueryable<CosmosTag>> GetTags()
         {
             var tags = this.container.GetItemLinqQueryable<CosmosTag>();
-            //var iterator = tags.ToFeedIterator();
-
-            // Same effect as .ToFeedIterator()
-            var iterator = this.myCosmosLinqQuery.GetFeedIterator(tags);
+            var iterator = tags.ToFeedIterator();
 
             var results = await iterator.ReadNextAsync();
             return results.AsQueryable();
@@ -142,11 +134,6 @@ namespace EducationalTeamsBotApi.Infrastructure.Services
         {
             await this.container.DeleteItemAsync<CosmosTag>(id, new PartitionKey(id));
             return default;
-        }
-
-        public FeedIterator<T> GetFeedIterator<T>(IQueryable<T> query)
-        {
-            return query.ToFeedIterator();
         }
     }
 }

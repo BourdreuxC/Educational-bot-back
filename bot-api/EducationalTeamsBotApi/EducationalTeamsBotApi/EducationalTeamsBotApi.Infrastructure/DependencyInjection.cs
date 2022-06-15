@@ -30,7 +30,6 @@ namespace EducationalTeamsBotApi.Infrastructure
             services.AddScoped<IReactionCosmosService, ReactionCosmosService>();
             services.AddScoped<IAnswerCosmosService, AnswerCosmosService>();
             services.AddScoped<ITagCosmosService, TagCosmosService>();
-            services.AddScoped<ICosmosLinqQuery, CosmosLinqQuery>();
 
             return services;
         }
