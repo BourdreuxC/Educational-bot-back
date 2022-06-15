@@ -12,12 +12,12 @@ namespace EducationalTeamsBotApi.UnitTests
     using Moq;
 
     /// <summary>
-    /// Test class for users routes.
+    /// Test class for users handlers.
     /// </summary>
     public class UserTests
     {
         /// <summary>
-        /// Tests the GET "/users" route.
+        /// Tests the <see cref="GetUsersQueryHandler"/>.
         /// </summary>
         [Fact]
         public async Task GetUsersQueryHandlerTest()
