@@ -22,16 +22,6 @@ namespace EducationalTeamsBotApi.Infrastructure.Services
     public class TagCosmosService : ITagCosmosService
     {
         /// <summary>
-        /// Cosmos client used in this service.
-        /// </summary>
-        private readonly CosmosClient? cosmosClient;
-
-        /// <summary>
-        /// Database used in this service.
-        /// </summary>
-        private readonly Database database;
-
-        /// <summary>
         /// Container used in this service.
         /// </summary>
         private readonly Container container;
@@ -39,13 +29,13 @@ namespace EducationalTeamsBotApi.Infrastructure.Services
         /// <summary>
         /// Initializes a new instance of the <see cref="TagCosmosService"/> class.
         /// </summary>
-        public TagCosmosService(ICosmosLinqQuery myCosmosLinqQuery)
+        public TagCosmosService()
         {
             var cosmosConString = Environment.GetEnvironmentVariable(DatabaseConstants.ConnectionString);
             var options = new CosmosClientOptions() { ConnectionMode = ConnectionMode.Gateway };
-            this.cosmosClient = new CosmosClient(cosmosConString, options);
-            this.database = this.cosmosClient.GetDatabase(DatabaseConstants.Database);
-            this.container = this.database.GetContainer(DatabaseConstants.TagContainer);
+            var cosmosClient = new CosmosClient(cosmosConString, options);
+            var database = cosmosClient.GetDatabase(DatabaseConstants.Database);
+            this.container = database.GetContainer(DatabaseConstants.TagContainer);
         }
 
         /// <summary>
@@ -53,10 +43,8 @@ namespace EducationalTeamsBotApi.Infrastructure.Services
         /// </summary>
         /// <param name="testContainer">Mock container used in the unit testing.</param>
         /// <param name="testDatabase">Mock database used in the unit testing.</param>
-        public TagCosmosService(Database testDatabase, Container testContainer)
+        public TagCosmosService(Container testContainer)
         {
-            this.cosmosClient = null;
-            this.database = testDatabase;
             this.container = testContainer;
         }
 
