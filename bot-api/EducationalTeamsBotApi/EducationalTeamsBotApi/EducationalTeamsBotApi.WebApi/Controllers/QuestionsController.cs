@@ -54,7 +54,6 @@ namespace EducationalTeamsBotApi.WebApi.Controllers
             {
                var res = await this.Mediator.Send(new AskQuestionCommand(activity));
                return this.Ok(res);
-
             }
             catch (Exception)
             {
