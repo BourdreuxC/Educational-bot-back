@@ -8,7 +8,6 @@ namespace EducationalTeamsBotApi.Infrastructure.Services
 {
     using System.Collections.Generic;
     using System.Threading.Tasks;
-    using System.Xml;
     using EducationalTeamsBotApi.Application.Common.Constants;
     using EducationalTeamsBotApi.Application.Common.Interfaces;
     using EducationalTeamsBotApi.Application.Dto;
@@ -17,8 +16,6 @@ namespace EducationalTeamsBotApi.Infrastructure.Services
     using Microsoft.Azure.CognitiveServices.Knowledge.QnAMaker.Models;
     using Microsoft.Azure.Cosmos;
     using Microsoft.Azure.Cosmos.Linq;
-    using Microsoft.Bot.Builder;
-    using Microsoft.Bot.Schema;
     using Microsoft.Extensions.Configuration;
 
     /// <summary>
@@ -40,6 +37,18 @@ namespace EducationalTeamsBotApi.Infrastructure.Services
         /// Database used in this service.
         /// </summary>
         private readonly Database database;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="QuestionCosmosService"/> class.
+        /// </summary>
+        /// <param name="qnaClient">A <see cref="QnaMakerClient"/>.</param>
+        /// <param name="cosmosClient">A <see cref="CosmosClient"/>.</param>
+        public QuestionCosmosService(QnAMakerClient qnaClient, CosmosClient cosmosClient)
+        {
+            this.qnaClient = qnaClient;
+            this.cosmosClient = cosmosClient;
+            this.database = this.cosmosClient.GetDatabase(DatabaseConstants.Database);
+        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="QuestionCosmosService"/> class.
@@ -131,39 +140,34 @@ namespace EducationalTeamsBotApi.Infrastructure.Services
         }
 
         /// <inheritdoc/>
-        public async Task<QuestionOutputDto> QuestionAsked(QuestionInputDto question)
+        public async Task<QnASearchResult> GetQuestionAnswer(QuestionInputDto question)
         {
-            QuestionOutputDto questionOutputDto = new QuestionOutputDto();
             var queryingURL = "https://qnadiibot.azurewebsites.net";
             var endpointKey = await this.qnaClient.EndpointKeys.GetKeysAsync();
             var qnaRuntimeCli = new QnAMakerRuntimeClient(new EndpointKeyServiceClientCredentials(endpointKey.PrimaryEndpointKey)) { RuntimeEndpoint = queryingURL };
 
             var response = await qnaRuntimeCli.Runtime.GenerateAnswerAsync("770b2be2-e25f-4963-b502-93961da9f88f", new QueryDTO { Question = question.Message });
-            var res = response.Answers[0].Answer;
+            return response.Answers[0];
+        }
 
-            if (response.Answers[0].Id == -1)
-            {
-                res = "Pas de solution mais je reste à l'écoute";
-                if (question.Tags.Count > 0)
-                {
-                    var containerTag = this.database.GetContainer(DatabaseConstants.TagContainer);
-                    var q = containerTag.GetItemLinqQueryable<CosmosTag>();
-                    var iterator = q.ToFeedIterator();
-                    var result = await iterator.ReadNextAsync();
-                    var tags = result.Where(t => t.Variants.Any(e => question.Tags.Contains(e))).Select(e => e.Id).ToList();
+        /// <inheritdoc/>
+        public async Task<IEnumerable<string>> GetQuestionSpeakers(QuestionInputDto question)
+        {
+            // Get tags corresponding to the question
+            var containerTag = this.database.GetContainer(DatabaseConstants.TagContainer);
+            var q = containerTag.GetItemLinqQueryable<CosmosTag>();
+            var iterator = q.ToFeedIterator();
+            var result = await iterator.ReadNextAsync();
+            var tags = result.Where(t => t.Variants.Any(e => question.Tags.Contains(e))).Select(e => e.Id).ToList();
 
-                    var container = this.database.GetContainer(DatabaseConstants.SpeakerContainer);
-                    var q2 = container.GetItemLinqQueryable<CosmosSpeaker>();
-                    var iterator2 = q2.ToFeedIterator();
-                    var result2 = await iterator2.ReadNextAsync();
-                    var speakers = result2.Where(s => s.Tags.Any(t => tags.Contains(t))).ToList();
+            // Get speakers corresponding to tags
+            var container = this.database.GetContainer(DatabaseConstants.SpeakerContainer);
+            var q2 = container.GetItemLinqQueryable<CosmosSpeaker>();
+            var iterator2 = q2.ToFeedIterator();
+            var result2 = await iterator2.ReadNextAsync();
+            var speakers = result2.Where(s => s.Tags.Any(t => tags.Contains(t))).ToList();
 
-                    questionOutputDto.Mentions = speakers.Select(s => s.Id).ToList();
-                }
-            }
-
-            questionOutputDto.Answer = res;
-            return questionOutputDto;
+            return speakers.Select(s => s.Id);
         }
 
         /// <inheritdoc/>

@@ -8,6 +8,7 @@ namespace EducationalTeamsBotApi.Application.Common.Interfaces
 {
     using EducationalTeamsBotApi.Application.Dto;
     using EducationalTeamsBotApi.Domain.Entities;
+    using Microsoft.Azure.CognitiveServices.Knowledge.QnAMaker.Models;
     using Microsoft.Bot.Schema;
 
     /// <summary>
@@ -71,12 +72,18 @@ namespace EducationalTeamsBotApi.Application.Common.Interfaces
         Task<CosmosQuestion> GetQuestionFromAnswer(string answerId);
 
         /// <summary>
-        /// When a question is asked, ask the Azure cognitive service for an answer.
-        /// If no answer is provided, save the question in the CosmosDB.
+        /// Get the answer corresponding to the question asked.
         /// </summary>
-        /// <param name="question">the question asked.</param>
-        /// <returns>The saved question (if need be).</returns>
-        Task<QuestionOutputDto> QuestionAsked(QuestionInputDto question);
+        /// <param name="question">A <see cref="QuestionInputDto"/> containing the asked question.</param>
+        /// <returns>A <see cref="QnASearchResult"/>.</returns>
+        Task<QnASearchResult> GetQuestionAnswer(QuestionInputDto question);
+
+        /// <summary>
+        /// Get the speakers corresponding to the tags of the question asked.
+        /// </summary>
+        /// <param name="question">A <see cref="QuestionInputDto"/> containing the asked question and its tags.</param>
+        /// <returns>A <see cref="IEnumerable{string}"/> containing speakers identifiers.</returns>
+        Task<IEnumerable<string>> GetQuestionSpeakers(QuestionInputDto question);
 
         /// <summary>
         /// Deletes a question.

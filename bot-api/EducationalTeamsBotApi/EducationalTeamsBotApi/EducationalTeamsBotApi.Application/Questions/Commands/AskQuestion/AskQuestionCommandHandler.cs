@@ -8,6 +8,7 @@ namespace EducationalTeamsBotApi.Application.Questions.Commands.AskQuestion
 {
     using System.Threading;
     using System.Threading.Tasks;
+    using EducationalTeamsBotApi.Application.Common.Constants;
     using EducationalTeamsBotApi.Application.Common.Interfaces;
     using EducationalTeamsBotApi.Application.Dto;
     using MediatR;
@@ -32,9 +33,40 @@ namespace EducationalTeamsBotApi.Application.Questions.Commands.AskQuestion
         }
 
         /// <inheritdoc/>
-        public Task<QuestionOutputDto> Handle(AskQuestionCommand request, CancellationToken cancellationToken)
+        public async Task<QuestionOutputDto> Handle(AskQuestionCommand request, CancellationToken cancellationToken)
         {
-            return this.questionCosmosService.QuestionAsked(request.Message);
+            var question = request.Message;
+
+            var result = new QuestionOutputDto
+            {
+                Answer = QnaMakerConstants.NotFoundResult,
+                Mentions = new List<string>(),
+            };
+
+            if (question.Message != string.Empty)
+            {
+                // Get answer
+                var answer = await this.questionCosmosService.GetQuestionAnswer(question);
+
+                // If there is no answer, try to get speakers corresponding to tags
+                if (answer.Id == -1)
+                {
+                    if (question.Tags.Any())
+                    {
+                        var speakers = await this.questionCosmosService.GetQuestionSpeakers(question);
+                        if (speakers.Any())
+                        {
+                            result.Mentions = speakers.ToList();
+                        }
+                    }
+                }
+                else
+                {
+                    result.Answer = answer.Answer;
+                }
+            }
+
+            return result;
         }
     }
 }

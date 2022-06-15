@@ -52,7 +52,7 @@ namespace EducationalTeamsBotApi.WebApi.Controllers
         {
             try
             {
-               var res = await this.Mediator.Send(new AskQuestionCommand { Message = activity });
+               var res = await this.Mediator.Send(new AskQuestionCommand(activity));
                return this.Ok(res);
             }
             catch (Exception)
