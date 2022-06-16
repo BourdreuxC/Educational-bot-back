@@ -84,7 +84,7 @@ namespace EducationalTeamsBotApi.WebApi.Controllers
         /// </summary>
         /// <param name="model">model containting the speaker to update.</param>
         /// <returns>A speaker.</returns>
-        [HttpPut]
+        [HttpPost]
         public async Task<IActionResult> EditSpeaker(EditSpeakerModel model)
         {
             try

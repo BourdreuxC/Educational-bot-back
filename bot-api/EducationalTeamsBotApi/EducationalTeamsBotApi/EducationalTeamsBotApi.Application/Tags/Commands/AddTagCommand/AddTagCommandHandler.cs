@@ -33,7 +33,7 @@ namespace EducationalTeamsBotApi.Application.Tags.Commands.AddTagCommand
         /// <inheritdoc/>
         public async Task<CosmosTag?> Handle(AddTagCommand request, CancellationToken cancellationToken)
         {
-            return await this.tagService.AddTag(request.Variants);
+            return await this.tagService.AddTag(request.Id, request.Variants);
         }
     }
 }
