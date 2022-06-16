@@ -39,7 +39,7 @@ namespace EducationalTeamsBotApi.Application.Speakers.Queries.GetSpeakerQuery
         /// Initializes a new instance of the <see cref="GetSpeakerQueryHandler"/> class.
         /// </summary>
         /// <param name="speakerCosmosService">Injection.</param>
-        /// <param name="tagCosmosService">Injection of the tag service.</param> 
+        /// <param name="tagCosmosService">Injection of the tag service.</param>
         /// <param name="mapper">Mapper to use.</param>
         public GetSpeakerQueryHandler(ISpeakerCosmosService speakerCosmosService, ITagCosmosService tagCosmosService, IMapper mapper)
         {

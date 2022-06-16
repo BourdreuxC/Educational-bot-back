@@ -22,6 +22,7 @@ namespace EducationalTeamsBotApi.Application.Dto
         {
             this.AltIds = new HashSet<string>();
             this.TagsIds = new HashSet<string>();
+            this.Tags = new List<TagDto>();
         }
 
         /// <summary>
