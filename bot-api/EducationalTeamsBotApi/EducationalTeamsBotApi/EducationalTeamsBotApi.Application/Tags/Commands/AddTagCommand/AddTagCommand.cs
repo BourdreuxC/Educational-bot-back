@@ -1,5 +1,5 @@
 ﻿// -----------------------------------------------------------------------
-// <copyright file="AddTagModel.cs" company="DIIAGE">
+// <copyright file="AddTagCommand.cs" company="DIIAGE">
 // Copyright (c) DIIAGE 2022. All rights reserved.
 // </copyright>
 // -----------------------------------------------------------------------
@@ -20,7 +20,7 @@ namespace EducationalTeamsBotApi.Application.Tags.Commands.AddTagCommand
         /// </summary>
         /// <param name="variants"> Variants of the tags.</param>
         /// <param name="id"> Identifier of the tag (edition only).</param>
-        public AddTagCommand(string id,List<string> variants)
+        public AddTagCommand(string id, List<string> variants)
         {
             this.Variants = variants;
             this.Id = id;

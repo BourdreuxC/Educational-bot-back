@@ -116,7 +116,7 @@ namespace EducationalTeamsBotApi.WebApi.Controllers
                 throw new BusinessException("The list of variant is empty.");
             }
 
-            var tags = await this.Mediator.Send(new AddTagCommand(model.Id, model.Variants));
+            var tags = await this.Mediator.Send(new AddTagCommand(model.Id ?? string.Empty, model.Variants));
 
             return this.Ok(tags);
         }
