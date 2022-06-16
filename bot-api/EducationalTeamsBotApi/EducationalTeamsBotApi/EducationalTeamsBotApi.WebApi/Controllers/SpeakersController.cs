@@ -95,7 +95,7 @@ namespace EducationalTeamsBotApi.WebApi.Controllers
                     Enabled = model.Enabled,
                     Nickname = model.Nickname,
                     Name = model.Name,
-                    Tags = model.Tags,
+                    Tags = model.Tags ?? new List<string>(),
                 }));
                 return this.Ok(speakers);
             }
