@@ -21,7 +21,7 @@ namespace EducationalTeamsBotApi.Application.Dto
         public SpeakerDto()
         {
             this.AltIds = new HashSet<string>();
-            this.Tags = new HashSet<string>();
+            this.TagsIds = new HashSet<string>();
         }
 
         /// <summary>
@@ -50,9 +50,14 @@ namespace EducationalTeamsBotApi.Application.Dto
         public IEnumerable<string> AltIds { get; set; }
 
         /// <summary>
+        /// Gets or sets the tags ids.
+        /// </summary>
+        public IEnumerable<string> TagsIds { get; set; }
+
+        /// <summary>
         /// Gets or sets the tags.
         /// </summary>
-        public IEnumerable<string> Tags { get; set; }
+        public IEnumerable<TagDto> Tags { get; set; }
 
         /// <summary>
         /// Method to map an entity to a DTO.
@@ -65,8 +70,9 @@ namespace EducationalTeamsBotApi.Application.Dto
                 .ForMember(p => p.Name, opt => opt.MapFrom(s => s.Name))
                 .ForMember(p => p.Nickname, opt => opt.MapFrom(s => s.Nickname))
                 .ForMember(p => p.Enabled, opt => opt.MapFrom(s => s.Enabled))
-                .ForMember(p => p.Tags, opt => opt.MapFrom(s => s.Tags))
-                .ForMember(p => p.AltIds, opt => opt.MapFrom(s => s.AltIds));
+                .ForMember(p => p.TagsIds, opt => opt.MapFrom(s => s.Tags))
+                .ForMember(p => p.AltIds, opt => opt.MapFrom(s => s.AltIds))
+                .ForMember(p => p.Tags, opt => opt.Ignore());
         }
     }
 }

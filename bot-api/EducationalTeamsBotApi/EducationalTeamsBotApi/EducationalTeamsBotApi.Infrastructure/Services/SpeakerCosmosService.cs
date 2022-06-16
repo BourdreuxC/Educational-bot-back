@@ -27,11 +27,6 @@ namespace EducationalTeamsBotApi.Infrastructure.Services
         private readonly CosmosClient cosmosClient;
 
         /// <summary>
-        /// Database used in this service.
-        /// </summary>
-        private readonly Database database;
-
-        /// <summary>
         /// Container used in this service.
         /// </summary>
         private readonly Container container;
@@ -44,13 +39,12 @@ namespace EducationalTeamsBotApi.Infrastructure.Services
             var cosmosConString = Environment.GetEnvironmentVariable(DatabaseConstants.ConnectionString);
             var options = new CosmosClientOptions() { ConnectionMode = ConnectionMode.Gateway };
             this.cosmosClient = new CosmosClient(cosmosConString, options);
-            this.database = this.cosmosClient.GetDatabase(DatabaseConstants.Database);
-            this.container = this.database.GetContainer(DatabaseConstants.SpeakerContainer);
-
+            var database = this.cosmosClient.GetDatabase(DatabaseConstants.Database);
+            this.container = database.GetContainer(DatabaseConstants.SpeakerContainer);
         }
 
         /// <inheritdoc/>
-        public Task<CosmosSpeaker> AddSpeaker(CosmosSpeaker speaker)
+        public Task<CosmosSpeaker?> AddSpeaker(CosmosSpeaker speaker)
         {
             this.container.CreateItemAsync<CosmosSpeaker>(speaker, new PartitionKey(speaker.Id));
 
@@ -66,7 +60,7 @@ namespace EducationalTeamsBotApi.Infrastructure.Services
         }
 
         /// <inheritdoc/>
-        public Task<CosmosSpeaker> EditSpeaker(CosmosSpeaker speaker)
+        public Task<CosmosSpeaker?> EditSpeaker(CosmosSpeaker speaker)
         {
             this.container.ReplaceItemAsync(speaker, speaker.Id);
 
@@ -103,7 +97,6 @@ namespace EducationalTeamsBotApi.Infrastructure.Services
             var speakers = this.container.GetItemLinqQueryable<CosmosSpeaker>();
             var iterator = speakers.ToFeedIterator();
             var results = await iterator.ReadNextAsync();
-
             return results.AsQueryable();
         }
 

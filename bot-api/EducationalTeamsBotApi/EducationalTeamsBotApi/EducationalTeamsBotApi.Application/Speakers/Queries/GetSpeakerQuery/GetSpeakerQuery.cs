@@ -6,13 +6,14 @@
 
 namespace EducationalTeamsBotApi.Application.Speakers.Queries.GetSpeakerQuery
 {
+    using EducationalTeamsBotApi.Application.Dto;
     using EducationalTeamsBotApi.Domain.Entities;
     using MediatR;
 
     /// <summary>
     /// Get a speaker.
     /// </summary>
-    public class GetSpeakerQuery : IRequest<CosmosSpeaker>
+    public class GetSpeakerQuery : IRequest<SpeakerDto>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="GetSpeakerQuery"/> class.

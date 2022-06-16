@@ -34,7 +34,7 @@ namespace EducationalTeamsBotApi.Application.Common.Interfaces
         /// </summary>
         /// <param name="speaker">the changed speaker.</param>
         /// <returns>Updated speaker object.</returns>
-        Task<CosmosSpeaker> EditSpeaker(CosmosSpeaker speaker);
+        Task<CosmosSpeaker?> EditSpeaker(CosmosSpeaker speaker);
 
         /// <summary>
         /// Disable the speaker.
@@ -55,7 +55,7 @@ namespace EducationalTeamsBotApi.Application.Common.Interfaces
         /// </summary>
         /// <param name="speaker">Speaker to insert.</param>
         /// <returns>The newly created speaker object.</returns>
-        Task<CosmosSpeaker> AddSpeaker(CosmosSpeaker speaker);
+        Task<CosmosSpeaker?> AddSpeaker(CosmosSpeaker speaker);
 
         /// <summary>
         /// Remove a tag from every speaker.
