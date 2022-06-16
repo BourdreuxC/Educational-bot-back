@@ -8,7 +8,6 @@ namespace EducationalTeamsBotApi.WebApi.Controllers
 {
     using EducationalTeamsBotApi.Application.Dto;
     using EducationalTeamsBotApi.Application.Pagination.Queries;
-    using EducationalTeamsBotApi.Application.Speakers.Commands.AddSpeakerCommand;
     using EducationalTeamsBotApi.Application.Speakers.Commands.DeleteSpeakerCommand;
     using EducationalTeamsBotApi.Application.Speakers.Commands.EditSpeakerCommand;
     using EducationalTeamsBotApi.Application.Speakers.Commands.EnableSpeakerCommand;
@@ -91,32 +90,6 @@ namespace EducationalTeamsBotApi.WebApi.Controllers
             try
             {
                 var speakers = await this.Mediator.Send(new EditSpeakerCommand(new CosmosSpeaker(model.Id)
-                {
-                    AltIds = model.AltIds,
-                    Enabled = model.Enabled,
-                    Nickname = model.Nickname,
-                    Name = model.Name,
-                    Tags = model.Tags,
-                }));
-                return this.Ok(speakers);
-            }
-            catch (Exception)
-            {
-                throw;
-            }
-        }
-
-        /// <summary>
-        /// Add a speaker.
-        /// </summary>
-        /// <param name="model">model containting the speaker to update.</param>
-        /// <returns>A speaker.</returns>
-        [HttpPost]
-        public async Task<IActionResult> Speaker(AddSpeakerModel model)
-        {
-            try
-            {
-                var speakers = await this.Mediator.Send(new AddSpeakerCommand(new CosmosSpeaker(string.Empty)
                 {
                     AltIds = model.AltIds,
                     Enabled = model.Enabled,

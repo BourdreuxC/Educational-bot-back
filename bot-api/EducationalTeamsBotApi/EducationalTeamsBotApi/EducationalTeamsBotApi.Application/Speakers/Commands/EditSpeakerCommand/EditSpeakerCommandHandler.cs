@@ -33,7 +33,15 @@ namespace EducationalTeamsBotApi.Application.Speakers.Commands.EditSpeakerComman
         /// <inheritdoc/>
         public async Task<CosmosSpeaker?> Handle(EditSpeakerCommand request, CancellationToken cancellationToken)
         {
-            return await this.speakerService.EditSpeaker(request.Speaker);
+            var speaker = this.speakerService.GetSpeaker(request.Speaker.Id);
+            if (speaker.Result == null)
+            {
+                return await this.speakerService.AddSpeaker(request.Speaker);
+            }
+            else
+            {
+                return await this.speakerService.EditSpeaker(request.Speaker);
+            }
         }
     }
 }

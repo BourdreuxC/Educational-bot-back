@@ -34,13 +34,13 @@ namespace EducationalTeamsBotApi.Domain.Entities
         /// Gets or sets the alternatives Identifiers of the same user.
         /// </summary>
         [JsonProperty("altIds")]
-        public IEnumerable<string> AltIds { get; set; }
+        public IEnumerable<string>? AltIds { get; set; }
 
         /// <summary>
         /// Gets or sets the tags associated to a speaker.
         /// </summary>
         [JsonProperty("tags")]
-        public IEnumerable<string> Tags { get; set; }
+        public IEnumerable<string>? Tags { get; set; }
 
         /// <summary>
         /// Gets or sets the name of the speaker | not required.
