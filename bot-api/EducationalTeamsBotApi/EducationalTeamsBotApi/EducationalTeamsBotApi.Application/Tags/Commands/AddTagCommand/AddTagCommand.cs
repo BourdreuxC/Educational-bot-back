@@ -1,32 +1,41 @@
 ﻿// -----------------------------------------------------------------------
-// <copyright file="AddTagCommand.cs" company="DIIAGE">
+// <copyright file="AddTagModel.cs" company="DIIAGE">
 // Copyright (c) DIIAGE 2022. All rights reserved.
 // </copyright>
 // -----------------------------------------------------------------------
 
 namespace EducationalTeamsBotApi.Application.Tags.Commands.AddTagCommand
 {
-    using System.Collections.Generic;
     using EducationalTeamsBotApi.Domain.Entities;
     using MediatR;
+    using Newtonsoft.Json;
 
     /// <summary>
-    /// Add tag command.
+    /// Model to add a tag.
     /// </summary>
     public class AddTagCommand : IRequest<CosmosTag?>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="AddTagCommand"/> class.
         /// </summary>
-        /// <param name="variants">Variants of the tag.</param>
-        public AddTagCommand(List<string> variants)
+        /// <param name="variants"> Variants of the tags.</param>
+        /// <param name="id"> Identifier of the tag (edition only).</param>
+        public AddTagCommand(string id,List<string> variants)
         {
             this.Variants = variants;
+            this.Id = id;
         }
 
         /// <summary>
-        /// Gets or Sets the list of variants of a new tag.
+        /// Gets or Sets the variants of the tag.
         /// </summary>
+        [JsonProperty("variants")]
         public List<string> Variants { get; set; }
+
+        /// <summary>
+        /// Gets or Sets the identifier of the tag (for edition only).
+        /// </summary>
+        [JsonProperty("id")]
+        public string Id { get; set; }
     }
 }

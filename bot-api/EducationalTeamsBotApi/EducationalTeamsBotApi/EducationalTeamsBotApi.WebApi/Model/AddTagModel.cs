@@ -27,5 +27,11 @@ namespace EducationalTeamsBotApi.WebApi.Model
         /// </summary>
         [JsonProperty("variants")]
         public List<string> Variants { get; set; }
+
+        /// <summary>
+        /// Gets or Sets the identifier of the tag (for edition only).
+        /// </summary>
+        [JsonProperty("id")]
+        public string? Id { get; set; }
     }
 }

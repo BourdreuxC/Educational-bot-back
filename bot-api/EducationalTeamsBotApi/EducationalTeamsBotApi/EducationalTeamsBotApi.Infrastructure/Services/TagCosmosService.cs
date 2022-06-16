@@ -49,17 +49,21 @@ namespace EducationalTeamsBotApi.Infrastructure.Services
         }
 
         /// <inheritdoc/>
-        public Task<CosmosTag?> AddTag(List<string> variants)
+        public Task<CosmosTag?> AddTag(string id, List<string> variants)
         {
             if (!variants.Any())
             {
                 throw new BusinessException("No variants");
             }
 
-            var id = Guid.NewGuid().ToString();
-            this.container.CreateItemAsync(new CosmosTag(id, variants), new PartitionKey(id));
+            if (id == string.Empty)
+            {
+                id = Guid.NewGuid().ToString();
+            }
 
-            return this.SearchTag(variants.First());
+            this.container.UpsertItemAsync(new CosmosTag(id, variants), new PartitionKey(id));
+
+            return this.GetTag(id);
         }
 
         /// <inheritdoc/>

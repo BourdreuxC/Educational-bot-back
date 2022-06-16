@@ -37,9 +37,10 @@ namespace EducationalTeamsBotApi.Application.Common.Interfaces
         /// <summary>
         /// Insert a brand new tag in the CosmosDB.
         /// </summary>
+        /// <param name="id">Identifier of the tag to edit (null if creation).</param>
         /// <param name="variants">New tag.</param>
         /// <returns>The inserted value.</returns>
-        Task<CosmosTag?> AddTag(List<string> variants);
+        Task<CosmosTag?> AddTag(string id, List<string> variants);
 
         /// <summary>
         /// Insert a new variant to an already existing tag.
