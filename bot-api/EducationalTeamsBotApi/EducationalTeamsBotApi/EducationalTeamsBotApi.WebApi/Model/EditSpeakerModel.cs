@@ -19,12 +19,12 @@ namespace EducationalTeamsBotApi.WebApi.Model
         /// <summary>
         /// Gets or sets the alternatives Identifiers of the same a speaker.
         /// </summary>
-        public IEnumerable<string> AltIds { get; set; }
+        public IEnumerable<string>? AltIds { get; set; }
 
         /// <summary>
         /// Gets or sets the tags associated to a speaker.
         /// </summary>
-        public IEnumerable<string> Tags { get; set; }
+        public IEnumerable<string>? Tags { get; set; }
 
         /// <summary>
         /// Gets or sets the name of the speaker.

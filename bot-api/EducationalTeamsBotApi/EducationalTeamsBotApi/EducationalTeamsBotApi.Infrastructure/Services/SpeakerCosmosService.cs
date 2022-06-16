@@ -27,9 +27,9 @@ namespace EducationalTeamsBotApi.Infrastructure.Services
         private readonly CosmosClient cosmosClient;
 
         /// <summary>
-        /// Database used in this service.
+        /// Container used in this service.
         /// </summary>
-        private readonly Database database;
+        private readonly Container container;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SpeakerCosmosService"/> class.
@@ -39,17 +39,14 @@ namespace EducationalTeamsBotApi.Infrastructure.Services
             var cosmosConString = Environment.GetEnvironmentVariable(DatabaseConstants.ConnectionString);
             var options = new CosmosClientOptions() { ConnectionMode = ConnectionMode.Gateway };
             this.cosmosClient = new CosmosClient(cosmosConString, options);
-            this.database = this.cosmosClient.GetDatabase(DatabaseConstants.Database);
+            var database = this.cosmosClient.GetDatabase(DatabaseConstants.Database);
+            this.container = database.GetContainer(DatabaseConstants.SpeakerContainer);
         }
 
         /// <inheritdoc/>
-        public Task<CosmosSpeaker> AddSpeaker(CosmosSpeaker speaker)
+        public Task<CosmosSpeaker?> AddSpeaker(CosmosSpeaker speaker)
         {
-            var container = this.database.GetContainer(DatabaseConstants.SpeakerContainer);
-
-            var id = Guid.NewGuid().ToString();
-            speaker.Id = id;
-            container.CreateItemAsync<CosmosSpeaker>(speaker, new PartitionKey(id));
+            this.container.CreateItemAsync<CosmosSpeaker>(speaker, new PartitionKey(speaker.Id));
 
             return this.GetSpeaker(speaker.Id);
         }
@@ -57,25 +54,15 @@ namespace EducationalTeamsBotApi.Infrastructure.Services
         /// <inheritdoc/>
         public async Task<Unit> DeleteSpeaker(string id)
         {
-            var container = this.database.GetContainer(DatabaseConstants.SpeakerContainer);
-
-            await container.DeleteItemAsync<CosmosSpeaker>(id, new PartitionKey(id));
+            await this.container.DeleteItemAsync<CosmosSpeaker>(id, new PartitionKey(id));
 
             return default;
         }
 
         /// <inheritdoc/>
-        public Task<CosmosSpeaker> EditSpeaker(CosmosSpeaker speaker)
+        public Task<CosmosSpeaker?> EditSpeaker(CosmosSpeaker speaker)
         {
-            var container = this.database.GetContainer(DatabaseConstants.SpeakerContainer);
-            var existingSpeaker = this.GetSpeaker(speaker.Id).Result;
-
-            if (existingSpeaker == null)
-            {
-                throw new BusinessException("Speaker not found");
-            }
-
-            container.ReplaceItemAsync(speaker, speaker.Id);
+            this.container.ReplaceItemAsync(speaker, speaker.Id);
 
             return this.GetSpeaker(speaker.Id);
         }
@@ -83,7 +70,6 @@ namespace EducationalTeamsBotApi.Infrastructure.Services
         /// <inheritdoc/>
         public Task<CosmosSpeaker> EnableSpeaker(string id)
         {
-            var container = this.database.GetContainer(DatabaseConstants.SpeakerContainer);
             var existingSpeaker = this.GetSpeaker(id).Result;
 
             if (existingSpeaker == null)
@@ -100,7 +86,7 @@ namespace EducationalTeamsBotApi.Infrastructure.Services
                 existingSpeaker.Enabled = false;
             }
 
-            container.ReplaceItemAsync(existingSpeaker, existingSpeaker.Id);
+            this.container.ReplaceItemAsync(existingSpeaker, existingSpeaker.Id);
 
             return this.GetSpeaker(id);
         }
@@ -108,29 +94,25 @@ namespace EducationalTeamsBotApi.Infrastructure.Services
         /// <inheritdoc/>
         public async Task<IQueryable<CosmosSpeaker>> GetCosmosSpeakers()
         {
-            var container = this.database.GetContainer(DatabaseConstants.SpeakerContainer);
-            var speakers = container.GetItemLinqQueryable<CosmosSpeaker>();
+            var speakers = this.container.GetItemLinqQueryable<CosmosSpeaker>();
             var iterator = speakers.ToFeedIterator();
             var results = await iterator.ReadNextAsync();
-
             return results.AsQueryable();
         }
 
         /// <inheritdoc/>
-        public async Task<CosmosSpeaker> GetSpeaker(string id)
+        public async Task<CosmosSpeaker?> GetSpeaker(string id)
         {
-            var container = this.database.GetContainer(DatabaseConstants.SpeakerContainer);
-            var q = container.GetItemLinqQueryable<CosmosSpeaker>();
+            var q = this.container.GetItemLinqQueryable<CosmosSpeaker>();
             var iterator = q.Where(x => x.Id == id).ToFeedIterator();
             var result = await iterator.ReadNextAsync();
-            return Tools.ToIEnumerable(result.GetEnumerator()).First();
+            return result.FirstOrDefault();
         }
 
         /// <inheritdoc/>
         public async Task<Unit> RemoveTagFromSpeakers(string id)
         {
-            var container = this.database.GetContainer(DatabaseConstants.SpeakerContainer);
-            var containerSpeakerQueryable = container.GetItemLinqQueryable<CosmosSpeaker>();
+            var containerSpeakerQueryable = this.container.GetItemLinqQueryable<CosmosSpeaker>();
             var iterator = containerSpeakerQueryable.Where(s => s.Tags.Contains(id)).ToFeedIterator();
             var speakersWithTag = await iterator.ReadNextAsync();
 
