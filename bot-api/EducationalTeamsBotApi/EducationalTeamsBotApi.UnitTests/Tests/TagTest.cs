@@ -7,7 +7,7 @@ using Microsoft.Azure.Cosmos.Linq;
 using Moq;
 
 
-namespace EducationalTeamsBotApi.UnitTests
+namespace EducationalTeamsBotApi.UnitTests.Tests
 {
     using EducationalTeamsBotApi.Application.Tags.Commands.DeleteTagCommand;
     using EducationalTeamsBotApi.CrossCuting;
@@ -42,7 +42,7 @@ namespace EducationalTeamsBotApi.UnitTests
             Assert.True(deletedTag != null);
 
             var commandHandler = new DeleteTagCommandHandler(tagService, speakerService);
-            var result = await commandHandler.Handle(new DeleteTagCommand(idTagToDelete),CancellationToken.None);
+            var result = await commandHandler.Handle(new DeleteTagCommand(idTagToDelete), CancellationToken.None);
 
             deletedTag = tags.FirstOrDefault(tags => tags.Id == idTagToDelete);
             Assert.True(deletedTag == null);
@@ -77,7 +77,7 @@ namespace EducationalTeamsBotApi.UnitTests
 
             var commandHandler = new DeleteTagCommandHandler(tagService, speakerService);
             try
-            { 
+            {
                 // The handler should trigger an exception.
                 var result = await commandHandler.Handle(new DeleteTagCommand(idTagToDelete), CancellationToken.None);
                 Assert.True(false);

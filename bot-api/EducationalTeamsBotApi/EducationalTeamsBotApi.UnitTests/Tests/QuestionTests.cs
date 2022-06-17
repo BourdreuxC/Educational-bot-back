@@ -4,7 +4,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace EducationalTeamsBotApi.UnitTests
+namespace EducationalTeamsBotApi.UnitTests.Tests
 {
     using System.Threading.Tasks;
     using EducationalTeamsBotApi.Application.Common.Constants;

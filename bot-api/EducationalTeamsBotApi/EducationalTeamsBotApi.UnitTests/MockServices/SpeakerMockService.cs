@@ -52,16 +52,17 @@ namespace EducationalTeamsBotApi.UnitTests.MockServices
 
         public Task<IQueryable<CosmosSpeaker>> GetCosmosSpeakers()
         {
-            throw new NotImplementedException();
+
+            return Task.FromResult(Speakers.AsQueryable());
         }
 
         public Task<CosmosSpeaker> GetSpeaker(string id)
         {
-            var speakers = Speakers.FirstOrDefault(s => s.Id == id);
-            return Task.FromResult(speakers);
+            var speaker = Speakers.FirstOrDefault(s => s.Id == id);
+            return Task.FromResult(speaker);
         }
 
-        public Task<Unit> RemoveTagFromSpeakers(string id)
+        public async Task<Unit> RemoveTagFromSpeakers(string id)
         {
             var speakersWithTag = Speakers.Where(s => s.Tags.Contains(id));
 
@@ -74,6 +75,7 @@ namespace EducationalTeamsBotApi.UnitTests.MockServices
                 speaker.Tags = tagList;
                 this.EditSpeaker(speaker);
             }
+
             return default;
         }
     }

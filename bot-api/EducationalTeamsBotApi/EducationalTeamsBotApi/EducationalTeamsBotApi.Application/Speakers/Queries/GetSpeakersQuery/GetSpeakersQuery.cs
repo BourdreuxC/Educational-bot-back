@@ -6,13 +6,14 @@
 
 namespace EducationalTeamsBotApi.Application.Speakers.Queries.GetSpeakersQuery
 {
-    using EducationalTeamsBotApi.Domain.Entities;
+    using EducationalTeamsBotApi.Application.Common.Models;
+    using EducationalTeamsBotApi.Application.Dto;
     using MediatR;
 
     /// <summary>
     /// Get the list of speakers.
     /// </summary>
-    public class GetSpeakersQuery : IRequest<IEnumerable<CosmosSpeaker>>
+    public class GetSpeakersQuery : IRequest<PaginatedList<SpeakerDto>>
     {
     }
 }
