@@ -51,7 +51,7 @@ namespace EducationalTeamsBotApi.Application.Tags.Commands.DeleteTagCommand
                 throw new BusinessException("Tag id '" + request.Id + "' was not found for deletion");
             }
 
-           var x = await this.speakerService.RemoveTagFromSpeakers(request.Id);
+            await this.speakerService.RemoveTagFromSpeakers(request.Id);
             return await this.tagService.DeleteTag(request.Id);
         }
     }
