@@ -17,13 +17,20 @@ namespace EducationalTeamsBotApi.Application.Reactions.Commands.CreateReactionCo
         /// <summary>
         /// Initializes a new instance of the <see cref="CreateReactionCommand"/> class.
         /// </summary>
+        /// <param name="id">Database identifier.</param>
         /// <param name="reactionId">Reaction identifier.</param>
         /// <param name="value">Reaction value.</param>
-        public CreateReactionCommand(string reactionId, int value)
+        public CreateReactionCommand(string id, string reactionId, int value)
         {
+            this.Id = id;
             this.ReactionId = reactionId;
             this.Value = value;
         }
+
+        /// <summary>
+        /// Gets or sets the Id.
+        /// </summary>
+        public string? Id { get; set; }
 
         /// <summary>
         /// Gets or sets the ReactionId.

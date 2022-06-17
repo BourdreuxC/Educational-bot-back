@@ -33,7 +33,7 @@ namespace EducationalTeamsBotApi.Application.Reactions.Commands.CreateReactionCo
         /// <inheritdoc/>
         public async Task<ReactionDto> Handle(CreateReactionCommand request, CancellationToken cancellationToken)
         {
-            var reaction = await this.service.CreateReaction(new CosmosReaction(string.Empty, request.ReactionId, request.Value));
+            var reaction = await this.service.CreateReaction(new CosmosReaction(request.Id ?? string.Empty, request.ReactionId, request.Value));
             return new ReactionDto
             {
                 Id = reaction.Id,
