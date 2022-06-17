@@ -48,23 +48,15 @@ namespace EducationalTeamsBotApi.Infrastructure.Services
         {
             var container = this.database.GetContainer(DatabaseConstants.ReactionContainer);
 
-            // Try to find a reaction with the same ReactionId.
-            var r = container.GetItemLinqQueryable<CosmosReaction>();
-            var iterator = r.Where(x => x.ReactionId == reaction.ReactionId).ToFeedIterator();
-            var result = await iterator.ReadNextAsync();
-            var existingReaction = Tools.ToIEnumerable(result.GetEnumerator()).FirstOrDefault();
-
-            // If a reaction already exists, return it.
-            if (existingReaction != null)
-            {
-                return existingReaction;
-            }
-
             var id = Guid.NewGuid().ToString();
 
-            reaction.Id = id;
+            // If reaction id is null, generate it
+            if (string.IsNullOrEmpty(reaction.Id))
+            {
+                reaction.Id = id;
+            }
 
-            var createdReaction = await container.CreateItemAsync(reaction, new PartitionKey(id));
+            var createdReaction = await container.UpsertItemAsync(reaction, new PartitionKey(reaction.Id));
 
             return createdReaction;
         }
