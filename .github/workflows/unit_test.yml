@@ -2,11 +2,9 @@ name: build and test
 
 on:
   push:
+    branches: [main,dev]
   pull_request:
-    branches: main
-    paths:
-    - '**.cs'
-    - '**.csproj'
+    types: [opened, synchronize, reopened]
 
 env:
   DOTNET_VERSION: '6.0' # The .NET SDK version to use
