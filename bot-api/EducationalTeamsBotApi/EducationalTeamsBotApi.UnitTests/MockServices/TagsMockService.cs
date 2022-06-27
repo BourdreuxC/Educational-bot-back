@@ -59,5 +59,10 @@ namespace EducationalTeamsBotApi.UnitTests.MockServices
         {
             throw new NotImplementedException();
         }
+
+        public Task<CosmosTag?> AddTag(string id, List<string> variants)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
