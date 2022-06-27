@@ -29,12 +29,13 @@ namespace EducationalTeamsBotApi.UnitTests.MockServices
 
         public async Task<Unit> DeleteTag(string id)
         {
+
             var tag = Tags.FirstOrDefault(t => t.Id == id);
             if (tag == null)
             {
                 throw new Exception("Tag not found");
             }
-            Tags.Remove(tag);
+            await Task.Run(() => Tags.Remove(tag));
             return default;
         }
 
