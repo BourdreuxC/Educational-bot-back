@@ -29,8 +29,13 @@ namespace EducationalTeamsBotApi.UnitTests.MockServices
 
         public async Task<Unit> DeleteTag(string id)
         {
-            var tag =  Tags.FirstOrDefault(t => t.Id == id);
-            Tags.Remove(tag);
+
+            var tag = Tags.FirstOrDefault(t => t.Id == id);
+            if (tag == null)
+            {
+                throw new Exception("Tag not found");
+            }
+            await Task.Run(() => Tags.Remove(tag));
             return default;
         }
 
@@ -56,6 +61,11 @@ namespace EducationalTeamsBotApi.UnitTests.MockServices
         }
 
         Task<IQueryable<CosmosTag>> ITagCosmosService.GetTags()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<CosmosTag?> AddTag(string id, List<string> variants)
         {
             throw new NotImplementedException();
         }
