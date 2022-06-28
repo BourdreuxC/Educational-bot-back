@@ -9,7 +9,7 @@ namespace EducationalTeamsBotApi.WebApi.Model
     /// <summary>
     /// Model useed for the edition of a speaker.
     /// </summary>
-    public class EditSpeakerModel
+    public class UpsertSpeakerModel
     {
         /// <summary>
         /// Gets or sets the identifier of a speaker.
