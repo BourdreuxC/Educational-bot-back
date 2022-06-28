@@ -18,12 +18,12 @@ namespace EducationalTeamsBotApi.Application.Reactions.Commands.CreateReactionCo
         /// Initializes a new instance of the <see cref="CreateReactionCommand"/> class.
         /// </summary>
         /// <param name="id">Database identifier.</param>
-        /// <param name="reactionId">Reaction identifier.</param>
+        /// <param name="reaction">Reaction identifier.</param>
         /// <param name="value">Reaction value.</param>
-        public CreateReactionCommand(string id, string reactionId, int value)
+        public CreateReactionCommand(string id, string reaction, int value)
         {
             this.Id = id;
-            this.ReactionId = reactionId;
+            this.Reaction = reaction;
             this.Value = value;
         }
 
@@ -33,9 +33,9 @@ namespace EducationalTeamsBotApi.Application.Reactions.Commands.CreateReactionCo
         public string? Id { get; set; }
 
         /// <summary>
-        /// Gets or sets the ReactionId.
+        /// Gets or sets the Reaction.
         /// </summary>
-        public string ReactionId { get; set; }
+        public string Reaction { get; set; }
 
         /// <summary>
         /// Gets or sets the Value.

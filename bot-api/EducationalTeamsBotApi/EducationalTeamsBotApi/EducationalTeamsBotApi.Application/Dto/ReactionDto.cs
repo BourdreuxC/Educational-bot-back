@@ -28,9 +28,9 @@ namespace EducationalTeamsBotApi.Application.Dto
         public string? Id { get; set; }
 
         /// <summary>
-        /// Gets or sets the ReactionId.
+        /// Gets or sets the Reaction.
         /// </summary>
-        public string? ReactionId { get; set; }
+        public string? Reaction { get; set; }
 
         /// <summary>
         /// Gets or sets the Value.
@@ -46,7 +46,7 @@ namespace EducationalTeamsBotApi.Application.Dto
             profile.CreateMap<CosmosReaction, ReactionDto>()
                 .ForMember(r => r.Id, opt => opt.MapFrom(e => e.Id))
                 .ForMember(r => r.Value, opt => opt.MapFrom(e => e.Value))
-                .ForMember(r => r.ReactionId, opt => opt.MapFrom(e => e.ReactionId));
+                .ForMember(r => r.Reaction, opt => opt.MapFrom(e => e.Reaction));
         }
     }
 }

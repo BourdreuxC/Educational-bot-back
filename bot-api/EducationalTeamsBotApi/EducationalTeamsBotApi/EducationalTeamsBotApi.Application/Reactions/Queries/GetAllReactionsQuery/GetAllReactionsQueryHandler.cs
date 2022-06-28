@@ -46,7 +46,9 @@ namespace EducationalTeamsBotApi.Application.Reactions.Queries.GetAllReactionsQu
         {
             var reactions = await this.service.GetCosmosReactions();
 
-            return await reactions.ProjectTo<ReactionDto>(this.mapper.ConfigurationProvider).PaginatedListAsync(request.PageNumber, request.PageSize);
+            return await reactions
+                .Where(r => r.Reaction.ToLower().Contains(request.Search.ToLower()))
+                .ProjectTo<ReactionDto>(this.mapper.ConfigurationProvider).PaginatedListAsync(request.PageNumber, request.PageSize);
         }
     }
 }

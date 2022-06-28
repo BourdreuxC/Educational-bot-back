@@ -17,6 +17,7 @@ namespace EducationalTeamsBotApi.Application.Dto
         public QuestionInputDto()
         {
             this.Message = string.Empty;
+            this.UserId = string.Empty;
             this.Tags = new List<string>();
         }
 
@@ -29,5 +30,10 @@ namespace EducationalTeamsBotApi.Application.Dto
         /// Gets or sets a list of tags provided in the message.
         /// </summary>
         public List<string> Tags { get; set; }
+
+        /// <summary>
+        /// Gets or sets the UserId.
+        /// </summary>
+        public string UserId { get; set; }
     }
 }

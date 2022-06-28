@@ -57,7 +57,9 @@ namespace EducationalTeamsBotApi.Application.Speakers.Queries.GetSpeakersQuery
         public async Task<PaginatedList<SpeakerDto>> Handle(GetWithPaginationQuery<SpeakerDto> request, CancellationToken cancellationToken)
         {
             var speakers = await this.speakerCosmosService.GetCosmosSpeakers();
-            var speakersDto = speakers.ProjectTo<SpeakerDto>(this.mapper.ConfigurationProvider).ToList();
+            var speakersDto = speakers
+                .Where(s => (s.Nickname != null && s.Nickname.ToLower().Contains(request.Search.ToLower())) || (s.Name != null && s.Name.ToLower().Contains(request.Search.ToLower())))
+                .ProjectTo<SpeakerDto>(this.mapper.ConfigurationProvider).ToList();
 
             // Get the tags item of the speakers.
             foreach (var speaker in speakersDto)
@@ -81,7 +83,9 @@ namespace EducationalTeamsBotApi.Application.Speakers.Queries.GetSpeakersQuery
                 speaker.Tags = tags;
             }
 
-            return await speakersDto.AsQueryable().PaginatedListAsync(request.PageNumber, request.PageSize);
+            return await speakersDto
+                .AsQueryable()
+                .PaginatedListAsync(request.PageNumber, request.PageSize);
         }
     }
 }
