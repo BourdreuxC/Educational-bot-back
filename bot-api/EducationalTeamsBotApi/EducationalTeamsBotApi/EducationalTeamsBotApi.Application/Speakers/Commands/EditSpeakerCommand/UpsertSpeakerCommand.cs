@@ -10,15 +10,15 @@ namespace EducationalTeamsBotApi.Application.Speakers.Commands.EditSpeakerComman
     using MediatR;
 
     /// <summary>
-    /// Command allowing the edition of a speaker.
+    /// Command allowing the edition and insertion of a speaker.
     /// </summary>
-    public class EditSpeakerCommand : IRequest<CosmosSpeaker?>
+    public class UpsertSpeakerCommand : IRequest<CosmosSpeaker?>
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="EditSpeakerCommand"/> class.
+        /// Initializes a new instance of the <see cref="UpsertSpeakerCommand"/> class.
         /// </summary>
         /// <param name="speaker">Speaker to handle.</param>
-        public EditSpeakerCommand(CosmosSpeaker speaker)
+        public UpsertSpeakerCommand(CosmosSpeaker speaker)
         {
             this.Speaker = speaker;
         }

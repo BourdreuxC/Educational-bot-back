@@ -80,16 +80,16 @@ namespace EducationalTeamsBotApi.WebApi.Controllers
         }
 
         /// <summary>
-        /// Edit a speaker.
+        /// Insert and update a speaker.
         /// </summary>
-        /// <param name="model">model containting the speaker to update.</param>
+        /// <param name="model">model containting the speaker to upsert.</param>
         /// <returns>A speaker.</returns>
         [HttpPost]
-        public async Task<IActionResult> EditSpeaker(EditSpeakerModel model)
+        public async Task<IActionResult> UpsertSpeaker(UpsertSpeakerModel model)
         {
             try
             {
-                var speakers = await this.Mediator.Send(new EditSpeakerCommand(new CosmosSpeaker(model.Id)
+                var speakers = await this.Mediator.Send(new UpsertSpeakerCommand(new CosmosSpeaker(model.Id)
                 {
                     AltIds = model.AltIds,
                     Enabled = model.Enabled,
