@@ -58,7 +58,7 @@ namespace EducationalTeamsBotApi.Application.Speakers.Queries.GetSpeakersQuery
         {
             var speakers = await this.speakerCosmosService.GetCosmosSpeakers();
             var speakersDto = speakers
-                .Where(s => (s.Nickname != null && s.Nickname.ToLower().Contains(request.Search.ToLower())) || (s.Name != null && s.Name.ToLower().Contains(request.Search.ToLower())))
+                .Where(s => request.Search == string.Empty || ((s.Nickname != null && s.Nickname.ToLower().Contains(request.Search.ToLower())) || (s.Name != null && s.Name.ToLower().Contains(request.Search.ToLower()))))
                 .ProjectTo<SpeakerDto>(this.mapper.ConfigurationProvider).ToList();
 
             // Get the tags item of the speakers.
