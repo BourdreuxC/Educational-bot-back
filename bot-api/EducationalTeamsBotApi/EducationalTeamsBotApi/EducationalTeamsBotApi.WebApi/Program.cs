@@ -6,10 +6,12 @@ using EducationalTeamsBotApi.Infrastructure;
 using EducationalTeamsBotApi.WebApi.Common.Extensions;
 using EducationalTeamsBotApi.WebApi.Filters;
 using EducationalTeamsBotApi.WebApi.Services;
+using Microsoft.ApplicationInsights.NLogTarget;
 using Microsoft.AspNetCore.Mvc.Versioning;
 using Microsoft.Identity.Web;
 using Microsoft.OpenApi.Models;
 using NLog;
+using NLog.Config;
 using NLog.Web;
 
 var logger = NLog.LogManager.Setup().LoadConfigurationFromAppSettings().GetCurrentClassLogger();
