@@ -1,5 +1,5 @@
 ﻿// -----------------------------------------------------------------------
-// <copyright file="EditSpeakerCommandHandler.cs" company="DIIAGE">
+// <copyright file="UpsertSpeakerCommandHandler.cs" company="DIIAGE">
 // Copyright (c) DIIAGE 2022. All rights reserved.
 // </copyright>
 // -----------------------------------------------------------------------
