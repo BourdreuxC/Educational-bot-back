@@ -68,7 +68,7 @@ namespace EducationalTeamsBotApi.Infrastructure.Services
         }
 
         /// <inheritdoc/>
-        public Task<CosmosSpeaker> EnableSpeaker(string id)
+        public Task<CosmosSpeaker?> EnableSpeaker(string id)
         {
             var existingSpeaker = this.GetSpeaker(id).Result;
 
@@ -117,10 +117,15 @@ namespace EducationalTeamsBotApi.Infrastructure.Services
             var speakersWithTag = await iterator.ReadNextAsync();
 
             IEnumerable<string> tagList;
-            CosmosSpeaker speaker;
+            CosmosSpeaker? speaker;
             foreach (var item in speakersWithTag)
             {
                 speaker = await this.GetSpeaker(item.Id);
+                if (speaker == null)
+                {
+                    continue;
+                }
+
                 tagList = item.Tags.Where(t => t != id);
                 speaker.Tags = tagList;
                 await this.EditSpeaker(speaker);

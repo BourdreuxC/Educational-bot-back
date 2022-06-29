@@ -48,7 +48,7 @@ namespace EducationalTeamsBotApi.Application.Common.Interfaces
         /// </summary>
         /// <param name="id">identifier of the speaker to enable.</param>
         /// <returns>The result of the update.</returns>
-        Task<CosmosSpeaker> EnableSpeaker(string id);
+        Task<CosmosSpeaker?> EnableSpeaker(string id);
 
         /// <summary>
         /// Create a new speaker.
