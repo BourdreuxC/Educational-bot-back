@@ -22,6 +22,7 @@ namespace EducationalTeamsBotApi.Application.Dto
         {
             this.Tags = new List<string>();
             this.Answers = new List<string>();
+            this.BestAnswer = string.Empty;
         }
 
         /// <summary>
