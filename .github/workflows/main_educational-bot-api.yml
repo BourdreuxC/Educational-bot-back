@@ -46,18 +46,13 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: .net-app
-          
-      - name: Azure Login
-        uses: Azure/login@v1.4.5
-        with:
-          # Paste output of `az ad sp create-for-rbac` as value of secret variable: AZURE_CREDENTIALS
-          creds: ${{secrets.AZURE_CREDENTIALS}}
 
       - name: Deploy to Azure Web App
         id: deploy-to-webapp
         uses: azure/webapps-deploy@v2
         with:
+          credentials: ${{ secrets.AZURE_CREDENTIALS }}
           app-name: 'qbot-api-dev'
           slot-name: 'Production'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_F041E93432D5473A9205C09E0F0325C4 }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE }}
           package: .
