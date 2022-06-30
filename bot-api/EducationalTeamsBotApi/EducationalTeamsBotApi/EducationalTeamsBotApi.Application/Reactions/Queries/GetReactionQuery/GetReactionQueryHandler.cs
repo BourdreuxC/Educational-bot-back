@@ -38,7 +38,7 @@ namespace EducationalTeamsBotApi.Application.Reactions.Queries.GetReactionQuery
             return new ReactionDto
             {
                 Id = reaction.Id,
-                ReactionId = reaction.Id,
+                Reaction = reaction.Reaction,
                 Value = reaction.Value,
             };
         }

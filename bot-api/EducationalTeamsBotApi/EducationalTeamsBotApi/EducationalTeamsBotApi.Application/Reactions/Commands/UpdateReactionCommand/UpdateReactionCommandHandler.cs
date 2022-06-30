@@ -36,12 +36,12 @@ namespace EducationalTeamsBotApi.Application.Reactions.Commands.UpdateReactionCo
         /// <inheritdoc/>
         public async Task<ReactionDto> Handle(UpdateReactionCommand request, CancellationToken cancellationToken)
         {
-            var reaction = await this.service.EditReaction(new CosmosReaction(request.Id, request.ReactionId, request.Value));
+            var reaction = await this.service.EditReaction(new CosmosReaction(request.Id, request.Reaction, request.Value));
 
             return new ReactionDto
             {
                 Id = reaction.Id,
-                ReactionId = reaction.Id,
+                Reaction = reaction.Reaction,
                 Value = reaction.Value,
             };
         }

@@ -4,7 +4,6 @@ using EducationalTeamsBotApi.Application;
 using EducationalTeamsBotApi.Application.Common.Interfaces;
 using EducationalTeamsBotApi.Infrastructure;
 using EducationalTeamsBotApi.WebApi.Common.Extensions;
-using EducationalTeamsBotApi.WebApi.Filters;
 using EducationalTeamsBotApi.WebApi.Services;
 using Microsoft.AspNetCore.Mvc.Versioning;
 using Microsoft.Identity.Web;

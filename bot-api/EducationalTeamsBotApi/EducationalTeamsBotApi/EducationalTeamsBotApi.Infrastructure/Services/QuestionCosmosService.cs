@@ -142,11 +142,11 @@ namespace EducationalTeamsBotApi.Infrastructure.Services
         /// <inheritdoc/>
         public async Task<QnASearchResult> GetQuestionAnswer(QuestionInputDto question)
         {
-            var queryingURL = "https://qnadiibot.azurewebsites.net";
+            var queryingURL = "https://diibot-qna-maker.azurewebsites.net";
             var endpointKey = await this.qnaClient.EndpointKeys.GetKeysAsync();
             var qnaRuntimeCli = new QnAMakerRuntimeClient(new EndpointKeyServiceClientCredentials(endpointKey.PrimaryEndpointKey)) { RuntimeEndpoint = queryingURL };
 
-            var response = await qnaRuntimeCli.Runtime.GenerateAnswerAsync("770b2be2-e25f-4963-b502-93961da9f88f", new QueryDTO { Question = question.Message });
+            var response = await qnaRuntimeCli.Runtime.GenerateAnswerAsync("1b6c2080-f7a3-4f05-bbc3-ac50a2ed652a", new QueryDTO { Question = question.Message });
             return response.Answers[0];
         }
 

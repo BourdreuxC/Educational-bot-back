@@ -16,6 +16,11 @@ namespace EducationalTeamsBotApi.Application.Pagination.Queries
     public class GetWithPaginationQuery<T> : IRequest<PaginatedList<T>>
     {
         /// <summary>
+        /// Gets or sets the Search.
+        /// </summary>
+        public string Search { get; set; } = string.Empty;
+
+        /// <summary>
         /// Gets or sets the PageNumber.
         /// </summary>
         public int PageNumber { get; set; } = 1;

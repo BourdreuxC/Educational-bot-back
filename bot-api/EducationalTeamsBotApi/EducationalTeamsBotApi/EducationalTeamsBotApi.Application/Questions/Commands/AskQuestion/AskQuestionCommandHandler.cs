@@ -11,6 +11,7 @@ namespace EducationalTeamsBotApi.Application.Questions.Commands.AskQuestion
     using EducationalTeamsBotApi.Application.Common.Constants;
     using EducationalTeamsBotApi.Application.Common.Interfaces;
     using EducationalTeamsBotApi.Application.Dto;
+    using EducationalTeamsBotApi.Domain.Entities;
     using MediatR;
 
     /// <summary>
@@ -36,6 +37,12 @@ namespace EducationalTeamsBotApi.Application.Questions.Commands.AskQuestion
         public async Task<QuestionOutputDto> Handle(AskQuestionCommand request, CancellationToken cancellationToken)
         {
             var question = request.Message;
+
+            // Insert question in database
+            await this.questionCosmosService.InsertCosmosQuestions(new List<CosmosQuestion>
+            {
+                new CosmosQuestion(Guid.NewGuid().ToString(), request.Message.Message, request.Message.UserId),
+            });
 
             var result = new QuestionOutputDto
             {
