@@ -86,6 +86,13 @@ namespace EducationalTeamsBotApi.Application.Common.Interfaces
         Task<IEnumerable<string>> GetQuestionSpeakers(QuestionInputDto question);
 
         /// <summary>
+        /// Return the best answer for a question.
+        /// </summary>
+        /// <param name="questionId">The identifier of the question.</param>
+        /// <returns>A <see cref="CosmosAnswer"/>.</returns>
+        Task<CosmosAnswer?> GetBestAnswerFromQuestion(string questionId);
+
+        /// <summary>
         /// Deletes a question.
         /// </summary>
         /// <param name="id">Question identifier.</param>
