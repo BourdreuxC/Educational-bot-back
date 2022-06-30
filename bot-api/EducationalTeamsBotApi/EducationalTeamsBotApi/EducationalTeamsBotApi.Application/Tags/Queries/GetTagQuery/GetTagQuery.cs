@@ -15,8 +15,17 @@ namespace EducationalTeamsBotApi.Application.Tags.Queries.GetTagQuery
     public class GetTagQuery : IRequest<CosmosTag>
     {
         /// <summary>
+        /// Initializes a new instance of the <see cref="GetTagQuery"/> class.
+        /// </summary>
+        /// <param name="id">Tag identifier.</param>
+        public GetTagQuery(string id)
+        {
+            this.Id = id;
+        }
+
+        /// <summary>
         /// Gets or Sets identifier of a tag.
         /// </summary>
-        public string? Id { get; set; }
+        public string Id { get; set; }
     }
 }

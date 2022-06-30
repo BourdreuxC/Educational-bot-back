@@ -8,11 +8,11 @@ namespace EducationalTeamsBotApi.WebApi.Controllers
 {
     using EducationalTeamsBotApi.Application.Dto;
     using EducationalTeamsBotApi.Application.Pagination.Queries;
-    using EducationalTeamsBotApi.Application.Speakers.Commands.AddSpeakerCommand;
     using EducationalTeamsBotApi.Application.Speakers.Commands.DeleteSpeakerCommand;
     using EducationalTeamsBotApi.Application.Speakers.Commands.EditSpeakerCommand;
     using EducationalTeamsBotApi.Application.Speakers.Commands.EnableSpeakerCommand;
     using EducationalTeamsBotApi.Application.Speakers.Queries.GetSpeakerQuery;
+    using EducationalTeamsBotApi.Domain.Entities;
     using EducationalTeamsBotApi.WebApi.Model;
     using Microsoft.AspNetCore.Mvc;
 
@@ -51,8 +51,7 @@ namespace EducationalTeamsBotApi.WebApi.Controllers
         {
             try
             {
-
-                var speakers = await this.Mediator.Send(new GetSpeakerQuery { SpeakerId = id });
+                var speakers = await this.Mediator.Send(new GetSpeakerQuery(id));
                 return this.Ok(speakers);
             }
             catch (Exception)
@@ -71,7 +70,7 @@ namespace EducationalTeamsBotApi.WebApi.Controllers
         {
             try
             {
-                var speakers = await this.Mediator.Send(new EnableSpeakerCommand { Id = id });
+                var speakers = await this.Mediator.Send(new EnableSpeakerCommand(id));
                 return this.Ok(speakers);
             }
             catch (Exception)
@@ -81,55 +80,23 @@ namespace EducationalTeamsBotApi.WebApi.Controllers
         }
 
         /// <summary>
-        /// Edit a speaker.
+        /// Insert and update a speaker.
         /// </summary>
-        /// <param name="model">model containting the speaker to update.</param>
-        /// <returns>A speaker.</returns>
-        [HttpPut]
-        public async Task<IActionResult> EditSpeaker(EditSpeakerModel model)
-        {
-            try
-            {
-                var speakers = await this.Mediator.Send(new EditSpeakerCommand
-                {
-                    Speaker = new Domain.Entities.CosmosSpeaker(model.Id)
-                    {
-                        AltIds = model.AltIds,
-                        Enabled = model.Enabled,
-                        Nickname = model.Nickname,
-                        Name = model.Name,
-                        Tags = model.Tags,
-                    },
-                });
-                return this.Ok(speakers);
-            }
-            catch (Exception)
-            {
-                throw;
-            }
-        }
-
-        /// <summary>
-        /// Add a speaker.
-        /// </summary>
-        /// <param name="model">model containting the speaker to update.</param>
+        /// <param name="model">model containting the speaker to upsert.</param>
         /// <returns>A speaker.</returns>
         [HttpPost]
-        public async Task<IActionResult> Speaker(AddSpeakerModel model)
+        public async Task<IActionResult> UpsertSpeaker(UpsertSpeakerModel model)
         {
             try
             {
-                var speakers = await this.Mediator.Send(new AddSpeakerCommand
+                var speakers = await this.Mediator.Send(new UpsertSpeakerCommand(new CosmosSpeaker(model.Id)
                 {
-                    Speaker = new Domain.Entities.CosmosSpeaker(string.Empty)
-                    {
-                        AltIds = model.AltIds,
-                        Enabled = model.Enabled,
-                        Nickname = model.Nickname,
-                        Name = model.Name,
-                        Tags = model.Tags,
-                    },
-                });
+                    AltIds = model.AltIds,
+                    Enabled = model.Enabled,
+                    Nickname = model.Nickname,
+                    Name = model.Name,
+                    Tags = model.Tags ?? new List<string>(),
+                }));
                 return this.Ok(speakers);
             }
             catch (Exception)
@@ -148,7 +115,7 @@ namespace EducationalTeamsBotApi.WebApi.Controllers
         {
             try
             {
-                var speakers = await this.Mediator.Send(new DeleteSpeakerCommand { Id = id });
+                var speakers = await this.Mediator.Send(new DeleteSpeakerCommand(id));
                 return this.Ok(speakers);
             }
             catch (Exception)

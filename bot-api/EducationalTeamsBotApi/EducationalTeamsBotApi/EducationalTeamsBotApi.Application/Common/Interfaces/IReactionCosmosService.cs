@@ -17,7 +17,7 @@ namespace EducationalTeamsBotApi.Application.Common.Interfaces
         /// Get all reactions.
         /// </summary>
         /// <returns>List of reactions.</returns>
-        Task<IEnumerable<CosmosReaction>> GetCosmosReactions();
+        Task<IQueryable<CosmosReaction>> GetCosmosReactions();
 
         /// <summary>
         /// Get a scpecific reaction.

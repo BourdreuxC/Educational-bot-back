@@ -20,7 +20,7 @@ namespace EducationalTeamsBotApi.Application.Common.Interfaces
         /// Get a list of all the speakers.
         /// </summary>
         /// <returns>Enumerable of speaker objects.</returns>
-        Task<IEnumerable<CosmosSpeaker>> GetCosmosSpeakers();
+        Task<IQueryable<CosmosSpeaker>> GetCosmosSpeakers();
 
         /// <summary>
         /// Get a specific speaker.
@@ -48,14 +48,14 @@ namespace EducationalTeamsBotApi.Application.Common.Interfaces
         /// </summary>
         /// <param name="id">identifier of the speaker to enable.</param>
         /// <returns>The result of the update.</returns>
-        Task<CosmosSpeaker> EnableSpeaker(string id);
+        Task<CosmosSpeaker?> EnableSpeaker(string id);
 
         /// <summary>
         /// Create a new speaker.
         /// </summary>
         /// <param name="speaker">Speaker to insert.</param>
         /// <returns>The newly created speaker object.</returns>
-        Task<CosmosSpeaker> AddSpeaker(CosmosSpeaker speaker);
+        Task<CosmosSpeaker?> AddSpeaker(CosmosSpeaker speaker);
 
         /// <summary>
         /// Remove a tag from every speaker.

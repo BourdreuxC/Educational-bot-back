@@ -46,7 +46,8 @@ namespace EducationalTeamsBotApi.Application.Tags.Queries.GetTagsQuery
         public async Task<PaginatedList<TagDto>> Handle(GetWithPaginationQuery<TagDto> request, CancellationToken cancellationToken)
         {
             var tags = await this.tagService.GetTags();
-            return await tags.ToList().AsQueryable()
+            return await tags
+                .Where(t => request.Search == string.Empty || t.Variants.Contains(request.Search))
                 .ProjectTo<TagDto>(this.mapper.ConfigurationProvider)
                 .PaginatedListAsync(request.PageNumber, request.PageSize);
         }

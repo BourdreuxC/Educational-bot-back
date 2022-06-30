@@ -24,7 +24,6 @@ try
         options.JsonSerializerOptions.DefaultIgnoreCondition
                        = JsonIgnoreCondition.WhenWritingNull;
     });
-
     // NLog: Setup NLog for Dependency injection
     builder.Logging.ClearProviders();
     builder.Logging.SetMinimumLevel(Microsoft.Extensions.Logging.LogLevel.Trace);
@@ -82,9 +81,8 @@ try
     builder.Services.AddMicrosoftIdentityWebApiAuthentication(builder.Configuration)
         .EnableTokenAcquisitionToCallDownstreamApi()
         .AddInMemoryTokenCaches();
-
+    
     builder.Services.AddScoped<ITokenService, TokenService>();
-
     builder.Services.AddApiVersioning(o =>
     {
         o.AssumeDefaultVersionWhenUnspecified = true;
@@ -125,7 +123,6 @@ try
     app.MapControllers();
     app.UseCors();
     app.Run();
-
 }
 catch (Exception exception)
 {

@@ -10,6 +10,7 @@ namespace EducationalTeamsBotApi.Infrastructure.Services
     using System.Threading.Tasks;
     using EducationalTeamsBotApi.Application.Common.Constants;
     using EducationalTeamsBotApi.Application.Common.Interfaces;
+    using EducationalTeamsBotApi.CrossCuting;
     using EducationalTeamsBotApi.Domain.Entities;
     using MediatR;
     using Microsoft.Azure.Cosmos;
@@ -21,14 +22,9 @@ namespace EducationalTeamsBotApi.Infrastructure.Services
     public class TagCosmosService : ITagCosmosService
     {
         /// <summary>
-        /// Cosmos client used in this service.
+        /// Container used in this service.
         /// </summary>
-        private readonly CosmosClient cosmosClient;
-
-        /// <summary>
-        /// Database used in this service.
-        /// </summary>
-        private readonly Database database;
+        private readonly Container container;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="TagCosmosService"/> class.
@@ -37,30 +33,42 @@ namespace EducationalTeamsBotApi.Infrastructure.Services
         {
             var cosmosConString = Environment.GetEnvironmentVariable(DatabaseConstants.ConnectionString);
             var options = new CosmosClientOptions() { ConnectionMode = ConnectionMode.Gateway };
-            this.cosmosClient = new CosmosClient(cosmosConString, options);
-            this.database = this.cosmosClient.GetDatabase(DatabaseConstants.Database);
+            var cosmosClient = new CosmosClient(cosmosConString, options);
+            var database = cosmosClient.GetDatabase(DatabaseConstants.Database);
+            this.container = database.GetContainer(DatabaseConstants.TagContainer);
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="TagCosmosService"/> class dedicated to unit testing.
+        /// </summary>
+        /// <param name="testContainer">Mock container used in the unit testing.</param>
+        /// <param name="testDatabase">Mock database used in the unit testing.</param>
+        public TagCosmosService(Container testContainer)
+        {
+            this.container = testContainer;
         }
 
         /// <inheritdoc/>
-        public Task<CosmosTag?> AddTag(List<string> variants)
+        public Task<CosmosTag?> AddTag(string id, List<string> variants)
         {
-            var container = this.database.GetContainer(DatabaseConstants.TagContainer);
             if (!variants.Any())
             {
-                throw new Exception("No variants");
+                throw new BusinessException("No variants");
             }
 
-            var id = Guid.NewGuid().ToString();
-            container.CreateItemAsync<CosmosTag>(new CosmosTag { Id = id, Variants = variants }, new PartitionKey(id));
+            if (id == string.Empty)
+            {
+                id = Guid.NewGuid().ToString();
+            }
 
-            return this.SearchTag(variants.First());
+            this.container.UpsertItemAsync(new CosmosTag(id, variants), new PartitionKey(id));
+
+            return this.GetTag(id);
         }
 
         /// <inheritdoc/>
         public Task<CosmosTag?> EditTagVariant(string id, string tagVariant)
         {
-            var container = this.database.GetContainer(DatabaseConstants.TagContainer);
-
             var existingTag = this.GetTag(id).Result;
 
             if (existingTag != null)
@@ -77,7 +85,7 @@ namespace EducationalTeamsBotApi.Infrastructure.Services
                 }
 
                 existingTag.Variants = tags;
-                container.ReplaceItemAsync(existingTag, existingTag.Id);
+                this.container.ReplaceItemAsync(existingTag, existingTag.Id);
             }
 
             return this.GetTag(id);
@@ -86,46 +94,38 @@ namespace EducationalTeamsBotApi.Infrastructure.Services
         /// <inheritdoc/>
         public async Task<CosmosTag?> GetTag(string id)
         {
-            var container = this.database.GetContainer(DatabaseConstants.TagContainer);
-
-            var q = container.GetItemLinqQueryable<CosmosTag>();
+            var q = this.container.GetItemLinqQueryable<CosmosTag>();
             var iterator = q.Where(t => t.Id == id).ToFeedIterator();
             var results = await iterator.ReadNextAsync();
 
-            return results.FirstOrDefault<CosmosTag>();
+            return results.FirstOrDefault();
         }
 
         /// <inheritdoc/>
-        public async Task<IEnumerable<CosmosTag>> GetTags()
+        public async Task<IQueryable<CosmosTag>> GetTags()
         {
-            var container = this.database.GetContainer(DatabaseConstants.TagContainer);
-            var tags = container.GetItemLinqQueryable<CosmosTag>();
+            var tags = this.container.GetItemLinqQueryable<CosmosTag>();
             var iterator = tags.ToFeedIterator();
 
             var results = await iterator.ReadNextAsync();
-            return Tools.ToIEnumerable<CosmosTag>(results.GetEnumerator());
+            return results.AsQueryable();
         }
 
         /// <inheritdoc/>
         public async Task<CosmosTag?> SearchTag(string tag)
         {
-            var container = this.database.GetContainer(DatabaseConstants.TagContainer);
-
-            var q = container.GetItemLinqQueryable<CosmosTag>();
+            var q = this.container.GetItemLinqQueryable<CosmosTag>();
             var iterator = q.Where(t => t.Variants.Contains(tag)).ToFeedIterator();
             var results = await iterator.ReadNextAsync();
 
-            return results.FirstOrDefault<CosmosTag>();
+            return results.FirstOrDefault();
         }
 
         /// <inheritdoc/>
         public async Task<Unit> DeleteTag(string id)
         {
-            var containerTag = this.database.GetContainer(DatabaseConstants.TagContainer);
-            var containerSpeaker = this.database.GetContainer(DatabaseConstants.SpeakerContainer);
-
-            await containerTag.DeleteItemAsync<CosmosTag>(id, new PartitionKey(id));
-            return default(Unit);
+            await this.container.DeleteItemAsync<CosmosTag>(id, new PartitionKey(id));
+            return default;
         }
     }
 }

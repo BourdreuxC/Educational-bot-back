@@ -8,6 +8,7 @@ namespace EducationalTeamsBotApi.Application.Tags.Commands.DeleteTagCommand
 {
     using System.Threading.Tasks;
     using EducationalTeamsBotApi.Application.Common.Interfaces;
+    using EducationalTeamsBotApi.CrossCuting;
     using MediatR;
 
     /// <summary>
@@ -29,7 +30,7 @@ namespace EducationalTeamsBotApi.Application.Tags.Commands.DeleteTagCommand
         /// Initializes a new instance of the <see cref="DeleteTagCommandHandler"/> class.
         /// </summary>
         /// <param name="tagService">Service of the tags.</param>
-        /// <param name="tagService">Service of the speakers.</param>
+        /// <param name="speakerService">Service of the speakers.</param>
         public DeleteTagCommandHandler(ITagCosmosService tagService, ISpeakerCosmosService speakerService)
         {
             this.tagService = tagService;
@@ -42,10 +43,16 @@ namespace EducationalTeamsBotApi.Application.Tags.Commands.DeleteTagCommand
         /// <param name="request">Delete request.</param>
         /// <param name="cancellationToken">Token of cancellation.</param>
         /// <returns>A Unit.</returns>
-        Task<Unit> IRequestHandler<DeleteTagCommand, Unit>.Handle(DeleteTagCommand request, CancellationToken cancellationToken)
+        public async Task<Unit> Handle(DeleteTagCommand request, CancellationToken cancellationToken)
         {
-            this.speakerService.RemoveTagFromSpeakers(request.Id);
-            return this.tagService.DeleteTag(request.Id);
+            var tag = this.tagService.GetTag(request.Id).Result;
+            if (tag == null)
+            {
+                throw new BusinessException("Tag id '" + request.Id + "' was not found for deletion");
+            }
+
+            await this.speakerService.RemoveTagFromSpeakers(request.Id);
+            return await this.tagService.DeleteTag(request.Id);
         }
     }
 }

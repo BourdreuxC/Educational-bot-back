@@ -20,5 +20,10 @@ namespace EducationalTeamsBotApi.Application.Common.Constants
         /// Key to get in configuration to get authoring URL.
         /// </summary>
         public const string AuthoringUrl = "QnaMaker:AuthoringUrl";
+
+        /// <summary>
+        /// Key to get the default message when there is no answer and speaker corresponding to the question.
+        /// </summary>
+        public const string NotFoundResult = "Pas de solution mais je reste à l'écoute.";
     }
 }

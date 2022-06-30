@@ -1,0 +1,35 @@
+name: Test
+
+on:
+  push:
+    branches: [main,dev,unit_tests]
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+env:
+  DOTNET_VERSION: '6.0' # The .NET SDK version to use
+
+jobs:
+  build-and-test:
+
+    name: Test-${{matrix.os}}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ windows-latest]
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: ${{ env.DOTNET_VERSION }}
+
+    - name: Install dependencies
+      run: dotnet restore bot-api\EducationalTeamsBotApi
+      
+    - name: Build
+      run: dotnet build bot-api\EducationalTeamsBotApi\EducationalTeamsBotApi.sln
+      
+    - name: Test
+      run: dotnet test bot-api\EducationalTeamsBotApi\EducationalTeamsBotApi.sln --no-restore --verbosity normal

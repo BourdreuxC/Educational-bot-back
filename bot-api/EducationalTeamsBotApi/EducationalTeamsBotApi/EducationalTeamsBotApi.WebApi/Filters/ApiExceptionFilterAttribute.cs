@@ -8,8 +8,10 @@ namespace EducationalTeamsBotApi.WebApi.Filters
 {
     using EducationalTeamsBotApi.Application.Common.Constants;
     using EducationalTeamsBotApi.Application.Common.Exceptions;
+    using EducationalTeamsBotApi.CrossCuting;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Mvc.Filters;
+    using NLog;
 
     /// <summary>
     /// Class attribute to filter api exception.
@@ -34,12 +36,16 @@ namespace EducationalTeamsBotApi.WebApi.Filters
                 { typeof(UnauthorizedAccessException), this.HandleUnauthorizedAccessException },
                 { typeof(ForbiddenAccessException), this.HandleForbiddenAccessException },
                 { typeof(ConflictException), this.HandleConflictException },
+                { typeof(BusinessException), this.HandleBusinessException },
             };
         }
 
         /// <inheritdoc/>
         public override void OnException(ExceptionContext context)
         {
+            Logger logger = LogManager.GetCurrentClassLogger();
+            logger.Log(LogLevel.Error, context.Exception);
+
             this.HandleException(context);
 
             base.OnException(context);
@@ -202,6 +208,26 @@ namespace EducationalTeamsBotApi.WebApi.Filters
             context.Result = new ObjectResult(details)
             {
                 StatusCode = StatusCodes.Status500InternalServerError,
+            };
+
+            context.ExceptionHandled = true;
+        }
+
+        /// <summary>
+        /// Handle the business exception.
+        /// </summary>
+        /// <param name="context">Context of the exception.</param>
+        private void HandleBusinessException(ExceptionContext context)
+        {
+            var details = new ProblemDetails
+            {
+                Status = StatusCodes.Status400BadRequest,
+                Detail = context.Exception.Message,
+            };
+
+            context.Result = new ObjectResult(details)
+            {
+                StatusCode = StatusCodes.Status400BadRequest,
             };
 
             context.ExceptionHandled = true;

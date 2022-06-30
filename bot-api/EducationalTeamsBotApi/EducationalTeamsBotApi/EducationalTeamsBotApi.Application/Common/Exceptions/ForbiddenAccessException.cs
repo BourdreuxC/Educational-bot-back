@@ -7,10 +7,12 @@
 namespace EducationalTeamsBotApi.Application.Common.Exceptions
 {
     using System;
+    using System.Runtime.Serialization;
 
     /// <summary>
     /// Class exception for the forbidden exception.
     /// </summary>
+    [Serializable]
     public class ForbiddenAccessException : Exception
     {
         /// <summary>
@@ -18,6 +20,16 @@ namespace EducationalTeamsBotApi.Application.Common.Exceptions
         /// </summary>
         public ForbiddenAccessException()
             : base()
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ForbiddenAccessException"/> class.
+        /// </summary>
+        /// <param name="info">Serialization information.</param>
+        /// <param name="context">Streaming context.</param>
+        protected ForbiddenAccessException(SerializationInfo info, StreamingContext context)
+            : base(info, context)
         {
         }
     }
