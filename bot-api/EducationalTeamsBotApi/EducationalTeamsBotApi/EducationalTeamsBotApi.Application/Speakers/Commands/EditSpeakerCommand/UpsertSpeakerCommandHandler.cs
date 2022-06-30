@@ -34,14 +34,8 @@ namespace EducationalTeamsBotApi.Application.Speakers.Commands.EditSpeakerComman
         public async Task<CosmosSpeaker?> Handle(UpsertSpeakerCommand request, CancellationToken cancellationToken)
         {
             var speaker = this.speakerService.GetSpeaker(request.Speaker.Id);
-            if (speaker.Result == null)
-            {
-                return await this.speakerService.AddSpeaker(request.Speaker);
-            }
-            else
-            {
-                return await this.speakerService.EditSpeaker(request.Speaker);
-            }
+
+            return speaker.Result == null ? await this.speakerService.AddSpeaker(request.Speaker) : await this.speakerService.EditSpeaker(request.Speaker);
         }
     }
 }

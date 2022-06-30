@@ -21,7 +21,7 @@ namespace EducationalTeamsBotApi.UnitTests.MockServices
         }
 
 
-        public Task<CosmosSpeaker> AddSpeaker(CosmosSpeaker speaker)
+        public Task<CosmosSpeaker?> AddSpeaker(CosmosSpeaker speaker)
         {
             throw new NotImplementedException();
         }
@@ -31,7 +31,7 @@ namespace EducationalTeamsBotApi.UnitTests.MockServices
             throw new NotImplementedException();
         }
 
-        public Task<CosmosSpeaker> EditSpeaker(CosmosSpeaker speaker)
+        public Task<CosmosSpeaker?> EditSpeaker(CosmosSpeaker speaker)
         {
              var existingSpeaker = this.GetSpeaker(speaker.Id).Result;
 
@@ -39,13 +39,14 @@ namespace EducationalTeamsBotApi.UnitTests.MockServices
             {
                 throw new BusinessException("Speaker not found");
             }
+
             existingSpeaker = speaker;
 
-            return Task.FromResult(existingSpeaker);
+            return Task.FromResult((CosmosSpeaker?) existingSpeaker);
 
         }
 
-        public Task<CosmosSpeaker> EnableSpeaker(string id)
+        public Task<CosmosSpeaker?> EnableSpeaker(string id)
         {
             throw new NotImplementedException();
         }
@@ -56,7 +57,7 @@ namespace EducationalTeamsBotApi.UnitTests.MockServices
             return Task.FromResult(Speakers.AsQueryable());
         }
 
-        public Task<CosmosSpeaker> GetSpeaker(string id)
+        public Task<CosmosSpeaker?> GetSpeaker(string id)
         {
             var speaker = Speakers.FirstOrDefault(s => s.Id == id);
             return Task.FromResult(speaker);
@@ -67,13 +68,18 @@ namespace EducationalTeamsBotApi.UnitTests.MockServices
             var speakersWithTag = Speakers.Where(s => s.Tags.Contains(id));
 
             IEnumerable<string> tagList;
-            CosmosSpeaker speaker;
+            CosmosSpeaker? speaker;
             foreach (var item in speakersWithTag)
             {
-                speaker = this.GetSpeaker(item.Id).Result;
+                speaker = await this.GetSpeaker(item.Id);
+                if (speaker == null)
+                {
+                    continue;
+                }
+
                 tagList = item.Tags.Where(t => t != id);
                 speaker.Tags = tagList;
-                this.EditSpeaker(speaker);
+                await this.EditSpeaker(speaker);
             }
 
             return default;

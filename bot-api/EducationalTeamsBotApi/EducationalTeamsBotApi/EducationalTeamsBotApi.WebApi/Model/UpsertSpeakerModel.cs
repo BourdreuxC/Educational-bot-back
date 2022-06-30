@@ -1,5 +1,5 @@
 ﻿// -----------------------------------------------------------------------
-// <copyright file="EditSpeakerModel.cs" company="DIIAGE">
+// <copyright file="UpsertSpeakerModel.cs" company="DIIAGE">
 // Copyright (c) DIIAGE 2022. All rights reserved.
 // </copyright>
 // -----------------------------------------------------------------------
@@ -7,10 +7,19 @@
 namespace EducationalTeamsBotApi.WebApi.Model
 {
     /// <summary>
-    /// Model useed for the edition of a speaker.
+    /// Model useed for the upsert of a speaker.
     /// </summary>
     public class UpsertSpeakerModel
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="UpsertSpeakerModel"/> class.
+        /// </summary>
+        /// <param name="id">Speaker identifier.</param>
+        public UpsertSpeakerModel(string id)
+        {
+            this.Id = id;
+        }
+
         /// <summary>
         /// Gets or sets the identifier of a speaker.
         /// </summary>
