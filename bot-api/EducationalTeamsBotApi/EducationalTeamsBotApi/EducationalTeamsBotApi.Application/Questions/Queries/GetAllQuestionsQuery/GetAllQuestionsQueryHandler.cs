@@ -14,6 +14,7 @@ namespace EducationalTeamsBotApi.Application.Questions.Queries.GetAllQuestionsQu
     using EducationalTeamsBotApi.Application.Common.Models;
     using EducationalTeamsBotApi.Application.Dto;
     using EducationalTeamsBotApi.Application.Pagination.Queries;
+    using EducationalTeamsBotApi.CrossCuting;
     using global::Application.Common.Mappings;
     using MediatR;
 
@@ -52,7 +53,27 @@ namespace EducationalTeamsBotApi.Application.Questions.Queries.GetAllQuestionsQu
                 .Where(q => request.Search == string.Empty || q.Content.ToLower().Contains(request.Search.ToLower()))
                 .ProjectTo<QuestionDto>(this.mapper.ConfigurationProvider);
 
-            var paginatedQuestions = await projectedQuestions.PaginatedListAsync(request.PageNumber, request.PageSize);
+            var result = new List<QuestionDto>();
+            foreach (var question in projectedQuestions)
+            {
+                if (question.Id == null)
+                {
+                    throw new BusinessException("The questions identifier are corrupted");
+                }
+
+                var answer = "No response available yet.";
+                var bestAnswer = this.questionCosmosService.GetBestAnswerFromQuestion(question.Id).Result;
+
+                if (bestAnswer != null)
+                {
+                    answer = bestAnswer.Content;
+                }
+
+                question.BestAnswer = answer;
+                result.Add(question);
+            }
+
+            var paginatedQuestions = await result.AsQueryable().PaginatedListAsync(request.PageNumber, request.PageSize);
 
             return paginatedQuestions;
         }

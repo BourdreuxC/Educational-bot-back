@@ -171,6 +171,17 @@ namespace EducationalTeamsBotApi.Infrastructure.Services
         }
 
         /// <inheritdoc/>
+        public async Task<CosmosAnswer?> GetBestAnswerFromQuestion(string questionId)
+        {
+            var questionAnswers = this.GetQuestion(questionId).Result.Answers;
+            var container = this.database.GetContainer(DatabaseConstants.AnswerContainer);
+            var q = container.GetItemLinqQueryable<CosmosAnswer>();
+            var iterator = q.Where(a => questionAnswers.Contains(a.Id)).ToFeedIterator();
+            var results = await iterator.ReadNextAsync();
+            return results.FirstOrDefault();
+        }
+
+        /// <inheritdoc/>
         public async Task DeleteQuestion(string id)
         {
             var container = this.database.GetContainer(DatabaseConstants.QuestionContainer);
