@@ -34,12 +34,6 @@ jobs:
           name: .net-app
           path: ${{env.DOTNET_ROOT}}/myapp
 
-      - name: Azure Login
-        uses: Azure/login@v1.4.5
-        with:
-          # Paste output of `az ad sp create-for-rbac` as value of secret variable: AZURE_CREDENTIALS
-          creds: ${{secrets.AZURE_CREDENTIALS}}
-
   deploy:
     runs-on: windows-latest
     needs: build
@@ -52,6 +46,12 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: .net-app
+          
+      - name: Azure Login
+        uses: Azure/login@v1.4.5
+        with:
+          # Paste output of `az ad sp create-for-rbac` as value of secret variable: AZURE_CREDENTIALS
+          creds: ${{secrets.AZURE_CREDENTIALS}}
 
       - name: Deploy to Azure Web App
         id: deploy-to-webapp
