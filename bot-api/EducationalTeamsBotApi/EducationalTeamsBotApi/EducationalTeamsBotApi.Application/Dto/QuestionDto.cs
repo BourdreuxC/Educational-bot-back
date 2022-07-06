@@ -22,6 +22,7 @@ namespace EducationalTeamsBotApi.Application.Dto
         {
             this.Tags = new List<string>();
             this.Answers = new List<string>();
+            this.BestAnswer = string.Empty;
         }
 
         /// <summary>
@@ -32,13 +33,15 @@ namespace EducationalTeamsBotApi.Application.Dto
         /// <param name="userId">User identifier.</param>
         /// <param name="tags">Question associated tags.</param>
         /// <param name="answers">Questions answers.</param>
-        public QuestionDto(string id, string content, string userId, IEnumerable<string> tags, IEnumerable<string> answers)
+        /// <param name="bestAnswer">Questions best answer.</param>
+        public QuestionDto(string id, string content, string userId, IEnumerable<string> tags, IEnumerable<string> answers, string bestAnswer)
         {
             this.Id = id;
             this.Content = content;
             this.UserId = userId;
             this.Tags = tags;
             this.Answers = answers;
+            this.BestAnswer = bestAnswer;
         }
 
         /// <summary>
@@ -60,6 +63,11 @@ namespace EducationalTeamsBotApi.Application.Dto
         /// Gets or sets the answers.
         /// </summary>
         public IEnumerable<string> Answers { get; set; }
+
+        /// <summary>
+        /// Gets or sets the answers object.
+        /// </summary>
+        public string BestAnswer { get; set; }
 
         /// <summary>
         /// Gets or sets the UserId.

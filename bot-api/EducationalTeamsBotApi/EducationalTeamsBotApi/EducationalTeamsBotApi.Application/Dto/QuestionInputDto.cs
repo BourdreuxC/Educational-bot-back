@@ -18,6 +18,9 @@ namespace EducationalTeamsBotApi.Application.Dto
         {
             this.Message = string.Empty;
             this.UserId = string.Empty;
+            this.MessageId = string.Empty;
+            this.ChannelId = string.Empty;
+            this.TeamId = string.Empty;
             this.Tags = new List<string>();
         }
 
@@ -35,5 +38,20 @@ namespace EducationalTeamsBotApi.Application.Dto
         /// Gets or sets the UserId.
         /// </summary>
         public string UserId { get; set; }
+
+        /// <summary>
+        /// Gets or sets the MessageId.
+        /// </summary>
+        public string MessageId { get; set; }
+
+        /// <summary>
+        /// Gets or sets the TeamId.
+        /// </summary>
+        public string TeamId { get; set; }
+
+        /// <summary>
+        /// Gets or sets the ChannelId.
+        /// </summary>
+        public string ChannelId { get; set; }
     }
 }

@@ -11,10 +11,7 @@ namespace EducationalTeamsBotApi.UnitTests.Tests
     using EducationalTeamsBotApi.Application.Common.Interfaces;
     using EducationalTeamsBotApi.Application.Dto;
     using EducationalTeamsBotApi.Application.Questions.Commands.AskQuestion;
-    using EducationalTeamsBotApi.Infrastructure.Services;
-    using Microsoft.Azure.CognitiveServices.Knowledge.QnAMaker;
     using Microsoft.Azure.CognitiveServices.Knowledge.QnAMaker.Models;
-    using Microsoft.Azure.Cosmos;
     using Microsoft.Extensions.Configuration;
     using Moq;
 
@@ -55,8 +52,10 @@ namespace EducationalTeamsBotApi.UnitTests.Tests
             mockQuestionService.Setup(x => x.GetQuestionAnswer(questionInput))
                 .Returns(Task.FromResult(expectedSearchResult));
 
+            var config = new ConfigurationBuilder().AddJsonFile("appsettings.Development.json").Build();
+
             // Instantiate the handler
-            var handler = new AskQuestionCommandHandler(mockQuestionService.Object);
+            var handler = new AskQuestionCommandHandler(mockQuestionService.Object, config);
 
             // Handles the command
             var answerFoundResult = await handler.Handle(new AskQuestionCommand(questionInput), CancellationToken.None);
@@ -108,8 +107,10 @@ namespace EducationalTeamsBotApi.UnitTests.Tests
             mockQuestionService.Setup(x => x.GetQuestionSpeakers(questionInput))
                 .Returns(Task.FromResult(expectedSpeakersResult.AsEnumerable()));
 
+            var config = new ConfigurationBuilder().AddJsonFile("appsettings.Development.json").Build();
+
             // Instantiate the handler
-            var handler = new AskQuestionCommandHandler(mockQuestionService.Object);
+            var handler = new AskQuestionCommandHandler(mockQuestionService.Object, config);
 
             // Handles the command
             var answerFoundResult = await handler.Handle(new AskQuestionCommand(questionInput), CancellationToken.None);
@@ -153,8 +154,10 @@ namespace EducationalTeamsBotApi.UnitTests.Tests
             mockQuestionService.Setup(x => x.GetQuestionSpeakers(questionInput))
                 .Returns(Task.FromResult(new List<string>().AsEnumerable()));
 
+            var config = new ConfigurationBuilder().AddJsonFile("appsettings.Development.json").Build();
+
             // Instantiate the handler
-            var handler = new AskQuestionCommandHandler(mockQuestionService.Object);
+            var handler = new AskQuestionCommandHandler(mockQuestionService.Object, config);
 
             // Handles the command
             var answerFoundResult = await handler.Handle(new AskQuestionCommand(questionInput), CancellationToken.None);
@@ -183,8 +186,10 @@ namespace EducationalTeamsBotApi.UnitTests.Tests
                 Tags = new List<string>()
             };
 
+            var config = new ConfigurationBuilder().AddJsonFile("appsettings.Development.json").Build();
+
             // Instantiate the handler
-            var handler = new AskQuestionCommandHandler(mockQuestionService.Object);
+            var handler = new AskQuestionCommandHandler(mockQuestionService.Object, config);
 
             // Handles the command
             var answerFoundResult = await handler.Handle(new AskQuestionCommand(questionInput), CancellationToken.None);

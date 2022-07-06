@@ -13,6 +13,8 @@ namespace EducationalTeamsBotApi.Application.Questions.Commands.AskQuestion
     using EducationalTeamsBotApi.Application.Dto;
     using EducationalTeamsBotApi.Domain.Entities;
     using MediatR;
+    using Microsoft.Extensions.Configuration;
+    using RestSharp;
 
     /// <summary>
     /// Handler for the command that will interrogate te QnA service and insert in the Cosmos if no answer is provided.
@@ -25,12 +27,19 @@ namespace EducationalTeamsBotApi.Application.Questions.Commands.AskQuestion
         private readonly IQuestionCosmosService questionCosmosService;
 
         /// <summary>
+        /// Configuration.
+        /// </summary>
+        private readonly IConfiguration configuration;
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="AskQuestionCommandHandler"/> class.
         /// </summary>
         /// <param name="questionCosmosService">injection.</param>
-        public AskQuestionCommandHandler(IQuestionCosmosService questionCosmosService)
+        /// <param name="configuration">Configuration.</param>
+        public AskQuestionCommandHandler(IQuestionCosmosService questionCosmosService, IConfiguration configuration)
         {
             this.questionCosmosService = questionCosmosService;
+            this.configuration = configuration;
         }
 
         /// <inheritdoc/>
@@ -71,6 +80,22 @@ namespace EducationalTeamsBotApi.Application.Questions.Commands.AskQuestion
                 {
                     result.Answer = answer.Answer;
                 }
+            }
+
+            if (Environment.GetEnvironmentVariable("LOGIC_APP_HTTP_TRIGGER") != null)
+            {
+                // Instantiate rest client
+                var restClient = new RestClient(Environment.GetEnvironmentVariable("LOGIC_APP_HTTP_TRIGGER") ?? string.Empty);
+
+                // Prepare request
+                var restRequest = new RestRequest()
+                    .AddQueryParameter("messageId", request.Message.MessageId)
+                    .AddQueryParameter("channelId", request.Message.ChannelId)
+                    .AddQueryParameter("teamId", request.Message.TeamId)
+                    .AddQueryParameter("delay", this.configuration["LogicAppDelay"]);
+
+                // Trigger logic app
+                await restClient.PostAsync(restRequest, CancellationToken.None);
             }
 
             return result;
