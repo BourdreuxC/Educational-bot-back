@@ -88,11 +88,7 @@ namespace EducationalTeamsBotApi.Application.Questions.Commands.AskQuestion
                 var restClient = new RestClient(Environment.GetEnvironmentVariable("LOGIC_APP_HTTP_TRIGGER") ?? string.Empty);
 
                 // Prepare request
-                var restRequest = new RestRequest()
-                    .AddQueryParameter("messageId", request.Message.MessageId)
-                    .AddQueryParameter("channelId", request.Message.ChannelId)
-                    .AddQueryParameter("teamId", request.Message.TeamId)
-                    .AddQueryParameter("delay", this.configuration["LogicAppDelay"]);
+                var restRequest = new RestRequest().AddBody(new LogicAppHttpBody { ChannelId = request.Message.ChannelId, MessageId = request.Message.MessageId, TeamId = request.Message.TeamId });
 
                 // Trigger logic app
                 await restClient.PostAsync(restRequest, CancellationToken.None);
