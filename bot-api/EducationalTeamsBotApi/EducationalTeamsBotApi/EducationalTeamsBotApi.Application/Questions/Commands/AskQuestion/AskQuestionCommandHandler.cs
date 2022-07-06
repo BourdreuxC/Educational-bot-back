@@ -50,7 +50,7 @@ namespace EducationalTeamsBotApi.Application.Questions.Commands.AskQuestion
             // Insert question in database
             await this.questionCosmosService.InsertCosmosQuestions(new List<CosmosQuestion>
             {
-                new CosmosQuestion(Guid.NewGuid().ToString(), request.Message.Message, request.Message.UserId),
+                new CosmosQuestion(request.Message.MessageId, request.Message.Message, request.Message.UserId),
             });
 
             var result = new QuestionOutputDto

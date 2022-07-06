@@ -29,6 +29,6 @@ namespace EducationalTeamsBotApi.Application.Dto
         /// <summary>
         /// Gets or sets the Delay.
         /// </summary>
-        public int Delay { get; set; } = 3;
+        public int Delay { get; set; } = 1;
     }
 }
