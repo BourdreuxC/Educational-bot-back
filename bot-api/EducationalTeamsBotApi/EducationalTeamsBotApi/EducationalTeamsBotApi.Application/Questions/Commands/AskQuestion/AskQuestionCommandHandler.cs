@@ -82,18 +82,21 @@ namespace EducationalTeamsBotApi.Application.Questions.Commands.AskQuestion
                 }
             }
 
-            // Instantiate rest client
-            var restClient = new RestClient(Environment.GetEnvironmentVariable("LOGIC_APP_HTTP_TRIGGER"));
+            if (Environment.GetEnvironmentVariable("LOGIC_APP_HTTP_TRIGGER") != null)
+            {
+                // Instantiate rest client
+                var restClient = new RestClient(Environment.GetEnvironmentVariable("LOGIC_APP_HTTP_TRIGGER") ?? string.Empty);
 
-            // Prepare request
-            var restRequest = new RestRequest()
-                .AddQueryParameter("messageId", request.Message.MessageId)
-                .AddQueryParameter("channelId", request.Message.ChannelId)
-                .AddQueryParameter("teamId", request.Message.TeamId)
-                .AddQueryParameter("delay", this.configuration["LogicAppDelay"]);
+                // Prepare request
+                var restRequest = new RestRequest()
+                    .AddQueryParameter("messageId", request.Message.MessageId)
+                    .AddQueryParameter("channelId", request.Message.ChannelId)
+                    .AddQueryParameter("teamId", request.Message.TeamId)
+                    .AddQueryParameter("delay", this.configuration["LogicAppDelay"]);
 
-            // Trigger logic app
-            var restResponse = await restClient.PostAsync(restRequest);
+                // Trigger logic app
+                await restClient.PostAsync(restRequest, CancellationToken.None);
+            }
 
             return result;
         }
