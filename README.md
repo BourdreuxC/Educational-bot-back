@@ -5,6 +5,10 @@ This is a solution designed for classroom teaching scenarios which allow teacher
 
 This solution is developed for the DIIAGE formation from Centre Universitaire Catholique De Bourgogne (CUCDB) in Dijon, France.
 
+## Carefull 
+
+This project is no longer maintained.
+
 # Use it yourself
 
 
